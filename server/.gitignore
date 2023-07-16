@@ -1,0 +1,9 @@
+.env.local
+.env.production.local
+
+**/.vs/**
+**/bin/**
+**/obj/**
+
+**fsproj.user
+**fsproj.user

@@ -1,0 +1,21 @@
+name: Server Build Check
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "7.0.x"
+
+      - name: Restore Dependencies
+        run: dotnet restore server/api/Api
+
+      - name: Build Project
+        run: dotnet build server/api/Api --configuration Release

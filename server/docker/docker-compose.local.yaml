@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  server:
+    container_name: server
+    restart: always
+    tty: true
+
+  database:
+    container_name: database
+    restart: always
+    tty: true
