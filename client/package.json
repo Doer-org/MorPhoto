@@ -12,7 +12,15 @@
     "format": "prettier --write **/*.{js,ts,jsx,tsx,md,json}",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install client/.husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{js,ts,jsx,tsx,md,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@types/node": "20.4.2",
@@ -47,11 +55,12 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.3",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^3.0.0",
     "storybook": "7.0.27",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
-    "vitest": "^0.33.0",
-    "husky": "^8.0.0"
+    "vitest": "^0.33.0"
   }
 }
