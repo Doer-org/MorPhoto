@@ -1,3 +1,6 @@
+.env.local
+.env.production.local
+
 **/.vs/**
 **/bin/**
 **/obj/**
