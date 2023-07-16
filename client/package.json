@@ -1,0 +1,57 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest",
+    "lint": "next lint",
+    "format": "prettier --write **/*.{js,ts,jsx,tsx,md,json}",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "next": "13.4.10",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.1.6"
+  },
+  "engines": {
+    "npm": "pnpm only",
+    "yarn": "pnpm only"
+  },
+  "devDependencies": {
+    "@next/env": "^13.4.10",
+    "@storybook/addon-essentials": "^7.0.27",
+    "@storybook/addon-interactions": "^7.0.27",
+    "@storybook/addon-links": "^7.0.27",
+    "@storybook/blocks": "^7.0.27",
+    "@storybook/nextjs": "^7.0.27",
+    "@storybook/react": "^7.0.27",
+    "@storybook/testing-library": "^0.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@vanilla-extract/css": "^1.12.0",
+    "@vanilla-extract/next-plugin": "^2.1.3",
+    "@vanilla-extract/webpack-plugin": "^2.2.0",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.12",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^3.0.0",
+    "storybook": "7.0.27",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "vitest": "^0.33.0",
+    "husky": "^8.0.0"
+  }
+}
