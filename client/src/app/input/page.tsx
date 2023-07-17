@@ -20,9 +20,11 @@ const Page = () => {
         <label htmlFor="image">入力画像</label>
         <input type="file" id="image" onChange={handleImageChange} />
       </div>
-      <div>
-        {imgUrl && <img src={imgUrl} alt="" width={160} height={160} />}
-      </div>
+      {imgUrl && (
+        <div>
+          <img src={imgUrl} alt="" width={160} height={160} />
+        </div>
+      )}
       <div>
         <label htmlFor="strength">変化量</label>
         <input type="number" id="strength" min={0} max={1} step={0.01} />
