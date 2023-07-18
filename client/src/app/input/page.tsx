@@ -2,12 +2,12 @@
 import { ChangeEvent, useState } from "react";
 
 const Page = () => {
-  const [imgUrl, setImgUrl] = useState<string>("");
+  const [imgUrlBase64, setImgUrlBase64] = useState<string>("");
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (!file) {
-      setImgUrl("");
+      setImgUrlBase64("");
       return;
     }
 
@@ -15,7 +15,7 @@ const Page = () => {
     reader.readAsDataURL(file);
     reader.onload = () => {
       const imgUrlBase64 = reader.result as string;
-      setImgUrl(imgUrlBase64);
+      setImgUrlBase64(imgUrlBase64);
     };
   };
 
@@ -35,9 +35,9 @@ const Page = () => {
           onChange={handleImageChange}
         />
       </div>
-      {imgUrl && (
+      {imgUrlBase64 && (
         <div>
-          <img src={imgUrl} alt="" width={160} height={160} />
+          <img src={imgUrlBase64} alt="" width={160} height={160} />
         </div>
       )}
       <div>
