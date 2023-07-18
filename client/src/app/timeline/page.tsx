@@ -1,5 +1,64 @@
 const Page = () => {
-  return <>Timeline Page</>;
+  return (
+    <>
+      <h2>Timeline Page</h2>
+      <div>
+        <span>子</span>
+        <div>
+          <img
+            src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
+            alt=""
+            width={400}
+            height={400}
+          />
+        </div>
+      </div>
+      <div>
+        <span>親1</span>
+        <div>
+          <img
+            src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798345343156/result_0.8.png"
+            alt=""
+            width={160}
+            height={160}
+          />
+        </div>
+      </div>
+      <div>
+        <span>親2</span>
+        <div>
+          <img
+            src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798026567770/result_0.5.png"
+            alt=""
+            width={160}
+            height={160}
+          />
+        </div>
+      </div>
+      <div>
+        <span>親3</span>
+        <div>
+          <img
+            src="https://media.discordapp.net/attachments/1130117141228703824/1130117281444266055/result_0.3.png?width=662&height=662"
+            alt=""
+            width={160}
+            height={160}
+          />
+        </div>
+      </div>
+      <div>
+        <span>root</span>
+        <div>
+          <img
+            src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
+            alt=""
+            width={400}
+            height={400}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Page;
