@@ -26,13 +26,13 @@ class ChatGPTConfig:
 @dataclass
 class DiffusionConfig:
     model: str = "runwayml/stable-diffusion-v1-5"
-    image_size: Tuple[int, int] = (128, 128)
+    image_size: Tuple[int, int] = (512, 512)
     seed: int = 10
     device: str = "cuda"
 
 
 @dataclass
-class IconConverterConfig:
+class MorphotoConfig:
     text_filter_config: TextFilterConfig = field(default_factory=TextFilterConfig)
     translation_config: TranslationConfig = field(default_factory=TranslationConfig)
     chatgpt_config: ChatGPTConfig = field(default_factory=ChatGPTConfig)
