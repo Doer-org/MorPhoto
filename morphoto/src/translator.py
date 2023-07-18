@@ -1,7 +1,6 @@
 import sys
 
 from googletrans import Translator
-from omegaconf import OmegaConf
 
 sys.path.append("configs")
 from config import TranslationConfig
@@ -18,6 +17,7 @@ class CustomTranslator:
 
 
 if __name__ == "__main__":
+    from omegaconf import OmegaConf
     print("入力文")
     example_1 = "こんにちは"
     print(example_1)

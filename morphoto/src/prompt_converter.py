@@ -3,7 +3,6 @@ import sys
 
 import openai
 from dotenv import load_dotenv
-from omegaconf import OmegaConf
 
 sys.path.append("configs")
 from config import ChatGPTConfig
@@ -24,6 +23,7 @@ class PromptConverter:
 
 
 if __name__ == "__main__":
+    from omegaconf import OmegaConf
     example_1 = "Make it a character-like image of a cute anime"
     print("入力文")
     print(example_1)
