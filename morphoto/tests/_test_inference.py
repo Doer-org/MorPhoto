@@ -27,4 +27,3 @@ class TestInferenceEndpoint(unittest.TestCase):
         image = base64.b64decode(response.json()["converted_image"])
         image = Image.open(io.BytesIO(image))
         self.assertIsNotNone(image)
-        

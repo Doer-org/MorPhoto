@@ -12,12 +12,15 @@ class CustomTranslator:
         self.translator = Translator()
 
     def translate(self, text: str) -> str:
-        translation = self.translator.translate(text, dest=self.config.dest, src=self.config.src).text
+        translation = self.translator.translate(
+            text, dest=self.config.dest, src=self.config.src
+        ).text
         return translation
 
 
 if __name__ == "__main__":
     from omegaconf import OmegaConf
+
     print("入力文")
     example_1 = "こんにちは"
     print(example_1)

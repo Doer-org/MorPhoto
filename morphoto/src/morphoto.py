@@ -29,6 +29,7 @@ class Morphoto:
 
 if __name__ == "__main__":
     from omegaconf import OmegaConf
+
     text = "ラーメン"
     image_path = "data/sample/nijika.png"
     strength = 0.8
