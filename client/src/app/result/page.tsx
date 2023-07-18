@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Page = () => {
   return (
     <>
@@ -31,13 +33,13 @@ const Page = () => {
       <div>
         <ul>
           <li>
-            <a href="#">共有する</a>
+            <a href="">共有する</a>
           </li>
           <li>
-            <a href="#">さらに画像を変化する</a>
+            <Link href="/input">さらに画像を変化する</Link>
           </li>
           <li>
-            <a href="#">タイムラインへ</a>
+            <Link href="/timeline">タイムラインへ</Link>
           </li>
         </ul>
       </div>
