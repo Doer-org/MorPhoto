@@ -12,7 +12,7 @@ echo 'HUGGING_FACE_TOKEN=your_huggingface_token' >> .env
 ### 実行 + テスト
 ```bash
 poetry install
-poetry run python icon_conversion.py
+poetry run uvicorn src.main:app --reload
 poetry run pytest # テスト
 ```
 
