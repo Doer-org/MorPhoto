@@ -4,7 +4,6 @@ import sys
 import torch
 from diffusers import StableDiffusionImg2ImgPipeline
 from dotenv import load_dotenv
-from omegaconf import OmegaConf
 from PIL import Image
 
 sys.path.append("configs")
@@ -20,13 +19,16 @@ class ImageConverter:
     def _inference_setup(self):
         load_dotenv()
         token = os.environ.get("HUGGING_FACE_TOKEN")
-        model = StableDiffusionImg2ImgPipeline.from_pretrained(self.config.model, use_auth_token=token)
+        model = StableDiffusionImg2ImgPipeline.from_pretrained(
+            self.config.model, use_auth_token=token
+        )
         model = model.to(self.device)
         model.safety_checker = lambda images, **kwargs: (images, [False])
         generator = torch.Generator(device=self.device).manual_seed(self.config.seed)
         return model, generator
 
     def convert(self, prompt: str, image, strength: float = 0.8):
+        image = image.convert("RGB")
         image = image.resize(self.config.image_size)
         image = self.model(
             prompt=prompt,
@@ -38,6 +40,8 @@ class ImageConverter:
 
 
 if __name__ == "__main__":
+    from omegaconf import OmegaConf
+
     diffusion_config = OmegaConf.create(DiffusionConfig)
     prompt = "best quality masterpiece makoto shinkai "
     image_path = "data/sample/nijika.png"

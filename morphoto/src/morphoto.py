@@ -1,19 +1,18 @@
 import sys
 
-from omegaconf import OmegaConf
 from PIL import Image
 
 sys.path.append("configs")
-from config import IconConverterConfig
+from config import MorphotoConfig
 
 from filter import TextFilter
-from image_conversion import ImageConverter
-from prompt_conversion import PromptConverter
-from translate import CustomTranslator
+from image_converter import ImageConverter
+from prompt_converter import PromptConverter
+from translator import CustomTranslator
 
 
-class IconConverter:
-    def __init__(self, converter_config: IconConverterConfig):
+class Morphoto:
+    def __init__(self, converter_config: MorphotoConfig):
         self.config = converter_config
         self.text_filter = TextFilter(self.config.text_filter_config)
         self.translator = CustomTranslator(self.config.translation_config)
@@ -29,12 +28,13 @@ class IconConverter:
 
 
 if __name__ == "__main__":
-    text = "柴犬"
+    from omegaconf import OmegaConf
+
+    text = "ラーメン"
     image_path = "data/sample/nijika.png"
     strength = 0.8
     image = Image.open(image_path)
-    icon_converter_config = OmegaConf.create(IconConverterConfig)
-    icon_converter = IconConverter(icon_converter_config)
-    icon, prompt = icon_converter.convert(text, image)
-    print(prompt)
+    morphoto_config = OmegaConf.create(MorphotoConfig)
+    morphoto = Morphoto(morphoto_config)
+    icon, prompt = morphoto.convert(text, image, strength)
     icon.save("result.png")

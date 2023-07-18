@@ -6,7 +6,7 @@ from omegaconf import OmegaConf
 sys.path.append("configs")
 from config import TranslationConfig
 
-from src.translate import CustomTranslator
+from src.translator import CustomTranslator
 
 
 class TestCustomTranslator(unittest.TestCase):
