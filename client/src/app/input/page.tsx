@@ -6,7 +6,17 @@ const Page = () => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    setImgUrl(file ? URL.createObjectURL(file) : "");
+    if (!file) {
+      setImgUrl("");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const imgUrlBase64 = reader.result as string;
+      setImgUrl(imgUrlBase64);
+    };
   };
 
   return (
@@ -18,7 +28,12 @@ const Page = () => {
       </div>
       <div>
         <label htmlFor="image">入力画像</label>
-        <input type="file" id="image" onChange={handleImageChange} />
+        <input
+          type="file"
+          id="image"
+          accept="image/jpeg,image/png"
+          onChange={handleImageChange}
+        />
       </div>
       {imgUrl && (
         <div>
