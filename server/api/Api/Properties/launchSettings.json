@@ -2,11 +2,11 @@
   "profiles": {
     "Api": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:59476;http://localhost:59477"
+      "applicationUrl": "http://localhost:8091"
     },
     "Docker": {
       "commandName": "Docker",
