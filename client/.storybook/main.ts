@@ -2,6 +2,10 @@ import type { StorybookConfig } from "@storybook/nextjs";
 // https://storybook.js.org/recipes/@vanilla-extract/css
 import { VanillaExtractPlugin } from "@vanilla-extract/webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import path from "path";
+
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -52,6 +56,19 @@ const config: StorybookConfig = {
         },
       ],
     });
+
+    if (config.resolve) {
+      config.resolve.plugins = [
+        ...(config.resolve.plugins || []),
+        new TsconfigPathsPlugin({
+          extensions: config.resolve.extensions,
+        }),
+      ];
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@": path.resolve(__dirname, "../src"),
+      };
+    }
 
     return config;
   },
