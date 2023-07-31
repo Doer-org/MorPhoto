@@ -1,3 +1,3 @@
 export * from "./button";
 export * from "./header";
-export * from "./searchBar";
+export * from "./search-bar";

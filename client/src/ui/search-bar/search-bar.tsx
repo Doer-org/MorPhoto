@@ -1,6 +1,6 @@
 import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
 
-import * as styles from "./searchBar.css";
+import * as styles from "./search-bar.css";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { sageDark } from "@radix-ui/colors";
 
