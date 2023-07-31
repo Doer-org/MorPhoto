@@ -17,6 +17,19 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
+  args: {
+    variant: "primary",
+  },
+  render(args) {
+    return (
+      <div>
+        <Button {...args}>Button</Button>
+      </div>
+    );
+  },
+};
+
+export const Catalog: Story = {
   args: {},
   render(args) {
     const refPrimary = useRef<HTMLButtonElement>(null);
