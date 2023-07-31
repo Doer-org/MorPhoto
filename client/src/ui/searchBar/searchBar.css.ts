@@ -11,6 +11,7 @@ export const searchBarIconStyle = style({
   top: "50%",
   left: "18px",
   transform: "translateY(-50%)",
+  pointerEvents: "none",
 });
 
 export const searchBarInputStyle = style({
