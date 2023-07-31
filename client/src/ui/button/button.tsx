@@ -1,7 +1,13 @@
-import { ComponentProps, ForwardedRef, ReactNode, forwardRef } from "react";
+import {
+  ComponentPropsWithRef,
+  ForwardedRef,
+  ReactNode,
+  forwardRef,
+} from "react";
 
 import * as styles from "./button.css";
-type Props = ComponentProps<"button"> & {
+
+type Props = ComponentPropsWithRef<"button"> & {
   variant?: "primary" | "secondary";
   children: ReactNode;
 };
@@ -12,7 +18,11 @@ const _Button = forwardRef(
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return (
-      <button ref={ref} {...props} className={styles.button[variant]}>
+      <button
+        ref={ref}
+        {...props}
+        className={styles.buttonVariantStyle[variant]}
+      >
         {children}
       </button>
     );

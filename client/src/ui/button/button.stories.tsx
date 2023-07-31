@@ -1,12 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Button } from "@/ui";
+import { useRef } from "react";
 
 const meta: Meta<typeof Button> = {
   title: "UI/Button",
   component: Button,
   tags: ["autodocs"],
-  argTypes: {},
+  argTypes: {
+    onClick: { action: "clicked" },
+  },
 };
 
 export default meta;
@@ -14,7 +18,8 @@ type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
   args: {},
-  render() {
+  render(args) {
+    const refPrimary = useRef<HTMLButtonElement>(null);
     return (
       <div
         style={{
@@ -22,8 +27,12 @@ export const Default: Story = {
           gap: "1rem",
         }}
       >
-        <Button variant="primary">Primary</Button>
-        <Button variant="secondary">Secondary</Button>
+        <Button {...args} variant="primary" ref={refPrimary}>
+          Primary
+        </Button>
+        <Button {...args} variant="secondary">
+          Secondary
+        </Button>
       </div>
     );
   },
