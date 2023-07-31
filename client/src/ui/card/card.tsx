@@ -4,11 +4,16 @@ import * as styles from "./card.css";
 type Props = {
   variant?: "default";
   children: ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
-const _Card: FC<Props> = ({ variant = "default", children }: Props) => {
+const _Card: FC<Props> = ({
+  variant = "default",
+  children,
+  ...props
+}: Props) => {
   return (
-    <div className={styles.cardVariantStyle[variant]} tabIndex={0}>
+    <div className={styles.cardVariantStyle[variant]} tabIndex={0} {...props}>
       {children}
     </div>
   );
