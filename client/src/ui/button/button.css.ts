@@ -5,13 +5,13 @@ import { style } from "@vanilla-extract/css";
 
 const base = style({
   padding: "0.5rem 1rem",
+  color: "white",
 });
 
-export const button = styleVariants({
+export const buttonVariantStyle = styleVariants({
   primary: [
     base,
     {
-      color: "white",
       backgroundColor: blueDark.blue7,
       border: "none",
       borderRadius: "0.5rem",
@@ -23,7 +23,6 @@ export const button = styleVariants({
   secondary: [
     base,
     {
-      color: "white",
       backgroundColor: grayDark.gray7,
       border: `1px solid ${grayDark.gray10}`,
       borderRadius: "0.1rem",
