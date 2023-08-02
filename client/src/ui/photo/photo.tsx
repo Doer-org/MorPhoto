@@ -2,8 +2,10 @@ import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
 import Image from "next/image";
 
 import * as styles from "./photo.css";
-type Props = ComponentPropsWithRef<typeof Image> & {
+type Props = Omit<ComponentPropsWithRef<typeof Image>, "width" | "height"> & {
   variant?: "square" | "rounded";
+  width: number | `${number}`;
+  height: number | `${number}`;
 };
 
 const _Photo = forwardRef(
