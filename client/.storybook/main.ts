@@ -11,6 +11,7 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
   ],
+  staticDirs: ["../public"],
   core: {},
   // 👇 Add this for Vanilla Extract
   webpackFinal(config, options) {
