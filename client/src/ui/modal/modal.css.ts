@@ -28,6 +28,7 @@ export const modalContent = style({
 export const modalClose = style({
   borderRadius: "100%",
   border: "none",
+  outline: "none",
   width: "24px",
   height: "24px",
   display: "inline-flex",
