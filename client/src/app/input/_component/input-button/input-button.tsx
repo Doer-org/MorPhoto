@@ -6,7 +6,7 @@ type Props = ComponentPropsWithoutRef<"input">;
 
 export const InputButton = forwardRef<HTMLInputElement, Props>(
   ({ ...props }, ref) => {
-    return <input ref={ref} className={styles.uploadButtonStyle} {...props} />;
+    return <input ref={ref} className={styles.inputButtonStyle} {...props} />;
   }
 );
 
