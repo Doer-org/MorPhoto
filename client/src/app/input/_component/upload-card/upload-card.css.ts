@@ -20,9 +20,15 @@ export const uploadCardItemStyle = style({
   },
 });
 
-export const uploadCardImageStyle = style({
+export const uploadCardImageListStyle = style({
   display: "flex",
   justifyContent: "center",
+});
+
+export const uploadCardImageStyle = style({
+  position: "relative",
+  minHeight: 160,
+  minWidth: 160,
 });
 
 export const uploadCardSliderHeaderStyle = style({

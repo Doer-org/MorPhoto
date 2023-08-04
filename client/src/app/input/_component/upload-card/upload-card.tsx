@@ -16,13 +16,15 @@ export const UploadCard = forwardRef<HTMLSpanElement, Props>(
           </div>
           <div className={styles.uploadCardContentStyle}>
             <div className={styles.uploadCardItemStyle}>
-              <div className={styles.uploadCardImageStyle}>
-                <Image
-                  src={"/assets/nijika1.png"}
-                  width={120}
-                  height={120}
-                  alt="入力画像"
-                />
+              <div className={styles.uploadCardImageListStyle}>
+                <div className={styles.uploadCardImageStyle}>
+                  <Image
+                    src={"/assets/nijika1.png"}
+                    layout="fill"
+                    objectFit="contain"
+                    alt="入力画像"
+                  />
+                </div>
               </div>
             </div>
             <div className={styles.uploadCardItemStyle}>
