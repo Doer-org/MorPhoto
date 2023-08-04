@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["http://localhost:3000", "http://morphoto.app"],
+    "method": ["GET", "HEAD", "POST"],
+    "responseHeader": ["Content-Type", "Access-Control-Allow-Origin"],
+    "maxAgeSeconds": 300
+  }
+]
