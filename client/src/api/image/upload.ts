@@ -13,8 +13,7 @@ export const uploadImage = async (file: File) => {
   const upload = await fetch(url, { method: "POST", body });
   if (!upload.ok) {
     console.log("upload failed");
-    return "";
+    return null;
   }
-  // return { fileName, url, fields };
   return { fileName };
 };
