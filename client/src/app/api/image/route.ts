@@ -9,6 +9,7 @@ export async function POST(request: NextRequest) {
     projectId: GCP_PROJECT_ID,
     credentials: JSON.parse(GCP_CREDENTIALS),
   });
+  console.log("POST: /api/image/upload");
   const bucket = storage.bucket(GCP_BUCKET_NAME);
   const file = request.nextUrl.searchParams.get("file");
   if (!file) return NextResponse.json({ error: "No file" }, { status: 500 });
@@ -18,11 +19,30 @@ export async function POST(request: NextRequest) {
     fields: { "x-goog-meta-test": "data" },
   };
   const [response] = await bucketFile.generateSignedPostPolicyV4(options);
-
-  // console.log(response);
-  //   return NextResponse.json({ data: response }, { status: 200 });
-  // console.log(GCP_BUCKET_NAME, GCP_CREDENTIALS, GCP_PROJECT_ID);
-  console.log("api: /api/image/upload");
-  console.log(response);
   return NextResponse.json(response, { status: 200 });
+}
+
+export async function GET(request: NextRequest) {
+  console.log("GET: /api/image/upload");
+  const storage = new Storage({
+    projectId: GCP_PROJECT_ID,
+    credentials: JSON.parse(GCP_CREDENTIALS),
+  });
+  const fileName = request.nextUrl.searchParams.get("file");
+  if (!fileName || fileName === "") {
+    NextResponse.json({ error: "file name is empty" }, { status: 400 });
+    return;
+  }
+  const bucket = storage.bucket(GCP_BUCKET_NAME);
+  const file = bucket.file(fileName);
+
+  // 有効期間を指定してSigned URLを生成する
+  const options = {
+    version: "v4" as const,
+    action: "read" as const,
+    expires: Date.now() + 5 * 60 * 1000, // 5分間有効
+  };
+
+  const [url] = await file.getSignedUrl(options);
+  return NextResponse.json(url, { status: 200 });
 }
