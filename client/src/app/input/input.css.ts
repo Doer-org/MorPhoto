@@ -1,6 +1,10 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 import { sageDark, blueDark } from "@radix-ui/colors";
 
+export const inputPageStyle = style({
+  padding: "48px 16px 0",
+});
+
 export const inputPageContentStyle = style({
   maxWidth: 800,
   margin: "0 auto",

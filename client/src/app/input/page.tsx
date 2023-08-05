@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { ImageIcon } from "@radix-ui/react-icons";
@@ -17,6 +17,9 @@ type Inputs = {
 };
 
 const Page = () => {
+  const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
+  const [image, setImage] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -25,7 +28,26 @@ const Page = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {};
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    const imageIDinGcs = await uploadImage(data.images[0]);
+    console.log("upload", imageIDinGcs?.fileName);
+    if (!imageIDinGcs) return alert("画像のアップロードに失敗しました。");
+    const { fileName } = imageIDinGcs;
+    setImage(`https://storage.googleapis.com/morphoto_strage/${fileName}`);
+
+    console.log(
+      "url",
+      `https://storage.googleapis.com/morphoto_strage/${fileName}`
+    );
+    (async () => {
+      const res = await fetch(`/api/image?file=${fileName}`, {
+        method: "GET",
+      });
+      const JSONRes = await res.json();
+      console.log("singed url(不要)", JSONRes);
+    })();
+  };
 
   const strength = useWatch({
     control,
@@ -33,24 +55,27 @@ const Page = () => {
     defaultValue: [0.5],
   });
 
-  const [imgUrlBase64, setImgUrlBase64] = useState<string>("");
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) {
-      setImgUrlBase64("");
+      setImageUrlBase64("");
       return;
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      const imgUrlBase64 = reader.result as string;
-      setImgUrlBase64(imgUrlBase64);
+      const imageUrlBase64 = reader.result as string;
+      setImageUrlBase64(imageUrlBase64);
       console.log(reader.result);
     };
   };
 
+  useEffect(() => {
+    setValue("strength", strength);
+  }, []);
+
   return (
-    <div>
+    <div className={styles.inputPageStyle}>
       <div className={styles.inputPageContentStyle}>
         <div className={styles.inputPageItemStyle}>
           <h2 className={styles.inputPageHeadingVariantStyle["default"]}>
@@ -90,9 +115,9 @@ const Page = () => {
                     <div className={styles.uploadCardItemStyle}>
                       <div className={styles.uploadCardImageListStyle}>
                         <div className={styles.uploadCardImageStyle}>
-                          {imgUrlBase64 ? (
+                          {imageUrlBase64 ? (
                             <Image
-                              src={imgUrlBase64}
+                              src={imageUrlBase64}
                               layout="fill"
                               objectFit="contain"
                               alt="入力画像"
