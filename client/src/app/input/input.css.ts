@@ -17,7 +17,7 @@ export const inputPageItemStyle = style({
   },
 });
 
-const inputPageHeadingBase = { fontSize: 42 };
+const inputPageHeadingBase = style({ fontSize: 42 });
 export const inputPageHeadingVariantStyle = styleVariants({
   default: [
     inputPageHeadingBase,
