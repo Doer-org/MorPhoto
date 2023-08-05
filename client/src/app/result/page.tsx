@@ -1,47 +1,100 @@
+"use client";
+
+import { Button, Modal } from "@/ui";
 import Link from "next/link";
+import Image from "next/image";
+import { CopyIcon, DownloadIcon, ImageIcon } from "@radix-ui/react-icons";
+
+import * as styles from "./result.css";
+import { IconButton } from "./_component";
 
 const Page = () => {
   return (
     <>
       <h2>Result Page</h2>
       <div>
-        <span>元画像</span>
-        <div>
-          <img
-            src="https://media.discordapp.net/attachments/1130117141228703824/1130117145217478737/result_0.png?width=500&height=560"
-            alt=""
-            width={160}
-            height={160}
-          />
-        </div>
-      </div>
-      <div>
-        <span>プロンプト</span>
-        <p>花火大会</p>
-      </div>
-      <div>
-        <span>結果画像</span>
-        <div>
-          <img
-            src="https://media.discordapp.net/attachments/1126485571108360313/1130108343839621140/result.png?width=662&height=662"
-            alt=""
-            width={160}
-            height={160}
-          />
-        </div>
-      </div>
-      <div>
-        <ul>
-          <li>
-            <a href="">共有する</a>
-          </li>
-          <li>
-            <Link href="/input">さらに画像を変化する</Link>
-          </li>
-          <li>
-            <Link href="/timeline">タイムラインへ</Link>
-          </li>
-        </ul>
+        <Modal>
+          <div className={styles.resultModalContentStyle}>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultHeadImageWrapperStyle}>
+                <Image
+                  className={styles.resultImageStyle}
+                  src={"/assets/nijika2.png"}
+                  fill
+                  alt="出力画像"
+                />
+              </div>
+            </div>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultButtonGroupStyle}>
+                <IconButton
+                  renderIcon={(className) => (
+                    <ImageIcon className={className} />
+                  )}
+                  label="Remix"
+                />
+                <IconButton
+                  renderIcon={(className) => (
+                    <DownloadIcon className={className} />
+                  )}
+                  label="Save"
+                />
+              </div>
+            </div>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultCardStyle}>
+                <div className={styles.resultCardItemStyle}>
+                  <p className={styles.resultPromptStyle}>
+                    best quality masterpiece makoto shinkai
+                  </p>
+                </div>
+                <div className={styles.resultCardItemStyle}>
+                  <IconButton
+                    renderIcon={(className) => (
+                      <CopyIcon className={className} />
+                    )}
+                    label="Copy Prompt"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultCardStyle}>
+                <div className={styles.resultCardItemStyle}>
+                  <span className={styles.resultCardTitleStyle}>Before</span>
+                </div>
+                <div className={styles.resultCardItemStyle}>
+                  <div className={styles.resultCardImageListStyle}>
+                    <div className={styles.resultCardImageWrapperStyle}>
+                      <Image
+                        className={styles.resultImageStyle}
+                        src={"/assets/nijika1.png"}
+                        fill
+                        alt="出力画像"
+                      />
+                    </div>
+                    <div className={styles.resultCardImageWrapperStyle}>
+                      <Image
+                        className={styles.resultImageStyle}
+                        src={"/assets/nijika1.png"}
+                        fill
+                        alt="出力画像"
+                      />
+                    </div>
+                    <div className={styles.resultCardImageWrapperStyle}>
+                      <Image
+                        className={styles.resultImageStyle}
+                        src={"/assets/nijika1.png"}
+                        fill
+                        alt="出力画像"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </div>
     </>
   );
