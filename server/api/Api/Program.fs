@@ -52,8 +52,8 @@ module Program =
     open Falco
     open Falco.Routing
     open Falco.HostBuilder
-
     open Microsoft.Extensions.DependencyInjection
+    open Service
 
     [<EntryPoint>]
     let main _ =
@@ -65,7 +65,12 @@ module Program =
 
             endpoints
                 [ get "/health" (Response.ofPlainText "ok")
-                  get "/" Service.Handler.getAllUsers ]
+                  get "/users" Handler.getAllUsers
+                  get "/morphoto/{morphoto_id}" Handler.getMorphoto
+                  post "/morphoto" Handler.registerMorphoto
+                  get "/timeline" Handler.getTimeline
+                  get "/log/{morphoto_id}" Handler.getLog
+                  post "/log" Handler.updateLog ]
 
         }
 
