@@ -5,6 +5,7 @@ open FsUnit.Xunit
 open System.Net
 open FsHttp
 open System
+open Domain
 
 let endpoint = "http://localhost:8091"
 
@@ -32,7 +33,7 @@ let users () =
     resp.statusCode |> should equal HttpStatusCode.OK
 
 [<Fact>]
-let morphoto () =
+let ``register and get morphoto info`` () =
     let key = "test_" + Guid.NewGuid().ToString()
 
     let resp =
@@ -50,11 +51,34 @@ let morphoto () =
 
     resp.statusCode |> should equal HttpStatusCode.OK
 
-// let resp =
-//     http {
-//         GET $"{endpoint}/morphoto/test"
-//         CacheControl "no-cache"
-//     }
-//     |> Request.send
+    let resp =
+        http {
+            GET $"{endpoint}/morphoto/{key}"
+            CacheControl "no-cache"
+        }
+        |> Request.send
 
-// resp.statusCode |> should equal HttpStatusCode.OK
+    resp.statusCode |> should equal HttpStatusCode.OK
+
+    let resp =
+        http {
+            GET $"{endpoint}/log/{key}"
+            CacheControl "no-cache"
+        }
+        |> Request.send
+        |> Response.deserializeJson<{| data: MorphotoLog |}>
+
+    resp.data.morphoto_id |> should equal key
+    resp.data.view_count |> should equal 1
+
+
+[<Fact>]
+let ``get all morphotos`` () =
+    let resp =
+        http {
+            GET $"{endpoint}/morphoto"
+            CacheControl "no-cache"
+        }
+        |> Request.send
+
+    resp.statusCode |> should equal HttpStatusCode.OK
