@@ -6,7 +6,6 @@ const base = style({
   padding: "12px 18px",
   borderRadius: "10px",
   boxSizing: "border-box",
-  maxWidth: "800px",
   color: sageDark.sage10,
   ":focus": {
     outline: `2px solid ${blueA.blueA11}`,

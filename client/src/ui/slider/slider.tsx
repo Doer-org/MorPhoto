@@ -5,24 +5,31 @@ import * as styles from "./slider.css";
 
 type Props = Omit<
   ComponentPropsWithRef<typeof ReactSlider.Root>,
-  "min" | "max" | "step" | "defaultValue" | "onValueChange"
+  "min" | "max" | "step" | "defaultValue" | "className"
 > & {
   min?: number;
   max?: number;
   step?: number;
   defaultValue?: number[];
-  onValueChange?: (value: number[]) => void;
+  className?: string;
 };
 
 const _Slider = forwardRef(
   (
-    { min = 0, max = 1, step = 0.01, defaultValue = [0.5], ...props }: Props,
+    {
+      min = 0,
+      max = 1,
+      step = 0.01,
+      defaultValue = [0.5],
+      className,
+      ...props
+    }: Props,
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
     return (
       <ReactSlider.Root
         ref={ref}
-        className={styles.sliderRoot}
+        className={[styles.sliderRoot, className].join(" ")}
         min={min}
         max={max}
         step={step}

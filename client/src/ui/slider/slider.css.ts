@@ -7,7 +7,6 @@ export const sliderRoot = style({
   alignItems: "center",
   userSelect: "none",
   touchAction: "none",
-  maxWidth: "600px",
   height: "12px",
 });
 
