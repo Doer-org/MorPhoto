@@ -93,8 +93,8 @@ export const uploadCardImageListStyle = style({
 
 export const uploadCardImageWrapperStyle = style({
   position: "relative",
-  minHeight: 240,
-  minWidth: 240,
+  height: 240,
+  width: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
