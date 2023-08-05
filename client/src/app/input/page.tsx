@@ -121,12 +121,12 @@ const Page = () => {
                   <div className={styles.uploadCardContentStyle}>
                     <div className={styles.uploadCardItemStyle}>
                       <div className={styles.uploadCardImageListStyle}>
-                        <div className={styles.uploadCardImageStyle}>
+                        <div className={styles.uploadCardImageWrapperStyle}>
                           {imageUrlBase64 ? (
                             <Image
+                              className={styles.uploadCardImageStyle}
                               src={imageUrlBase64}
-                              width={160}
-                              height={160}
+                              fill
                               alt="入力画像"
                             />
                           ) : (

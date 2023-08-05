@@ -91,13 +91,17 @@ export const uploadCardImageListStyle = style({
   padding: "12px 0",
 });
 
-export const uploadCardImageStyle = style({
+export const uploadCardImageWrapperStyle = style({
   position: "relative",
-  minHeight: 160,
-  minWidth: 160,
+  minHeight: 240,
+  minWidth: 240,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+});
+
+export const uploadCardImageStyle = style({
+  objectFit: "contain",
 });
 
 const uploadCardLabelBase = style({
