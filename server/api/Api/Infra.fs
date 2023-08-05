@@ -12,7 +12,7 @@ module Repo =
         abstract member register: Morphoto -> TaskResult<Morphoto, string>
         abstract member getMorphoto: string -> TaskResult<Morphoto, string>
         abstract member getMorphotos: unit -> TaskResult<Morphoto[], string>
-        abstract member getTimeline: unit -> TaskResult<Morphoto[], string>
+        abstract member getTimeline: string -> TaskResult<Morphoto[], string>
         abstract member getLog: string -> TaskResult<MorphotoLog, string>
 
         abstract member regiserLog:
@@ -27,6 +27,8 @@ module Database =
     open Dapper
     open Dapper.FSharp.MySQL
     open MySql.Data.MySqlClient
+
+    OptionTypes.register ()
 
     type DBEnv =
         { DB_HOST: string
@@ -108,9 +110,52 @@ module Database =
                 with e ->
                     Error e.Message |> Task.singleton
 
-            // Todo: implement
-            member _.getTimeline() : TaskResult<Morphoto array, string> =
-                failwith "not implemented"
+            /// Todo:
+            member _.getTimeline
+                (morphoto_id: string)
+                : TaskResult<Morphoto array, string> =
+                let sql_toward_parent =
+                    @"WITH RECURSIVE MorphotoRecursive AS (
+                        SELECT morphoto_id, img_url, parent_id 
+                        FROM Morphoto
+                        WHERE morphoto_id = @morphoto_id
+
+                        UNION ALL
+
+                        SELECT m.morphoto_id, m.img_url, m.parent_id 
+                        FROM Morphoto m 
+                        INNER JOIN MorphotoRecursive r ON m.morphoto_id = r.parent_id
+                      ) 
+                      SELECT morphoto_id, img_url, parent_id 
+                      FROM MorphotoRecursive;"
+
+
+                let sql_toward_children =
+                    @"WITH RECURSIVE MorphotoRecursive AS (
+                            SELECT morphoto_id, img_url, parent_id 
+                            FROM Morphoto
+                            WHERE morphoto_id = @morphoto_id
+    
+                            UNION ALL
+    
+                            SELECT m.morphoto_id, m.img_url, m.parent_id 
+                            FROM Morphoto m 
+                            INNER JOIN MorphotoRecursive r ON r.morphoto_id = m.parent_id
+                          ) 
+                          SELECT morphoto_id, img_url, parent_id 
+                          FROM MorphotoRecursive;"
+
+                try
+                    let conn = conn env
+
+                    conn.QueryAsync<Morphoto>(
+                        sql_toward_parent,
+                        {| morphoto_id = morphoto_id |}
+                    )
+                    |> Task.map (Seq.toArray >> Ok)
+                with e ->
+                    Error e.Message |> Task.singleton
+
 
             member _.register
                 (morphoto: Morphoto)

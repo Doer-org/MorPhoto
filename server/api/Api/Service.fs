@@ -46,10 +46,9 @@ module Usecase =
             return morphotos
         }
 
-    let getTimeline (morphotoRepo: MorphotoRepo) =
+    let getTimeline (morphoto_id: string) (morphotoRepo: MorphotoRepo) =
         taskResult {
-            let! morphotos = morphotoRepo.getTimeline ()
-            morphotos |> printfn "%A"
+            let! morphotos = morphotoRepo.getTimeline morphoto_id
             return morphotos
         }
 
@@ -151,15 +150,19 @@ module Handler =
 
     let getTimeline: HttpHandler =
         fun ctx ->
+            let query = Request.getQuery ctx
+            let morphoto_id = query.Get("morphoto_id")
+            printfn "getTimeline morphoto_id: %s" morphoto_id
             let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
 
             task {
-                let! morphotos = Usecase.getTimeline morphotoRepo
+                let! morphotos = Usecase.getTimeline morphoto_id morphotoRepo
 
                 return
                     morphotos
                     |> function
                         | Ok morphotos ->
+                            printfn "resp: %A" morphotos
                             ctx |> Response.ofJson {| data = morphotos |}
                         | Error e ->
                             ctx

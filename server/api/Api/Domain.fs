@@ -10,7 +10,7 @@ type User =
 type Morphoto =
     { morphoto_id: string
       img_url: string
-      parent_id: string }
+      parent_id: string option }
 
 type MorphotoLog =
     { morphoto_id: string

@@ -45,7 +45,7 @@ let ``register and get morphoto info`` () =
             jsonSerialize
                 {| morphoto_id = key
                    img_url = key
-                   parent_id = key |}
+                   parent_id = None |}
         }
         |> Request.send
 
@@ -77,6 +77,41 @@ let ``get all morphotos`` () =
     let resp =
         http {
             GET $"{endpoint}/morphoto"
+            CacheControl "no-cache"
+        }
+        |> Request.send
+
+    resp.statusCode |> should equal HttpStatusCode.OK
+
+[<Fact>]
+let timeline () =
+    let keys =
+        let key = "test_" + Guid.NewGuid().ToString()
+        let keys = [| 0..5 |] |> Array.map (string >> (+) "_" >> (+) key)
+
+        [| for i in 1 .. keys.Length - 1 -> (keys[i - 1], Some keys[i])
+           yield (keys[keys.Length - 1], None) |]
+
+
+    keys
+    |> Array.iter (fun (child, parent) ->
+        http {
+            POST $"{endpoint}/morphoto"
+            CacheControl "no-cache"
+            body
+
+            jsonSerialize
+                {| morphoto_id = child
+                   img_url = child
+                   parent_id = parent |}
+        }
+        |> Request.send
+        |> ignore)
+
+
+    let resp =
+        http {
+            GET $"{endpoint}/timeline?morphoto_id={fst keys[3]}"
             CacheControl "no-cache"
         }
         |> Request.send

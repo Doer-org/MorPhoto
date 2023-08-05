@@ -11,7 +11,7 @@ INSERT INTO User (user_id, user_name, image_url) VALUES ('cdf', 'user2', 'https:
 CREATE TABLE `Morphoto`(
   `morphoto_id`   varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `img_url`       varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `parent_id`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `parent_id`     varchar(255) COLLATE utf8mb4_bin,
   PRIMARY KEY (`morphoto_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
