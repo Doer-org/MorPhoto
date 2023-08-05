@@ -29,10 +29,10 @@ export const sliderThumb = style({
   display: "block",
   width: "12px",
   height: "12px",
-  backgroundColor: olive.olive7,
+  backgroundColor: olive.olive8,
   borderRadius: "10px",
   ":hover": {
-    backgroundColor: olive.olive5,
+    backgroundColor: olive.olive9,
   },
   ":focus": {
     outline: "none",
