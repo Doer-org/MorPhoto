@@ -21,7 +21,7 @@ export const modalContent = style({
   boxSizing: "border-box",
   backgroundColor: sageDark.sage8,
   margin: "64px auto",
-  padding: "44px 20px 20px 20px",
+  padding: "52px 20px 20px 20px",
   borderRadius: "10px",
   color: "white",
 });
@@ -44,4 +44,9 @@ export const modalClose = style({
   ":hover": {
     backgroundColor: sageDark.sage10,
   },
+});
+
+export const modalCloseIcon = style({
+  width: 20,
+  height: 20,
 });
