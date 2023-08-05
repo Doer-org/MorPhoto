@@ -14,6 +14,5 @@ type Morphoto =
 
 type MorphotoLog =
     { morphoto_id: string
-      user_id: string
       view_count: int
       created_at: DateTime }
