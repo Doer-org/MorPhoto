@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { oliveDark } from "@radix-ui/colors";
+import { sageDark } from "@radix-ui/colors";
 
 export const modalOverlay = style({
   backgroundColor: "rgba(0 0 0 / 0.5)",
@@ -11,6 +11,7 @@ export const modalOverlay = style({
   display: "grid",
   placeItems: "center",
   overflowY: "scroll",
+  padding: "0 16px",
 });
 
 export const modalContent = style({
@@ -18,7 +19,7 @@ export const modalContent = style({
   maxWidth: "600px",
   width: "100%",
   boxSizing: "border-box",
-  backgroundColor: oliveDark.olive2,
+  backgroundColor: sageDark.sage8,
   margin: "64px auto",
   padding: "44px 20px 20px 20px",
   borderRadius: "10px",
@@ -39,8 +40,8 @@ export const modalClose = style({
   position: "absolute",
   top: "20px",
   right: "20px",
-  padding: 0,
+  transition: "background-color .2s ease",
   ":hover": {
-    backgroundColor: oliveDark.olive8,
+    backgroundColor: sageDark.sage10,
   },
 });
