@@ -52,8 +52,8 @@ module Program =
     open Falco
     open Falco.Routing
     open Falco.HostBuilder
-
     open Microsoft.Extensions.DependencyInjection
+    open Service
 
     [<EntryPoint>]
     let main _ =
@@ -63,9 +63,21 @@ module Program =
                 svc.AddSingleton<Infra.Repo.UserRepo>(fun _ ->
                     Infra.Database.userRepo Env.dbEnv))
 
+
+            add_service (fun (svc: IServiceCollection) ->
+                svc.AddSingleton<Infra.Repo.MorphotoRepo>(fun _ ->
+                    Infra.Database.morphotoRepo Env.dbEnv))
+
+
             endpoints
                 [ get "/health" (Response.ofPlainText "ok")
-                  get "/" Service.Handler.getAllUsers ]
+                  get "/users" Handler.getAllUsers
+                  get "/morphoto/{morphoto_id}" Handler.getMorphoto
+                  // TODO: 検索条件（検索条件: 閲覧回数, 最新）を指定できるようにする
+                  get "/morphoto" Handler.getMorphotos
+                  post "/morphoto" Handler.registerMorphoto
+                  get "/timeline" Handler.getTimeline
+                  get "/log/{morphoto_id}" Handler.getLog ]
 
         }
 
