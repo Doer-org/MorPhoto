@@ -63,10 +63,17 @@ module Program =
                 svc.AddSingleton<Infra.Repo.UserRepo>(fun _ ->
                     Infra.Database.userRepo Env.dbEnv))
 
+
+            add_service (fun (svc: IServiceCollection) ->
+                svc.AddSingleton<Infra.Repo.MorphotoRepo>(fun _ ->
+                    Infra.Database.morphotoRepo Env.dbEnv))
+
+
             endpoints
                 [ get "/health" (Response.ofPlainText "ok")
                   get "/users" Handler.getAllUsers
                   get "/morphoto/{morphoto_id}" Handler.getMorphoto
+                  get "/morphoto" Handler.getMorphotos
                   post "/morphoto" Handler.registerMorphoto
                   get "/timeline" Handler.getTimeline
                   get "/log/{morphoto_id}" Handler.getLog
