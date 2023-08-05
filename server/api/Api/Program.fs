@@ -76,8 +76,7 @@ module Program =
                   get "/morphoto" Handler.getMorphotos
                   post "/morphoto" Handler.registerMorphoto
                   get "/timeline" Handler.getTimeline
-                  get "/log/{morphoto_id}" Handler.getLog
-                  post "/log" Handler.updateLog ]
+                  get "/log/{morphoto_id}" Handler.getLog ]
 
         }
 

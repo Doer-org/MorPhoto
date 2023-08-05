@@ -16,13 +16,26 @@ module Usecase =
     let registerMorphoto (morphoto: Morphoto) (morphotoRepo: MorphotoRepo) =
         taskResult {
             let! morphoto = morphotoRepo.register morphoto
+
+            let! _ =
+                morphotoRepo.regiserLog
+                    { created_at = System.DateTime.Now
+                      morphoto_id = morphoto.morphoto_id
+                      view_count = 0 }
+
             return morphoto
         }
 
     let getMorphoto (morphoto_id: string) (morphotoRepo: MorphotoRepo) =
         taskResult {
             let! morphoto = morphotoRepo.getMorphoto morphoto_id
-            morphoto |> printfn "%A"
+            let! log = morphotoRepo.getLog morphoto_id
+
+            let! _ =
+                morphotoRepo.updateLog
+                    { log with
+                        view_count = log.view_count + 1 }
+
             return morphoto
         }
 
@@ -43,7 +56,7 @@ module Usecase =
     let getLog (morphoto_id: string) (morphotoRepo: MorphotoRepo) =
         taskResult {
             let! morphotoLogs = morphotoRepo.getLog morphoto_id
-            morphotoLogs |> printfn "%A"
+            morphotoLogs |> printfn "getLog: %A"
             return morphotoLogs
         }
 
@@ -51,7 +64,7 @@ module Usecase =
     let updateLog (morphotoLog: MorphotoLog) (morphotoRepo: MorphotoRepo) =
         taskResult {
             let! log = morphotoRepo.updateLog morphotoLog
-            log |> printfn "%A"
+            log |> printfn "updateLog: %A"
             return log
         }
 
@@ -72,6 +85,7 @@ module Handler =
                 | Error e ->
                     ctx |> Response.withStatusCode 500 |> Response.ofPlainText e
 
+    /// Log追加も行う
     let registerMorphoto: HttpHandler =
         fun ctx ->
             task {
@@ -96,11 +110,11 @@ module Handler =
                             |> Response.ofPlainText e
             }
 
+    /// Log更新も行う(閲覧回数を加算)
     let getMorphoto: HttpHandler =
         fun ctx ->
-            let query = Request.getQuery ctx
+            let query = Request.getRoute ctx
             let morphoto_id = query.Get("morphoto_id")
-
             let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
 
             task {
@@ -155,9 +169,8 @@ module Handler =
 
     let getLog: HttpHandler =
         fun ctx ->
-            let query = Request.getQuery ctx
+            let query = Request.getRoute ctx
             let morphoto_id = query.Get("morphoto_id")
-
             let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
 
             task {
@@ -168,31 +181,6 @@ module Handler =
                     |> function
                         | Ok morphotoLogs ->
                             ctx |> Response.ofJson {| data = morphotoLogs |}
-                        | Error e ->
-                            ctx
-                            |> Response.withStatusCode 500
-                            |> Response.ofPlainText e
-            }
-
-
-    let updateLog: HttpHandler =
-        fun ctx ->
-            task {
-                let! morphotoLog =
-                    Request.getJsonOptions<MorphotoLog>
-                        JsonSerializerOptions.Default
-                        ctx
-
-                let morphotoRepo =
-                    ctx.RequestServices.GetService<MorphotoRepo>()
-
-                let! morphotoLog = Usecase.updateLog morphotoLog morphotoRepo
-
-                return
-                    morphotoLog
-                    |> function
-                        | Ok morphotoLog ->
-                            ctx |> Response.ofJson {| data = morphotoLog |}
                         | Error e ->
                             ctx
                             |> Response.withStatusCode 500

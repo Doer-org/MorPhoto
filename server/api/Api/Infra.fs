@@ -15,6 +15,9 @@ module Repo =
         abstract member getTimeline: unit -> TaskResult<Morphoto[], string>
         abstract member getLog: string -> TaskResult<MorphotoLog, string>
 
+        abstract member regiserLog:
+            MorphotoLog -> TaskResult<MorphotoLog, string>
+
         abstract member updateLog:
             MorphotoLog -> TaskResult<MorphotoLog, string>
 
@@ -63,9 +66,10 @@ module Database =
                 : TaskResult<MorphotoLog, string> =
                 try
                     let conn = conn env
+                    printfn "getlog morphoto_id: %s" morphoto_id
 
                     select {
-                        for m in table<Morphoto> do
+                        for m in table<MorphotoLog> do
                             where (m.morphoto_id = morphoto_id)
                             take 1
                     }
@@ -123,18 +127,35 @@ module Database =
                 with e ->
                     Error e.Message |> Task.singleton
 
-            member _.updateLog
+            member _.regiserLog
                 (log: Domain.MorphotoLog)
+                : TaskResult<MorphotoLog, string> =
+                try
+                    let conn = conn env
+
+                    insert {
+                        into table<MorphotoLog>
+                        value log
+                    }
+                    |> conn.InsertAsync
+                    |> Task.map (fun _ -> Ok log)
+                with e ->
+                    Error e.Message |> Task.singleton
+
+
+            member _.updateLog
+                (arg1: MorphotoLog)
                 : TaskResult<MorphotoLog, string> =
                 try
                     let conn = conn env
 
                     update {
                         for m in table<MorphotoLog> do
-                            set log
-                            where (m.morphoto_id = log.morphoto_id)
+                            set arg1
+                            where (m.morphoto_id = arg1.morphoto_id)
                     }
                     |> conn.UpdateAsync
-                    |> Task.map (fun _ -> Ok log)
+                    |> Task.map (fun _ -> Ok arg1)
+
                 with e ->
                     Error e.Message |> Task.singleton }
