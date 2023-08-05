@@ -60,6 +60,10 @@ export const resultButtonGroupStyle = style({
   gap: 6,
 });
 
+export const resultLinkStyle = style({
+  width: "100%",
+});
+
 export const resultPromptStyle = style({
   fontSize: 14,
 });

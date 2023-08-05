@@ -2,6 +2,7 @@
 
 import { Modal } from "@/ui";
 import Image from "next/image";
+import Link from "next/link";
 import { CopyIcon, DownloadIcon, ImageIcon } from "@radix-ui/react-icons";
 
 import * as styles from "./result.css";
@@ -26,18 +27,33 @@ const Page = () => {
             </div>
             <div className={styles.resultModalItemStyle}>
               <div className={styles.resultButtonGroupStyle}>
-                <IconButton
-                  renderIcon={(className) => (
-                    <ImageIcon className={className} />
-                  )}
-                  label="Remix"
-                />
-                <IconButton
-                  renderIcon={(className) => (
-                    <DownloadIcon className={className} />
-                  )}
-                  label="Save"
-                />
+                <Link
+                  className={styles.resultLinkStyle}
+                  href={{
+                    pathname: "/input",
+                    query: { inputImageUrl: "/assets/nijika2.png" },
+                  }}
+                >
+                  <IconButton
+                    renderIcon={(className) => (
+                      <ImageIcon className={className} />
+                    )}
+                    label="Remix"
+                  />
+                </Link>
+                {/* TODO: GCSに保存された変換画像のURLに変更する */}
+                <a
+                  className={styles.resultLinkStyle}
+                  href={"/assets/nijika2.png"}
+                  download={"nijika2.png"}
+                >
+                  <IconButton
+                    renderIcon={(className) => (
+                      <DownloadIcon className={className} />
+                    )}
+                    label="Save"
+                  />
+                </a>
               </div>
             </div>
             <div className={styles.resultModalItemStyle}>
