@@ -18,7 +18,6 @@ type Inputs = {
 
 const Page = () => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [isDragActive, setisDragActive] = useState<boolean>(false);
 
   const {
@@ -30,14 +29,10 @@ const Page = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     const imageIDinGcs = await uploadImage(data.image);
     console.log("upload", imageIDinGcs?.fileName);
     if (!imageIDinGcs) return alert("画像のアップロードに失敗しました。");
     const { fileName } = imageIDinGcs;
-    setUploadedImage(
-      `https://storage.googleapis.com/morphoto_strage/${fileName}`
-    );
 
     console.log(
       "url",
@@ -181,15 +176,6 @@ const Page = () => {
             </div>
           </form>
         </div>
-      </div>
-      <div>
-        <h2>Result</h2>
-        {uploadedImage && (
-          <>
-            <img src={uploadedImage} alt="image" />
-            <a href={uploadedImage}>{uploadedImage}</a>
-          </>
-        )}
       </div>
     </div>
   );

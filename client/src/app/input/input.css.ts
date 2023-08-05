@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { sageDark, blueDark } from "@radix-ui/colors";
+import { sageDark, blueDark, blackA } from "@radix-ui/colors";
 
 export const inputPageStyle = style({
   padding: "48px 16px 0",
@@ -86,7 +86,9 @@ export const uploadCardItemStyle = style({
 export const uploadCardImageListStyle = style({
   display: "flex",
   justifyContent: "center",
+  alignItems: "center",
   position: "relative",
+  padding: "12px 0",
 });
 
 export const uploadCardImageStyle = style({
@@ -103,20 +105,23 @@ const uploadCardLabelBase = style({
   width: "100%",
   height: "100%",
   cursor: "pointer",
+  borderRadius: 10,
+  transition: "background-color 0.3s ease",
+  ":hover": {
+    backgroundColor: blackA.blackA8,
+  },
 });
 export const uploadCardLabelVariantStyle = styleVariants({
   default: [
     uploadCardLabelBase,
     {
       backgroundColor: "transparent",
-      opacity: 1,
     },
   ],
   drag: [
     uploadCardLabelBase,
     {
-      backgroundColor: "black",
-      opacity: 0.25,
+      backgroundColor: blackA.blackA8,
     },
   ],
 });
