@@ -1,12 +1,11 @@
 "use client";
 
-import { Button, Modal } from "@/ui";
-import Link from "next/link";
+import { Modal } from "@/ui";
 import Image from "next/image";
 import { CopyIcon, DownloadIcon, ImageIcon } from "@radix-ui/react-icons";
 
 import * as styles from "./result.css";
-import { IconButton } from "./_component";
+import { IconButton, TwitterShareButton } from "./_component";
 
 const Page = () => {
   return (
@@ -55,6 +54,9 @@ const Page = () => {
                     )}
                     label="Copy Prompt"
                   />
+                </div>
+                <div className={styles.resultCardItemStyle}>
+                  <TwitterShareButton text="test" />
                 </div>
               </div>
             </div>
