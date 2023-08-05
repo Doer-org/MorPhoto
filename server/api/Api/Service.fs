@@ -26,6 +26,13 @@ module Usecase =
             return morphoto
         }
 
+    let getMorphotos (morphotoRepo: MorphotoRepo) =
+        taskResult {
+            let! morphotos = morphotoRepo.getMorphotos ()
+            morphotos |> printfn "%A"
+            return morphotos
+        }
+
     let getTimeline (morphotoRepo: MorphotoRepo) =
         taskResult {
             let! morphotos = morphotoRepo.getTimeline ()
@@ -53,6 +60,7 @@ module Handler =
 
     open Falco
     open Microsoft.Extensions.DependencyInjection
+    open System.Text.Json
 
     let getAllUsers: HttpHandler =
         fun ctx ->
@@ -66,32 +74,27 @@ module Handler =
 
     let registerMorphoto: HttpHandler =
         fun ctx ->
-            try
+            task {
+                let! morphoto =
+                    Request.getJsonOptions<Morphoto>
+                        JsonSerializerOptions.Default
+                        ctx
+
                 let morphotoRepo =
                     ctx.RequestServices.GetService<MorphotoRepo>()
 
-                ctx
-                |> Request.mapJson (fun morphoto ctx ->
-                    task {
-                        let! morphoto =
-                            Usecase.registerMorphoto morphoto morphotoRepo
+                let! morphoto = Usecase.registerMorphoto morphoto morphotoRepo
 
-                        return
-                            morphoto
-                            |> function
-                                | Ok morphoto ->
-                                    ctx
-                                    |> Response.ofJson {| data = morphoto |}
-                                | Error e ->
-                                    ctx
-                                    |> Response.withStatusCode 500
-                                    |> Response.ofPlainText e
-                    })
-            with e ->
-                ctx
-                |> Response.withStatusCode 500
-                |> Response.ofPlainText e.Message
-
+                return
+                    morphoto
+                    |> function
+                        | Ok morphoto ->
+                            ctx |> Response.ofJson {| data = morphoto |}
+                        | Error e ->
+                            ctx
+                            |> Response.withStatusCode 500
+                            |> Response.ofPlainText e
+            }
 
     let getMorphoto: HttpHandler =
         fun ctx ->
@@ -108,6 +111,24 @@ module Handler =
                     |> function
                         | Ok morphoto ->
                             ctx |> Response.ofJson {| data = morphoto |}
+                        | Error e ->
+                            ctx
+                            |> Response.withStatusCode 500
+                            |> Response.ofPlainText e
+            }
+
+    let getMorphotos: HttpHandler =
+        fun ctx ->
+            let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
+
+            task {
+                let! morphotos = Usecase.getMorphotos morphotoRepo
+
+                return
+                    morphotos
+                    |> function
+                        | Ok morphotos ->
+                            ctx |> Response.ofJson {| data = morphotos |}
                         | Error e ->
                             ctx
                             |> Response.withStatusCode 500
@@ -156,28 +177,24 @@ module Handler =
 
     let updateLog: HttpHandler =
         fun ctx ->
-            try
+            task {
+                let! morphotoLog =
+                    Request.getJsonOptions<MorphotoLog>
+                        JsonSerializerOptions.Default
+                        ctx
+
                 let morphotoRepo =
                     ctx.RequestServices.GetService<MorphotoRepo>()
 
-                ctx
-                |> Request.mapJson (fun morphotoLog ctx ->
-                    task {
-                        let! morphotoLog =
-                            Usecase.updateLog morphotoLog morphotoRepo
+                let! morphotoLog = Usecase.updateLog morphotoLog morphotoRepo
 
-                        return
-                            morphotoLog
-                            |> function
-                                | Ok morphotoLog ->
-                                    ctx
-                                    |> Response.ofJson {| data = morphotoLog |}
-                                | Error e ->
-                                    ctx
-                                    |> Response.withStatusCode 500
-                                    |> Response.ofPlainText e
-                    })
-            with e ->
-                ctx
-                |> Response.withStatusCode 500
-                |> Response.ofPlainText e.Message
+                return
+                    morphotoLog
+                    |> function
+                        | Ok morphotoLog ->
+                            ctx |> Response.ofJson {| data = morphotoLog |}
+                        | Error e ->
+                            ctx
+                            |> Response.withStatusCode 500
+                            |> Response.ofPlainText e
+            }
