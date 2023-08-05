@@ -73,6 +73,7 @@ module Program =
                 [ get "/health" (Response.ofPlainText "ok")
                   get "/users" Handler.getAllUsers
                   get "/morphoto/{morphoto_id}" Handler.getMorphoto
+                  // TODO: 検索条件（検索条件: 閲覧回数, 最新）を指定できるようにする
                   get "/morphoto" Handler.getMorphotos
                   post "/morphoto" Handler.registerMorphoto
                   get "/timeline" Handler.getTimeline
