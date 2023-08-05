@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, DragEvent, useState, useEffect } from "react";
 import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { ImageIcon } from "@radix-ui/react-icons";
@@ -12,13 +12,14 @@ import * as styles from "./input.css";
 
 type Inputs = {
   prompt: string;
-  images: FileList;
+  image: File;
   strength: number[];
 };
 
 const Page = () => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
-  const [image, setImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [isDragActive, setisDragActive] = useState<boolean>(false);
 
   const {
     register,
@@ -30,11 +31,13 @@ const Page = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
-    const imageIDinGcs = await uploadImage(data.images[0]);
+    const imageIDinGcs = await uploadImage(data.image);
     console.log("upload", imageIDinGcs?.fileName);
     if (!imageIDinGcs) return alert("画像のアップロードに失敗しました。");
     const { fileName } = imageIDinGcs;
-    setImage(`https://storage.googleapis.com/morphoto_strage/${fileName}`);
+    setUploadedImage(
+      `https://storage.googleapis.com/morphoto_strage/${fileName}`
+    );
 
     console.log(
       "url",
@@ -55,19 +58,28 @@ const Page = () => {
     defaultValue: [0.5],
   });
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const baseHandleImageAdd = (files: FileList | null) => {
+    const file = files?.[0];
     if (!file) {
-      setImageUrlBase64("");
       return;
     }
+    setValue("image", file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
       const imageUrlBase64 = reader.result as string;
       setImageUrlBase64(imageUrlBase64);
-      console.log(reader.result);
     };
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    baseHandleImageAdd(e.target.files);
+  };
+
+  const handleImageDrop = (e: DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setisDragActive(false);
+    baseHandleImageAdd(e.dataTransfer.files);
   };
 
   useEffect(() => {
@@ -118,20 +130,29 @@ const Page = () => {
                           {imageUrlBase64 ? (
                             <Image
                               src={imageUrlBase64}
-                              layout="fill"
-                              objectFit="contain"
+                              width={160}
+                              height={160}
                               alt="入力画像"
                             />
                           ) : (
                             <ImageIcon width={60} height={60} />
                           )}
                         </div>
-                        <label className={styles.uploadCardLabelStyle}>
+                        <label
+                          className={
+                            styles.uploadCardLabelVariantStyle[
+                              isDragActive ? "drag" : "default"
+                            ]
+                          }
+                          onDragEnter={() => setisDragActive(true)}
+                          onDragLeave={() => setisDragActive(false)}
+                          onDragOver={(e) => e.preventDefault()}
+                          onDrop={handleImageDrop}
+                        >
                           <input
                             className={styles.uploadCardInputStyle}
                             type="file"
                             accept="image/jpeg,image/png"
-                            {...register("images")}
                             onChange={handleImageChange}
                           />
                         </label>
@@ -160,6 +181,15 @@ const Page = () => {
             </div>
           </form>
         </div>
+      </div>
+      <div>
+        <h2>Result</h2>
+        {uploadedImage && (
+          <>
+            <img src={uploadedImage} alt="image" />
+            <a href={uploadedImage}>{uploadedImage}</a>
+          </>
+        )}
       </div>
     </div>
   );

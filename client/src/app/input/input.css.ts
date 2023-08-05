@@ -98,11 +98,27 @@ export const uploadCardImageStyle = style({
   justifyContent: "center",
 });
 
-export const uploadCardLabelStyle = style({
+const uploadCardLabelBase = style({
   position: "absolute",
   width: "100%",
   height: "100%",
   cursor: "pointer",
+});
+export const uploadCardLabelVariantStyle = styleVariants({
+  default: [
+    uploadCardLabelBase,
+    {
+      backgroundColor: "transparent",
+      opacity: 1,
+    },
+  ],
+  drag: [
+    uploadCardLabelBase,
+    {
+      backgroundColor: "black",
+      opacity: 0.25,
+    },
+  ],
 });
 
 export const uploadCardInputStyle = style({
