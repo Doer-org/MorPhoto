@@ -47,7 +47,9 @@ const Page = () => {
                   className={styles.resultImageStyle}
                   src={"/assets/nijika2.png"}
                   fill
+                  sizes="500px"
                   alt="出力画像"
+                  priority
                 />
               </div>
             </div>
@@ -117,6 +119,7 @@ const Page = () => {
                         className={styles.resultImageStyle}
                         src={"/assets/nijika1.png"}
                         fill
+                        sizes="100px"
                         alt="出力画像"
                       />
                     </div>
@@ -125,6 +128,7 @@ const Page = () => {
                         className={styles.resultImageStyle}
                         src={"/assets/nijika1.png"}
                         fill
+                        sizes="100px"
                         alt="出力画像"
                       />
                     </div>
@@ -133,6 +137,7 @@ const Page = () => {
                         className={styles.resultImageStyle}
                         src={"/assets/nijika1.png"}
                         fill
+                        sizes="100px"
                         alt="出力画像"
                       />
                     </div>
