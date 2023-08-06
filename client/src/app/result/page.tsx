@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Modal } from "@/ui";
+import { Button } from "@/ui";
+import { Modal } from "@/app/_component";
 import Image from "next/image";
 import Link from "next/link";
 import {

@@ -1,7 +1,5 @@
-"use client";
-
 import { Header } from "@/ui";
-import { ComponentPropsWithoutRef, FC, forwardRef } from "react";
+import { ComponentPropsWithoutRef, forwardRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
