@@ -3,6 +3,7 @@
 import { ChangeEvent, DragEvent, useState, useEffect } from "react";
 import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
 import { Card, Slider } from "@/ui";
@@ -16,9 +17,17 @@ type Inputs = {
   strength: number[];
 };
 
-const Page = () => {
+const Page = ({
+  params,
+  searchParams,
+}: {
+  params: {};
+  searchParams: { inputImageUrl?: string };
+}) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
   const [isDragActive, setisDragActive] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -45,6 +54,8 @@ const Page = () => {
       const JSONRes = await res.json();
       console.log("singed url(不要)", JSONRes);
     })();
+
+    router.push("/result");
   };
 
   const strength = useWatch({
@@ -53,12 +64,13 @@ const Page = () => {
     defaultValue: [0.5],
   });
 
-  const baseHandleImageAdd = (files: FileList | null) => {
-    const file = files?.[0];
+  const handleImage = (file?: File) => {
     if (!file) {
       return;
     }
     setValue("image", file);
+
+    // base64変換
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -68,16 +80,25 @@ const Page = () => {
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    baseHandleImageAdd(e.target.files);
+    handleImage(e.target.files?.[0]);
   };
 
   const handleImageDrop = (e: DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
     setisDragActive(false);
-    baseHandleImageAdd(e.dataTransfer.files);
+    handleImage(e.dataTransfer.files?.[0]);
   };
 
   useEffect(() => {
+    (async () => {
+      const pathName = searchParams.inputImageUrl;
+      if (pathName) {
+        const file = await fetch(pathName)
+          .then((res) => res.blob())
+          .then((blob) => new File([blob], "nijika2.png"));
+        handleImage(file);
+      }
+    })();
     setValue("strength", strength);
   }, []);
 

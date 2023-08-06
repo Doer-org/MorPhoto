@@ -20,7 +20,7 @@ const _Modal = ({ children, ...props }: Props) => {
             {children}
             <Dialog.Close asChild>
               <button className={styles.modalClose} aria-label="Close">
-                <Cross2Icon width={16.85} height={16.85} />
+                <Cross2Icon className={styles.modalCloseIcon} />
               </button>
             </Dialog.Close>
           </Dialog.Content>

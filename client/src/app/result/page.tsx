@@ -1,47 +1,159 @@
+"use client";
+
+import { Modal } from "@/ui";
+import Image from "next/image";
 import Link from "next/link";
+import {
+  CheckIcon,
+  CopyIcon,
+  DownloadIcon,
+  ImageIcon,
+} from "@radix-ui/react-icons";
+import {
+  IconButton,
+  MisskeyShareButton,
+  TwitterShareButton,
+} from "./_component";
+import { useEffect, useState } from "react";
+
+import * as styles from "./result.css";
 
 const Page = () => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>(
+    " best quality masterpiece makoto shinkai"
+  );
+  const [copied, setCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    setModalOpen(true);
+  }, []);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(prompt).then(
+      () => {
+        console.log("Copying to clipboard was successful!");
+        setCopied(true);
+      },
+      (err) => console.log("Copying to clipboard was failed", err)
+    );
+  };
+
   return (
     <>
       <h2>Result Page</h2>
       <div>
-        <span>元画像</span>
-        <div>
-          <img
-            src="https://media.discordapp.net/attachments/1130117141228703824/1130117145217478737/result_0.png?width=500&height=560"
-            alt=""
-            width={160}
-            height={160}
-          />
-        </div>
-      </div>
-      <div>
-        <span>プロンプト</span>
-        <p>花火大会</p>
-      </div>
-      <div>
-        <span>結果画像</span>
-        <div>
-          <img
-            src="https://media.discordapp.net/attachments/1126485571108360313/1130108343839621140/result.png?width=662&height=662"
-            alt=""
-            width={160}
-            height={160}
-          />
-        </div>
-      </div>
-      <div>
-        <ul>
-          <li>
-            <a href="">共有する</a>
-          </li>
-          <li>
-            <Link href="/input">さらに画像を変化する</Link>
-          </li>
-          <li>
-            <Link href="/timeline">タイムラインへ</Link>
-          </li>
-        </ul>
+        <Modal open={modalOpen} onOpenChange={(open) => setModalOpen(open)}>
+          <div className={styles.resultModalContentStyle}>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultHeadImageWrapperStyle}>
+                <Image
+                  className={styles.resultImageStyle}
+                  src={"/assets/nijika2.png"}
+                  fill
+                  sizes="500px"
+                  alt="出力画像"
+                  priority
+                />
+              </div>
+            </div>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultButtonGroupStyle}>
+                <Link
+                  className={styles.resultLinkStyle}
+                  href={{
+                    pathname: "/input",
+                    query: { inputImageUrl: "/assets/nijika2.png" },
+                  }}
+                >
+                  <IconButton
+                    renderIcon={(className) => (
+                      <ImageIcon className={className} />
+                    )}
+                    label="Remix"
+                  />
+                </Link>
+                {/* TODO: GCSに保存された変換画像のURLに変更する */}
+                <a
+                  className={styles.resultLinkStyle}
+                  href={"/assets/nijika2.png"}
+                  download={"nijika2.png"}
+                >
+                  <IconButton
+                    renderIcon={(className) => (
+                      <DownloadIcon className={className} />
+                    )}
+                    label="Save"
+                  />
+                </a>
+              </div>
+            </div>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultCardStyle}>
+                <div className={styles.resultCardItemStyle}>
+                  <p className={styles.resultPromptStyle}>{prompt}</p>
+                </div>
+                <div className={styles.resultCardItemStyle}>
+                  <IconButton
+                    onClick={handleCopy}
+                    renderIcon={(className) =>
+                      copied ? (
+                        <CheckIcon className={className} />
+                      ) : (
+                        <CopyIcon className={className} />
+                      )
+                    }
+                    label={copied ? "Copied!" : "Copy Prompt"}
+                  />
+                </div>
+                <div className={styles.resultCardItemStyle}>
+                  <div className={styles.resultSnsListStyle}>
+                    <TwitterShareButton text="test" />
+                    <MisskeyShareButton title="test" text="test test" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.resultModalItemStyle}>
+              <div className={styles.resultCardStyle}>
+                <div className={styles.resultCardItemStyle}>
+                  <span className={styles.resultCardTitleStyle}>Before</span>
+                </div>
+                <div className={styles.resultCardItemStyle}>
+                  <div className={styles.resultCardImageListStyle}>
+                    <div className={styles.resultCardImageWrapperStyle}>
+                      <Image
+                        className={styles.resultImageStyle}
+                        src={"/assets/nijika1.png"}
+                        fill
+                        sizes="100px"
+                        alt="出力画像"
+                      />
+                    </div>
+                    <div className={styles.resultCardImageWrapperStyle}>
+                      <Image
+                        className={styles.resultImageStyle}
+                        src={"/assets/nijika1.png"}
+                        fill
+                        sizes="100px"
+                        alt="出力画像"
+                      />
+                    </div>
+                    <div className={styles.resultCardImageWrapperStyle}>
+                      <Image
+                        className={styles.resultImageStyle}
+                        src={"/assets/nijika1.png"}
+                        fill
+                        sizes="100px"
+                        alt="出力画像"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </div>
     </>
   );
