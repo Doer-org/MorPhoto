@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
-import { Card, Slider } from "@/ui";
+import { Card, Modal, Slider } from "@/ui";
 import { InputButton } from "./_component";
 
 import * as styles from "./input.css";
@@ -194,12 +194,13 @@ const Page = ({
             </div>
             <div className={styles.inputPageFormItemStyle}>
               <InputButton type="submit" value={"Generate Photo"} />
-              {isSubmitting && "ちょっとまってね"}
-              {isSubmitted && "終わったよ"}
             </div>
           </form>
         </div>
       </div>
+      {(isSubmitting || isSubmitted) && (
+        <Modal open>{isSubmitting ? "ちょっとまってね" : "おわったよ"}</Modal>
+      )}
     </div>
   );
 };
