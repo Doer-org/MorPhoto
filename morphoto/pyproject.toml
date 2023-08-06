@@ -16,7 +16,7 @@ omegaconf = "^2.3.0"
 pillow = "^10.0.0"
 torch = [
     { version = "^2.0.1+cu118", source = "torch_cu118", markers = "sys_platform != 'darwin'" },
-    { version = "^2.0.1+cpu", source = "torch_cu118", markers = "sys_platform == 'darwin'" },
+    { version = "^2.0.1+cpu", source = "torch_cpu", markers = "sys_platform == 'darwin'" },
 ]
 python-dotenv = "^1.0.0"
 diffusers = "^0.18.2"
