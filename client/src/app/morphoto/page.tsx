@@ -1,97 +1,44 @@
 import Link from "next/link";
 
+import * as styles from "./morphoto.css";
+import { SearchBar } from "@/ui";
+import Image from "next/image";
+import { ReactNode } from "react";
+
 const Page = () => {
   return (
-    <>
-      <h2>Morphoto Page</h2>
-      <div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span>入力</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-          <div>
-            <span>結果</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
+    <div className={styles.pageStyle}>
+      <div className={styles.pageContentStyle}>
+        <div className={styles.pageItemStyle}>
+          <h2 className={styles.pageHeadingStyle}>
+            Find a <span className={styles.pageHeadingBlueStyle}>Photo!</span>
+          </h2>
         </div>
-        <div>
-          <Link href="/timeline">詳細</Link>
+        <div className={styles.pageItemStyle}>
+          <SearchBar />
+        </div>
+        <div className={styles.pageItemStyle}>
+          <div className={styles.imageListStyle}>
+            {(() => {
+              const photos: ReactNode[] = [];
+              for (let i = 0; i < 10; i++) {
+                photos.push(
+                  <div className={styles.imageWrapperStyle}>
+                    <Image
+                      className={styles.imageStyle}
+                      src={"/assets/nijika2.png"}
+                      fill
+                      alt="morphoto"
+                    />
+                  </div>
+                );
+              }
+              return photos;
+            })()}
+          </div>
         </div>
       </div>
-      <div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span>入力</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-          <div>
-            <span>結果</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Link href="/timeline">詳細</Link>
-        </div>
-      </div>
-      <div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span>入力</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-          <div>
-            <span>結果</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Link href="/timeline">詳細</Link>
-        </div>
-      </div>
-    </>
+    </div>
   );
 };
 
