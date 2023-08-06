@@ -28,7 +28,7 @@ export const pageHeadingBlueStyle = style({
 
 export const imageListStyle = style({
   display: "grid",
-  gap: 10,
+  gap: 14,
   gridTemplateColumns: "repeat(2, 1fr)",
   "@media": {
     "screen and (min-width: 600px)": {

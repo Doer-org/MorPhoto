@@ -12,6 +12,7 @@ export const modalOverlay = style({
   placeItems: "center",
   overflowY: "scroll",
   padding: "0 16px",
+  zIndex: 500,
 });
 
 export const modalContent = style({

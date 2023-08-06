@@ -15,7 +15,7 @@ import {
   MisskeyShareButton,
   TwitterShareButton,
 } from "./_component";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 
 import * as styles from "./result.css";
 
@@ -126,33 +126,22 @@ const Page = () => {
               </div>
               <div className={styles.resultCardItemStyle}>
                 <div className={styles.resultCardImageListStyle}>
-                  <div className={styles.resultCardImageWrapperStyle}>
-                    <Image
-                      className={styles.resultImageStyle}
-                      src={"/assets/nijika1.png"}
-                      fill
-                      sizes="100px"
-                      alt="出力画像"
-                    />
-                  </div>
-                  <div className={styles.resultCardImageWrapperStyle}>
-                    <Image
-                      className={styles.resultImageStyle}
-                      src={"/assets/nijika1.png"}
-                      fill
-                      sizes="100px"
-                      alt="出力画像"
-                    />
-                  </div>
-                  <div className={styles.resultCardImageWrapperStyle}>
-                    <Image
-                      className={styles.resultImageStyle}
-                      src={"/assets/nijika1.png"}
-                      fill
-                      sizes="100px"
-                      alt="出力画像"
-                    />
-                  </div>
+                  {(() => {
+                    const photos: ReactNode[] = [];
+                    for (let i = 0; i < 5; i++) {
+                      photos.push(
+                        <div className={styles.resultCardImageWrapperStyle}>
+                          <Image
+                            className={styles.resultImageStyle}
+                            src={"/assets/nijika1.png"}
+                            fill
+                            alt="出力画像"
+                          />
+                        </div>
+                      );
+                    }
+                    return photos;
+                  })()}
                 </div>
               </div>
             </div>

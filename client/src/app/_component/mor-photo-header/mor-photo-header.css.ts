@@ -4,6 +4,7 @@ import { blueDark } from "@radix-ui/colors";
 export const headerStyle = style({
   padding: "12px 16px",
   backgroundColor: "inherit",
+  zIndex: 100,
 });
 
 export const logoStyle = style({
