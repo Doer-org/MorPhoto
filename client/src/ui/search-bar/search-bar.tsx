@@ -1,5 +1,3 @@
-"use client";
-
 import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
 
 import * as styles from "./search-bar.css";
