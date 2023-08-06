@@ -7,8 +7,8 @@ from fastapi import FastAPI
 from omegaconf import OmegaConf
 from PIL import Image
 
-from morphoto import Morphoto
 from models import InferenceRequest
+from morphoto import Morphoto
 
 sys.path.append("configs")
 from config import MorphotoConfig
@@ -19,7 +19,7 @@ app = FastAPI()
 
 
 @app.post("/inference")
-def inference(request: InferenceRequest) -> None:
+def inference(request: InferenceRequest) -> dict[str, str]:
     image = io.BytesIO(base64.b64decode(request.image))
     image = Image.open(image)
     converted_image, prompt = morphoto.convert(request.prompt, image, request.strength)
@@ -29,6 +29,11 @@ def inference(request: InferenceRequest) -> None:
     converted_image = base64.b64encode(buffered.getvalue()).decode()
     result = {"converted_image": converted_image, "prompt": prompt}
     return result
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
 
 
 if __name__ == "__main__":
