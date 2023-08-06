@@ -2,7 +2,7 @@ import { style, styleVariants } from "@vanilla-extract/css";
 import { sageDark, blueDark, blackA } from "@radix-ui/colors";
 
 export const inputPageStyle = style({
-  padding: "48px 16px 0",
+  padding: "48px 16px 120px",
 });
 
 export const inputPageContentStyle = style({

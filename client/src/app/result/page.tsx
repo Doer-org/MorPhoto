@@ -67,6 +67,7 @@ const Page = () => {
                   }}
                 >
                   <IconButton
+                    tabIndex={-1}
                     renderIcon={(className) => (
                       <ImageIcon className={className} />
                     )}
@@ -80,6 +81,7 @@ const Page = () => {
                   download={"nijika2.png"}
                 >
                   <IconButton
+                    tabIndex={-1}
                     renderIcon={(className) => (
                       <DownloadIcon className={className} />
                     )}
