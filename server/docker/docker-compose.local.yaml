@@ -10,3 +10,8 @@ services:
     container_name: database
     restart: always
     tty: true
+
+  ml:
+    container_name: ml
+    restart: always
+    tty: true
