@@ -1,6 +1,5 @@
-import re
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import Tuple
 
 import torch
 

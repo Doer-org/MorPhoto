@@ -1,10 +1,6 @@
-import sys
-
 from PIL import Image
 
-sys.path.append("configs")
-from config import MorphotoConfig
-
+from configs import MorphotoConfig
 from filter import TextFilter
 from image_converter import ImageConverter
 from prompt_converter import PromptConverter

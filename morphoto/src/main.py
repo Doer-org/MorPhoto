@@ -1,21 +1,20 @@
 import base64
 import io
-import sys
 
+import modal
 import uvicorn
 from fastapi import FastAPI
 from omegaconf import OmegaConf
 from PIL import Image
 
+from configs import MorphotoConfig
 from models import InferenceRequest
 from morphoto import Morphoto
-
-sys.path.append("configs")
-from config import MorphotoConfig
 
 morphoto_config = OmegaConf.create(MorphotoConfig)
 morphoto = Morphoto(morphoto_config)
 app = FastAPI()
+stub = modal.Stub()
 
 
 @app.post("/inference")
@@ -34,6 +33,14 @@ def inference(request: InferenceRequest) -> dict[str, str]:
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+modal_image = modal.Image.debian_slim().poetry_install_from_file("pyproject.toml")
+
+
+@stub.function(image=modal_image)
+def fastapi_app() -> FastAPI:
+    return app
 
 
 if __name__ == "__main__":
