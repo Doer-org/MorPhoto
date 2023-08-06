@@ -3,7 +3,12 @@
 import { Modal } from "@/ui";
 import Image from "next/image";
 import Link from "next/link";
-import { CopyIcon, DownloadIcon, ImageIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  CopyIcon,
+  DownloadIcon,
+  ImageIcon,
+} from "@radix-ui/react-icons";
 
 import * as styles from "./result.css";
 import { IconButton, TwitterShareButton } from "./_component";
@@ -11,10 +16,24 @@ import { useEffect, useState } from "react";
 
 const Page = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>(
+    " best quality masterpiece makoto shinkai"
+  );
+  const [copied, setCopied] = useState<boolean>(false);
 
   useEffect(() => {
     setModalOpen(true);
   }, []);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(prompt).then(
+      () => {
+        console.log("Copying to clipboard was successful!");
+        setCopied(true);
+      },
+      (err) => console.log("Copying to clipboard was failed", err)
+    );
+  };
 
   return (
     <>
@@ -66,16 +85,19 @@ const Page = () => {
             <div className={styles.resultModalItemStyle}>
               <div className={styles.resultCardStyle}>
                 <div className={styles.resultCardItemStyle}>
-                  <p className={styles.resultPromptStyle}>
-                    best quality masterpiece makoto shinkai
-                  </p>
+                  <p className={styles.resultPromptStyle}>{prompt}</p>
                 </div>
                 <div className={styles.resultCardItemStyle}>
                   <IconButton
-                    renderIcon={(className) => (
-                      <CopyIcon className={className} />
-                    )}
-                    label="Copy Prompt"
+                    onClick={handleCopy}
+                    renderIcon={(className) =>
+                      copied ? (
+                        <CheckIcon className={className} />
+                      ) : (
+                        <CopyIcon className={className} />
+                      )
+                    }
+                    label={copied ? "Copied!" : "Copy Prompt"}
                   />
                 </div>
                 <div className={styles.resultCardItemStyle}>
