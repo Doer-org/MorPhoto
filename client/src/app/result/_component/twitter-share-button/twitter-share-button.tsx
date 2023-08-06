@@ -16,13 +16,24 @@ export const TwitterShareButton = forwardRef<HTMLAnchorElement, Props>(
   ({ text, url, hashtags, via, related, in_reply_to, ...props }, ref) => {
     const _url = new URL("https://twitter.com/intent/tweet");
 
-    if (text) _url.searchParams.set("text", text);
-    if (url) _url.searchParams.set("url", url);
-    if (hashtags) _url.searchParams.set("hashtags", hashtags.join(","));
-    if (via) _url.searchParams.set("via", via);
-    if (related) _url.searchParams.set("related", related.join(","));
-    if (in_reply_to !== undefined)
+    if (text) {
+      _url.searchParams.set("text", text);
+    }
+    if (url) {
+      _url.searchParams.set("url", url);
+    }
+    if (hashtags) {
+      _url.searchParams.set("hashtags", hashtags.join(","));
+    }
+    if (via) {
+      _url.searchParams.set("via", via);
+    }
+    if (related) {
+      _url.searchParams.set("related", related.join(","));
+    }
+    if (in_reply_to) {
       _url.searchParams.set("in_reply_to", in_reply_to);
+    }
 
     return (
       <a
