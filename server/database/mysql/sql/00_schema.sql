@@ -15,8 +15,8 @@ CREATE TABLE `Morphoto`(
   PRIMARY KEY (`morphoto_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-INSERT INTO Morphoto (morphoto_id, img_url, parent_id) VALUES ('abc', 'https://www.google.com', 'abc');
-INSERT INTO Morphoto (morphoto_id, img_url, parent_id) VALUES ('cdf', 'https://www.google.com', 'cdf');
+INSERT INTO Morphoto (morphoto_id, img_url, parent_id) VALUES ('abc', 'https://www.google.com', NULL);
+INSERT INTO Morphoto (morphoto_id, img_url, parent_id) VALUES ('cdf', 'https://www.google.com', NULL);
 INSERT INTO Morphoto (morphoto_id, img_url, parent_id) VALUES ('ghi', 'https://www.google.com', 'abc');
 INSERT INTO Morphoto (morphoto_id, img_url, parent_id) VALUES ('jkl', 'https://www.google.com', 'cdf');
 
