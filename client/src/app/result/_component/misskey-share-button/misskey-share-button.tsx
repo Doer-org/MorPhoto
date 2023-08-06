@@ -83,8 +83,8 @@ export const MisskeyShareButton = forwardRef<HTMLAnchorElement, Props>(
         <div className={styles.iconWrapperStyle}>
           <Image
             src={"/assets/sns/misskey.png"}
-            width={32}
-            height={32}
+            width={44}
+            height={44}
             alt="misskey"
           />
         </div>
