@@ -1,9 +1,8 @@
-import Link from "next/link";
-
-import * as styles from "./morphoto.css";
+import { ReactNode } from "react";
 import { SearchBar } from "@/ui";
 import Image from "next/image";
-import { ReactNode } from "react";
+
+import * as styles from "./morphoto.css";
 
 const Page = () => {
   return (
