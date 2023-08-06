@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal } from "@/ui";
+import { Button, Modal } from "@/ui";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -40,124 +40,125 @@ const Page = () => {
   };
 
   return (
-    <>
-      <h2>Result Page</h2>
-      <div>
-        <Modal open={modalOpen} onOpenChange={(open) => setModalOpen(open)}>
-          <div className={styles.resultModalContentStyle}>
-            <div className={styles.resultModalItemStyle}>
-              <div className={styles.resultHeadImageWrapperStyle}>
-                <Image
-                  className={styles.resultImageStyle}
-                  src={"/assets/nijika2.png"}
-                  fill
-                  sizes="500px"
-                  alt="出力画像"
-                  priority
+    <div className={styles.resultStyle}>
+      <Modal
+        trigger={<Button variant="primary">View Result</Button>}
+        open={modalOpen}
+        onOpenChange={(open) => setModalOpen(open)}
+      >
+        <div className={styles.resultModalContentStyle}>
+          <div className={styles.resultModalItemStyle}>
+            <div className={styles.resultHeadImageWrapperStyle}>
+              <Image
+                className={styles.resultImageStyle}
+                src={"/assets/nijika2.png"}
+                fill
+                sizes="500px"
+                alt="出力画像"
+                priority
+              />
+            </div>
+          </div>
+          <div className={styles.resultModalItemStyle}>
+            <div className={styles.resultButtonGroupStyle}>
+              <Link
+                className={styles.resultLinkStyle}
+                href={{
+                  pathname: "/input",
+                  query: { inputImageUrl: "/assets/nijika2.png" },
+                }}
+              >
+                <IconButton
+                  tabIndex={-1}
+                  renderIcon={(className) => (
+                    <ImageIcon className={className} />
+                  )}
+                  label="Remix"
+                />
+              </Link>
+              {/* TODO: GCSに保存された変換画像のURLに変更する */}
+              <a
+                className={styles.resultLinkStyle}
+                href={"/assets/nijika2.png"}
+                download={"nijika2.png"}
+              >
+                <IconButton
+                  tabIndex={-1}
+                  renderIcon={(className) => (
+                    <DownloadIcon className={className} />
+                  )}
+                  label="Save"
+                />
+              </a>
+            </div>
+          </div>
+          <div className={styles.resultModalItemStyle}>
+            <div className={styles.resultCardStyle}>
+              <div className={styles.resultCardItemStyle}>
+                <p className={styles.resultPromptStyle}>{prompt}</p>
+              </div>
+              <div className={styles.resultCardItemStyle}>
+                <IconButton
+                  onClick={handleCopy}
+                  renderIcon={(className) =>
+                    copied ? (
+                      <CheckIcon className={className} />
+                    ) : (
+                      <CopyIcon className={className} />
+                    )
+                  }
+                  label={copied ? "Copied!" : "Copy Prompt"}
                 />
               </div>
-            </div>
-            <div className={styles.resultModalItemStyle}>
-              <div className={styles.resultButtonGroupStyle}>
-                <Link
-                  className={styles.resultLinkStyle}
-                  href={{
-                    pathname: "/input",
-                    query: { inputImageUrl: "/assets/nijika2.png" },
-                  }}
-                >
-                  <IconButton
-                    tabIndex={-1}
-                    renderIcon={(className) => (
-                      <ImageIcon className={className} />
-                    )}
-                    label="Remix"
-                  />
-                </Link>
-                {/* TODO: GCSに保存された変換画像のURLに変更する */}
-                <a
-                  className={styles.resultLinkStyle}
-                  href={"/assets/nijika2.png"}
-                  download={"nijika2.png"}
-                >
-                  <IconButton
-                    tabIndex={-1}
-                    renderIcon={(className) => (
-                      <DownloadIcon className={className} />
-                    )}
-                    label="Save"
-                  />
-                </a>
+              <div className={styles.resultCardItemStyle}>
+                <div className={styles.resultSnsListStyle}>
+                  <TwitterShareButton text="test" />
+                  <MisskeyShareButton title="test" text="test test" />
+                </div>
               </div>
             </div>
-            <div className={styles.resultModalItemStyle}>
-              <div className={styles.resultCardStyle}>
-                <div className={styles.resultCardItemStyle}>
-                  <p className={styles.resultPromptStyle}>{prompt}</p>
-                </div>
-                <div className={styles.resultCardItemStyle}>
-                  <IconButton
-                    onClick={handleCopy}
-                    renderIcon={(className) =>
-                      copied ? (
-                        <CheckIcon className={className} />
-                      ) : (
-                        <CopyIcon className={className} />
-                      )
-                    }
-                    label={copied ? "Copied!" : "Copy Prompt"}
-                  />
-                </div>
-                <div className={styles.resultCardItemStyle}>
-                  <div className={styles.resultSnsListStyle}>
-                    <TwitterShareButton text="test" />
-                    <MisskeyShareButton title="test" text="test test" />
+          </div>
+          <div className={styles.resultModalItemStyle}>
+            <div className={styles.resultCardStyle}>
+              <div className={styles.resultCardItemStyle}>
+                <span className={styles.resultCardTitleStyle}>Before</span>
+              </div>
+              <div className={styles.resultCardItemStyle}>
+                <div className={styles.resultCardImageListStyle}>
+                  <div className={styles.resultCardImageWrapperStyle}>
+                    <Image
+                      className={styles.resultImageStyle}
+                      src={"/assets/nijika1.png"}
+                      fill
+                      sizes="100px"
+                      alt="出力画像"
+                    />
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.resultModalItemStyle}>
-              <div className={styles.resultCardStyle}>
-                <div className={styles.resultCardItemStyle}>
-                  <span className={styles.resultCardTitleStyle}>Before</span>
-                </div>
-                <div className={styles.resultCardItemStyle}>
-                  <div className={styles.resultCardImageListStyle}>
-                    <div className={styles.resultCardImageWrapperStyle}>
-                      <Image
-                        className={styles.resultImageStyle}
-                        src={"/assets/nijika1.png"}
-                        fill
-                        sizes="100px"
-                        alt="出力画像"
-                      />
-                    </div>
-                    <div className={styles.resultCardImageWrapperStyle}>
-                      <Image
-                        className={styles.resultImageStyle}
-                        src={"/assets/nijika1.png"}
-                        fill
-                        sizes="100px"
-                        alt="出力画像"
-                      />
-                    </div>
-                    <div className={styles.resultCardImageWrapperStyle}>
-                      <Image
-                        className={styles.resultImageStyle}
-                        src={"/assets/nijika1.png"}
-                        fill
-                        sizes="100px"
-                        alt="出力画像"
-                      />
-                    </div>
+                  <div className={styles.resultCardImageWrapperStyle}>
+                    <Image
+                      className={styles.resultImageStyle}
+                      src={"/assets/nijika1.png"}
+                      fill
+                      sizes="100px"
+                      alt="出力画像"
+                    />
+                  </div>
+                  <div className={styles.resultCardImageWrapperStyle}>
+                    <Image
+                      className={styles.resultImageStyle}
+                      src={"/assets/nijika1.png"}
+                      fill
+                      sizes="100px"
+                      alt="出力画像"
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </Modal>
-      </div>
-    </>
+        </div>
+      </Modal>
+    </div>
   );
 };
 
