@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
 
 import * as ReactSlider from "@radix-ui/react-slider";
