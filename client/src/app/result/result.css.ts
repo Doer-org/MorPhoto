@@ -67,3 +67,10 @@ export const resultLinkStyle = style({
 export const resultPromptStyle = style({
   fontSize: 14,
 });
+
+export const resultSnsListStyle = style({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: 24,
+});

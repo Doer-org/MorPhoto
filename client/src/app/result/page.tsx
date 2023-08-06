@@ -9,10 +9,14 @@ import {
   DownloadIcon,
   ImageIcon,
 } from "@radix-ui/react-icons";
+import {
+  IconButton,
+  MisskeyShareButton,
+  TwitterShareButton,
+} from "./_component";
+import { useEffect, useState } from "react";
 
 import * as styles from "./result.css";
-import { IconButton, TwitterShareButton } from "./_component";
-import { useEffect, useState } from "react";
 
 const Page = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -103,7 +107,10 @@ const Page = () => {
                   />
                 </div>
                 <div className={styles.resultCardItemStyle}>
-                  <TwitterShareButton text="test" />
+                  <div className={styles.resultSnsListStyle}>
+                    <TwitterShareButton text="test" />
+                    <MisskeyShareButton title="test" text="test test" />
+                  </div>
                 </div>
               </div>
             </div>
