@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 import { blueA, sageDark } from "@radix-ui/colors";
 
 export const searchBarStyle = style({
-  maxWidth: "600px",
+  width: "100%",
   position: "relative",
 });
 
