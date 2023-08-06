@@ -6,7 +6,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
-import { Card, Modal, Slider } from "@/ui";
+import { Card, Slider } from "@/ui";
+import { Modal } from "../_component";
 import { InputButton } from "./_component";
 
 import * as styles from "./input.css";
