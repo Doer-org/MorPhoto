@@ -42,14 +42,14 @@ let initTargets () =
     Target.create Command.Up (fun _ ->
         Shell.AsyncExec(
             "docker",
-            $"compose -f {DOCKER_COMPONSE_LOCAL} -f {DOCKER_COMPOSE_LOCAL_DATABASE} -f {DOCKER_COMPOSE_LOCAL_SERVER} -f {DOCKER_COMPOSE_LOCAL_ML} --env-file {ENV} up -d"
+            $"compose -p morphoto-dev -f {DOCKER_COMPONSE_LOCAL} -f {DOCKER_COMPOSE_LOCAL_DATABASE} -f {DOCKER_COMPOSE_LOCAL_SERVER} -f {DOCKER_COMPOSE_LOCAL_ML} --env-file {ENV} up -d "
         )
         |> ignore)
 
     Target.create Command.Down (fun _ ->
         Shell.Exec(
             "docker",
-            $"compose -f {DOCKER_COMPONSE_LOCAL} -f {DOCKER_COMPOSE_LOCAL_DATABASE} -f {DOCKER_COMPOSE_LOCAL_SERVER} -f {DOCKER_COMPOSE_LOCAL_ML} --env-file {ENV} down --rmi all --volumes --remove-orphans"
+            $"compose -p morphoto-dev -f {DOCKER_COMPONSE_LOCAL} -f {DOCKER_COMPOSE_LOCAL_DATABASE} -f {DOCKER_COMPOSE_LOCAL_SERVER} -f {DOCKER_COMPOSE_LOCAL_ML} --env-file {ENV} down --rmi all --volumes --remove-orphans"
         )
         |> ignore)
 
