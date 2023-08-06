@@ -5,15 +5,14 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import * as styles from "./modal.css";
 
 type Props = ComponentProps<typeof Dialog.Root> & {
+  trigger?: ReactNode;
   children: ReactNode;
 };
 
-const _Modal = ({ children, ...props }: Props) => {
+const _Modal = ({ trigger, children, ...props }: Props) => {
   return (
     <Dialog.Root {...props}>
-      <Dialog.Trigger asChild>
-        <button>open Modal</button>
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.modalOverlay}>
           <Dialog.Content className={styles.modalContent}>

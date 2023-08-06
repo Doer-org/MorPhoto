@@ -1,6 +1,10 @@
 import { grayDark } from "@radix-ui/colors";
 import { style } from "@vanilla-extract/css";
 
+export const resultStyle = style({
+  padding: "120px 16px",
+});
+
 export const resultModalContentStyle = style({});
 
 export const resultModalItemStyle = style({
