@@ -7,13 +7,20 @@ import { CopyIcon, DownloadIcon, ImageIcon } from "@radix-ui/react-icons";
 
 import * as styles from "./result.css";
 import { IconButton, TwitterShareButton } from "./_component";
+import { useEffect, useState } from "react";
 
 const Page = () => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setModalOpen(true);
+  }, []);
+
   return (
     <>
       <h2>Result Page</h2>
       <div>
-        <Modal>
+        <Modal open={modalOpen} onOpenChange={(open) => setModalOpen(open)}>
           <div className={styles.resultModalContentStyle}>
             <div className={styles.resultModalItemStyle}>
               <div className={styles.resultHeadImageWrapperStyle}>

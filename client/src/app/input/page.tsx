@@ -3,6 +3,7 @@
 import { ChangeEvent, DragEvent, useState, useEffect } from "react";
 import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
 import { Card, Slider } from "@/ui";
@@ -25,6 +26,8 @@ const Page = ({
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
   const [isDragActive, setisDragActive] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -51,6 +54,8 @@ const Page = ({
       const JSONRes = await res.json();
       console.log("singed url(不要)", JSONRes);
     })();
+
+    router.push("/result");
   };
 
   const strength = useWatch({
