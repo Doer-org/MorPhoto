@@ -34,7 +34,7 @@ const Page = ({
     handleSubmit,
     control,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitted },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -194,6 +194,8 @@ const Page = ({
             </div>
             <div className={styles.inputPageFormItemStyle}>
               <InputButton type="submit" value={"Generate Photo"} />
+              {isSubmitting && "ちょっとまってね"}
+              {isSubmitted && "終わったよ"}
             </div>
           </form>
         </div>
