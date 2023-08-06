@@ -26,6 +26,9 @@ const Page = ({
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
   const [isDragActive, setisDragActive] = useState<boolean>(false);
+  const [textareaVariant, setTextareaVariant] = useState<"default" | "onfocus">(
+    "default"
+  );
 
   const router = useRouter();
 
@@ -124,8 +127,12 @@ const Page = ({
                   </div>
                   <div className={styles.promptCardContentStyle}>
                     <textarea
-                      className={styles.promptCardInputStyle}
+                      className={
+                        styles.promptCardTextareaVariantStyle[textareaVariant]
+                      }
                       {...register("prompt")}
+                      onFocus={() => setTextareaVariant("onfocus")}
+                      onBlur={() => setTextareaVariant("default")}
                     ></textarea>
                   </div>
                 </div>

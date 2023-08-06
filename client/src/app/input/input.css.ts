@@ -53,14 +53,27 @@ export const promptCardContentStyle = style({
   marginTop: 8,
 });
 
-export const promptCardInputStyle = style({
+const promptCardTextareaBase = style({
   display: "block",
   width: "100%",
   height: 68,
   resize: "none",
   fontSize: 16,
-  padding: 8,
   color: sageDark.sage10,
+  border: "none",
+  outline: "none",
+  transition: "background-color 0.3s ease",
+});
+export const promptCardTextareaVariantStyle = styleVariants({
+  default: [
+    promptCardTextareaBase,
+    {
+      ":hover": {
+        backgroundColor: blackA.blackA8,
+      },
+    },
+  ],
+  onfocus: [promptCardTextareaBase],
 });
 
 export const uploadCardStyle = style({});
