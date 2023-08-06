@@ -1,6 +1,8 @@
 import re
-from typing import List, Tuple
 from dataclasses import dataclass, field
+from typing import List, Tuple
+
+import torch
 
 
 @dataclass
@@ -28,7 +30,7 @@ class DiffusionConfig:
     model: str = "runwayml/stable-diffusion-v1-5"
     image_size: Tuple[int, int] = (512, 512)
     seed: int = 10
-    device: str = "cuda"
+    device: str = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 @dataclass

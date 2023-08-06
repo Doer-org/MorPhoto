@@ -1,0 +1,10 @@
+version: '3'
+services:
+  ml:
+    build:
+      context: ../../morphoto
+      dockerfile: Dockerfile
+    env_file:
+      - ../../morphoto/.env
+    ports:
+      - 8000:8000
