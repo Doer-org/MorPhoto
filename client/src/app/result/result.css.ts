@@ -18,7 +18,9 @@ export const resultHeadImageWrapperStyle = style({
   display: "block",
   position: "relative",
   width: "100%",
-  minHeight: "50vh",
+  maxWidth: "400px",
+  aspectRatio: "1",
+  margin: "0 auto",
 });
 
 export const resultCardStyle = style({
@@ -41,20 +43,18 @@ export const resultCardTitleStyle = style({
 });
 
 export const resultCardImageListStyle = style({
-  display: "flex",
-  justifyContent: "space-between",
-  gap: 8,
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gap: 10,
 });
 
 export const resultCardImageWrapperStyle = style({
-  display: "block",
   position: "relative",
-  width: "30%",
-  minHeight: 200,
+  aspectRatio: "1",
 });
 
 export const resultImageStyle = style({
-  objectFit: "contain",
+  objectFit: "cover",
 });
 
 export const resultButtonGroupStyle = style({
