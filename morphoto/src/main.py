@@ -2,6 +2,7 @@ import base64
 import io
 
 import modal
+import uvicorn
 from fastapi import FastAPI
 from modal import asgi_app
 from omegaconf import OmegaConf
@@ -38,16 +39,16 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@stub.function(image=modal_image, mounts=[modal.Mount.from_local_python_packages("data")])
+@stub.function(image=modal_image)
 @asgi_app()
 def fastapi_app() -> FastAPI:
     return app
 
 
-# https://github.com/modal-labs/modal-examples/blob/main/07_web_endpoints/fastapi_app.py
-# https://modal.com/home
-# https://modal.com/docs/reference/modal.Image#poetry_install_from_file
-# https://modal.com/docs/reference/modal.Mount#from_local_python_packages
+@stub.local_entrypoint()
+def main() -> None:
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 if __name__ == "__main__":
-    stub.deploy("mophoto-fastapi")
+    main()
