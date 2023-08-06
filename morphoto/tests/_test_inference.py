@@ -12,10 +12,10 @@ client = TestClient(app)
 
 
 class TestInferenceEndpoint(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.test_image_path = "data/sample/nijika.png"
 
-    def test_inference(self):
+    def test_inference(self) -> None:
         with open(self.test_image_path, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode()
 

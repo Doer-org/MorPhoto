@@ -1,11 +1,8 @@
-import sys
 import unittest
 
 from omegaconf import OmegaConf
 
-sys.path.append("configs")
-from config import TranslationConfig
-
+from src.configs import TranslationConfig
 from src.translator import CustomTranslator
 
 
