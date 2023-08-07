@@ -1,3 +1,3 @@
 export * from "./modal";
-export * from "./mor-photo-header";
+export * from "./morphoto-header";
 export * from "./slider";

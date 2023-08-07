@@ -3,11 +3,11 @@ import { ComponentPropsWithoutRef, forwardRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import * as styles from "./mor-photo-header.css";
+import * as styles from "./morphoto-header.css";
 
 type Props = ComponentPropsWithoutRef<"header">;
 
-export const MorPhotoHeader = forwardRef<HTMLElement, Props>(({}, ref) => {
+export const MorphotoHeader = forwardRef<HTMLElement, Props>(({}, ref) => {
   return (
     <Header
       className={styles.headerStyle}
@@ -26,4 +26,4 @@ export const MorPhotoHeader = forwardRef<HTMLElement, Props>(({}, ref) => {
   );
 });
 
-MorPhotoHeader.displayName = "MorPhotoHeader";
+MorphotoHeader.displayName = "MorphotoHeader";
