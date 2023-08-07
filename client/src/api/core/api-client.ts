@@ -16,26 +16,36 @@ const ajv = new Ajv({
 const resp2result = async <T extends AnySchema>(
   resp: Response
 ): Promise<Result<T, ResponseError>> => {
-  const data = (await resp.json()) as T;
-  const validate = ajv.compile<JTDDataType<T>>(data);
-  if (!resp.ok) {
+  try {
+    const data = (await resp.json()) as T;
+    const validate = ajv.compile<JTDDataType<T>>(data);
+    if (!resp.ok) {
+      return {
+        type: "error",
+        error: {
+          status: resp.status,
+          message: resp.statusText,
+        },
+      };
+    } else if (!validate(data)) {
+      return {
+        type: "error",
+        error: {
+          status: resp.status,
+          message: JSON.stringify(validate.errors),
+        },
+      };
+    }
+    return { type: "ok", value: data };
+  } catch (e) {
     return {
       type: "error",
       error: {
-        status: resp.status,
-        message: resp.statusText,
-      },
-    };
-  } else if (!validate(data)) {
-    return {
-      type: "error",
-      error: {
-        status: resp.status,
-        message: JSON.stringify(validate.errors),
+        status: 500,
+        message: "Internal Server Error",
       },
     };
   }
-  return { type: "ok", value: data };
 };
 
 export const apiClient = {
