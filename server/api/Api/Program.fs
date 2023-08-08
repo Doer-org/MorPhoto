@@ -68,6 +68,19 @@ module Program =
                 svc.AddSingleton<Infra.Repo.MorphotoRepo>(fun _ ->
                     Infra.Database.morphotoRepo Env.dbEnv))
 
+            use_cors "CorsPolicy" (fun options ->
+                options.AddPolicy(
+                    "CorsPolicy",
+                    fun builder ->
+                        builder.AllowAnyHeader() |> ignore
+                        builder.AllowAnyMethod() |> ignore
+
+                        builder
+                            .WithOrigins(Env.env.CLIENT_URL)
+                            .AllowCredentials()
+                        |> ignore
+                ))
+
 
             endpoints
                 [ get "/health" (Response.ofPlainText "ok")
