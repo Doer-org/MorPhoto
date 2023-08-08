@@ -8,7 +8,7 @@ type Props = {
   morphoto: TMorphoto;
 };
 
-const _Morphoto: FC<Props> = ({ morphoto }) => {
+export const Morphoto: FC<Props> = ({ morphoto }) => {
   return (
     <div className={styles.morphotoStyle}>
       <Image
@@ -20,7 +20,3 @@ const _Morphoto: FC<Props> = ({ morphoto }) => {
     </div>
   );
 };
-
-_Morphoto.displayName = "Morphoto";
-
-export const Morphoto = _Morphoto;

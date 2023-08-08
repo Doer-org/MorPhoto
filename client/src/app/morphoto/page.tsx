@@ -3,7 +3,7 @@ import { SearchBar } from "@/ui";
 import * as styles from "./morphoto-page.css";
 import { Morphotos } from "./_component";
 
-const Page = () => {
+const MorphotoPage = () => {
   return (
     <div className={styles.pageStyle}>
       <div className={styles.pageContentStyle}>
@@ -24,4 +24,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default MorphotoPage;
