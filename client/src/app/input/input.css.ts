@@ -17,22 +17,6 @@ export const inputPageItemStyle = style({
   },
 });
 
-const inputPageHeadingBase = style({ fontSize: 42 });
-export const inputPageHeadingVariantStyle = styleVariants({
-  default: [
-    inputPageHeadingBase,
-    {
-      color: "white",
-    },
-  ],
-  primary: [
-    inputPageHeadingBase,
-    {
-      color: blueDark.blue7,
-    },
-  ],
-});
-
 export const inputPageFormItemStyle = style({
   marginTop: 18,
   ":first-child": {

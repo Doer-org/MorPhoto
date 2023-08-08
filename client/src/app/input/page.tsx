@@ -8,7 +8,7 @@ import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
 import { Card } from "@/ui";
 import { Modal, Slider } from "@/app/_component";
-import { InputButton } from "./_component";
+import { InputButton, Title } from "./_components";
 
 import * as styles from "./input.css";
 
@@ -110,13 +110,7 @@ const Page = ({
     <div className={styles.inputPageStyle}>
       <div className={styles.inputPageContentStyle}>
         <div className={styles.inputPageItemStyle}>
-          <h2 className={styles.inputPageHeadingVariantStyle["default"]}>
-            Let{"'"}s start
-            <br />
-            <span className={styles.inputPageHeadingVariantStyle["primary"]}>
-              morphing!
-            </span>
-          </h2>
+          <Title />
         </div>
         <div className={styles.inputPageItemStyle}>
           <form onSubmit={handleSubmit(onSubmit)}>
