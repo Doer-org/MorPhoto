@@ -10,13 +10,3 @@ export const morphotosStyle = style({
     },
   },
 });
-
-export const morphotoStyle = style({
-  position: "relative",
-  aspectRatio: "1",
-});
-
-export const morphotoImageStyle = style({
-  borderRadius: 10,
-  objectFit: "cover",
-});
