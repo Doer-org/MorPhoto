@@ -52,6 +52,8 @@ export const apiClient = {
   get: async <T extends AnySchema>(url: string) => {
     const data = await fetch(url, {
       method: "GET",
+      cache: "no-store",
+      credentials: "include",
     });
     return await resp2result<T>(data);
   },
@@ -61,6 +63,8 @@ export const apiClient = {
   ) => {
     const data = await fetch(url, {
       method: "POST",
+      cache: "no-store",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

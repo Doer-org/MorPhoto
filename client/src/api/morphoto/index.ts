@@ -4,7 +4,7 @@ import { MorphotoCreate, MorphotoResponse, MorphotosResponse } from "./types";
 
 export const createMorphoto = async (morphoto: MorphotoCreate) =>
   await apiClient.post<MorphotoResponse>(
-    `${env.SERVER_URL}/morphoto}`,
+    `${env.SERVER_URL}/morphoto`,
     morphoto
   );
 
