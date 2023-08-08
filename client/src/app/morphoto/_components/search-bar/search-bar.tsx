@@ -1,8 +1,8 @@
 import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
-
-import * as styles from "./search-bar.css";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { sageDark } from "@radix-ui/colors";
+
+import * as styles from "./search-bar.css";
 
 type Props = ComponentPropsWithRef<"input"> & {
   variant?: "default";

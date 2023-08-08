@@ -31,14 +31,19 @@ module Database =
     OptionTypes.register ()
 
     type DBEnv =
-        { DB_HOST: string
+        { IS_DEV: bool
+          DB_HOST: string
           DB_USER: string
           DB_PASSWORD: string
           DB_DATABASE: string }
 
     let conn (env: DBEnv) : IDbConnection =
         let connStr =
-            $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
+            let s =
+                $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
+
+            if env.IS_DEV then s else s + ";SslMode=VerifyFull"
+
 
         new MySqlConnection(connStr)
 

@@ -1,44 +1,21 @@
-import { ReactNode } from "react";
-import { SearchBar } from "@/ui";
-import Image from "next/image";
+import { Morphotos, Title, SearchBar } from "./_components";
 
-import * as styles from "./morphoto.css";
+import * as styles from "./morphoto-page.css";
 
-const Page = () => {
+export default function MorphotoPage() {
   return (
     <div className={styles.pageStyle}>
       <div className={styles.pageContentStyle}>
         <div className={styles.pageItemStyle}>
-          <h2 className={styles.pageHeadingStyle}>
-            Find a <span className={styles.pageHeadingBlueStyle}>Photo!</span>
-          </h2>
+          <Title />
         </div>
         <div className={styles.pageItemStyle}>
           <SearchBar />
         </div>
         <div className={styles.pageItemStyle}>
-          <div className={styles.imageListStyle}>
-            {(() => {
-              const photos: ReactNode[] = [];
-              for (let i = 0; i < 10; i++) {
-                photos.push(
-                  <div className={styles.imageWrapperStyle}>
-                    <Image
-                      className={styles.imageStyle}
-                      src={"/assets/nijika2.png"}
-                      fill
-                      alt="morphoto"
-                    />
-                  </div>
-                );
-              }
-              return photos;
-            })()}
-          </div>
+          <Morphotos />
         </div>
       </div>
     </div>
   );
-};
-
-export default Page;
+}
