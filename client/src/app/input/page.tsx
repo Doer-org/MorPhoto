@@ -5,7 +5,12 @@ import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
-import { createInference, createMorphoto, uploadImage } from "@/api";
+import {
+  createInference,
+  createMorphoto,
+  readMorphoto,
+  uploadImage,
+} from "@/api";
 import { Modal } from "@/app/_component";
 import {
   FileUploader,
@@ -39,7 +44,7 @@ const InputPage = ({
   searchParams,
 }: {
   params: {};
-  searchParams: { inputImageUrl?: string };
+  searchParams: { parent_id?: string };
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
 
@@ -91,7 +96,7 @@ const InputPage = ({
     }
 
     // 生成前の画像の処理
-    if (!searchParams.inputImageUrl) {
+    if (!searchParams.parent_id) {
       const currentFile = await upload(data.image);
       if (currentFile.err) return window.location.reload();
       const currentMorphoto = await createMorphoto({
@@ -118,7 +123,7 @@ const InputPage = ({
     const morphoto = await createMorphoto({
       morphoto_id: convertedFile.fileName,
       img_url: `https://storage.googleapis.com/morphoto_strage/${convertedFile.fileName}`,
-      parent_id: searchParams.inputImageUrl,
+      parent_id: searchParams.parent_id,
     });
     if (morphoto.type === "error") {
       confirm("API通信に失敗しました");
@@ -128,6 +133,7 @@ const InputPage = ({
     // 結果ページへリダイレクト
     const url = new URL("/result");
     url.searchParams.set("morphoto_id", morphoto.value.data.morphoto_id);
+    url.searchParams.set("prompt", data.prompt);
     router.push(url.toString());
   };
 
@@ -153,16 +159,23 @@ const InputPage = ({
   };
 
   useEffect(() => {
+    setValue("strength", strength);
+
     (async () => {
-      const pathName = searchParams.inputImageUrl;
+      if (!searchParams.parent_id) return;
+      const morphoto = await readMorphoto(searchParams.parent_id);
+      if (morphoto.type === "error") return;
+      const pathName = morphoto.value.data.img_url;
       if (pathName) {
         const file = await fetch(pathName)
           .then((res) => res.blob())
-          .then((blob) => new File([blob], "nijika2.png"));
+          .then(
+            (blob) =>
+              new File([blob], pathName.split("/").pop() || "morphoto.png")
+          );
         handleImage(file);
       }
     })();
-    setValue("strength", strength);
   }, []);
 
   return (
