@@ -24,42 +24,6 @@ export const inputPageFormItemStyle = style({
   },
 });
 
-export const promptCardStyle = style({});
-
-export const promptCardHeaderStyle = style({});
-
-export const promptCardTitleStyle = style({
-  fontSize: 16,
-  fontWeight: "bold",
-});
-
-export const promptCardContentStyle = style({
-  marginTop: 8,
-});
-
-const promptCardTextareaBase = style({
-  display: "block",
-  width: "100%",
-  height: 68,
-  resize: "none",
-  fontSize: 16,
-  color: sageDark.sage10,
-  border: "none",
-  outline: "none",
-  transition: "background-color 0.3s ease",
-});
-export const promptCardTextareaVariantStyle = styleVariants({
-  default: [
-    promptCardTextareaBase,
-    {
-      ":hover": {
-        backgroundColor: blackA.blackA8,
-      },
-    },
-  ],
-  onfocus: [promptCardTextareaBase],
-});
-
 export const uploadCardStyle = style({});
 
 export const uploadCardHeaderStyle = style({});

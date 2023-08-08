@@ -8,7 +8,7 @@ import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
 import { Card } from "@/ui";
 import { Modal, Slider } from "@/app/_component";
-import { InputButton, Title } from "./_components";
+import { InputButton, PromptCard, Title } from "./_components";
 
 import * as styles from "./input.css";
 
@@ -27,9 +27,6 @@ const Page = ({
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
   const [isDragActive, setisDragActive] = useState<boolean>(false);
-  const [textareaVariant, setTextareaVariant] = useState<"default" | "onfocus">(
-    "default"
-  );
 
   const router = useRouter();
 
@@ -115,23 +112,7 @@ const Page = ({
         <div className={styles.inputPageItemStyle}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.inputPageFormItemStyle}>
-              <Card>
-                <div className={styles.promptCardStyle}>
-                  <div className={styles.promptCardHeaderStyle}>
-                    <span className={styles.promptCardTitleStyle}>Prompt</span>
-                  </div>
-                  <div className={styles.promptCardContentStyle}>
-                    <textarea
-                      className={
-                        styles.promptCardTextareaVariantStyle[textareaVariant]
-                      }
-                      {...register("prompt")}
-                      onFocus={() => setTextareaVariant("onfocus")}
-                      onBlur={() => setTextareaVariant("default")}
-                    ></textarea>
-                  </div>
-                </div>
-              </Card>
+              <PromptCard register={register} />
             </div>
             <div className={styles.inputPageFormItemStyle}>
               <Card>
