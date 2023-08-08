@@ -16,12 +16,3 @@ export const pageItemStyle = style({
     marginTop: 0,
   },
 });
-
-export const pageHeadingStyle = style({
-  fontSize: 42,
-  fontWeight: 700,
-});
-
-export const pageHeadingBlueStyle = style({
-  color: blueDark.blue7,
-});

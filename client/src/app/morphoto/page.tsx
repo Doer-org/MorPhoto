@@ -1,16 +1,14 @@
 import { SearchBar } from "@/ui";
+import { Morphotos, Title } from "./_components";
 
 import * as styles from "./morphoto-page.css";
-import { Morphotos } from "./_component";
 
 export default function MorphotoPage() {
   return (
     <div className={styles.pageStyle}>
       <div className={styles.pageContentStyle}>
         <div className={styles.pageItemStyle}>
-          <h2 className={styles.pageHeadingStyle}>
-            Find a <span className={styles.pageHeadingBlueStyle}>Photo!</span>
-          </h2>
+          <Title />
         </div>
         <div className={styles.pageItemStyle}>
           <SearchBar />
