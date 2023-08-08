@@ -3,23 +3,26 @@
 import { Button } from "@/ui";
 import { Modal } from "@/app/_component";
 import Image from "next/image";
-import Link from "next/link";
-import {
-  CheckIcon,
-  CopyIcon,
-  DownloadIcon,
-  ImageIcon,
-} from "@radix-ui/react-icons";
+import { CheckIcon, CopyIcon } from "@radix-ui/react-icons";
 import {
   IconButton,
   MisskeyShareButton,
+  RemixLink,
+  ResultImage,
+  SaveLink,
   TwitterShareButton,
 } from "./_component";
 import { useEffect, useState, ReactNode } from "react";
 
 import * as styles from "./result.css";
 
-const Page = () => {
+export default function ResultPage({
+  params,
+  searchParams,
+}: {
+  params: {};
+  searchParams: { morphoto_id: string };
+}) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>(
     " best quality masterpiece makoto shinkai"
@@ -49,48 +52,16 @@ const Page = () => {
       >
         <div className={styles.resultModalContentStyle}>
           <div className={styles.resultModalItemStyle}>
-            <div className={styles.resultHeadImageWrapperStyle}>
-              <Image
-                className={styles.resultImageStyle}
-                src={"/assets/nijika2.png"}
-                fill
-                sizes="500px"
-                alt="出力画像"
-                priority
-              />
-            </div>
+            <ResultImage morphoto_id={searchParams.morphoto_id} />
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultButtonGroupStyle}>
-              <Link
-                className={styles.resultLinkStyle}
-                href={{
-                  pathname: "/input",
-                  query: { inputImageUrl: "/assets/nijika2.png" },
-                }}
-              >
-                <IconButton
-                  tabIndex={-1}
-                  renderIcon={(className) => (
-                    <ImageIcon className={className} />
-                  )}
-                  label="Remix"
-                />
-              </Link>
-              {/* TODO: GCSに保存された変換画像のURLに変更する */}
-              <a
-                className={styles.resultLinkStyle}
-                href={"/assets/nijika2.png"}
-                download={"nijika2.png"}
-              >
-                <IconButton
-                  tabIndex={-1}
-                  renderIcon={(className) => (
-                    <DownloadIcon className={className} />
-                  )}
-                  label="Save"
-                />
-              </a>
+              {searchParams.morphoto_id && (
+                <>
+                  <RemixLink morphoto_id={searchParams.morphoto_id} />
+                  <SaveLink morphoto_id={searchParams.morphoto_id} />
+                </>
+              )}
             </div>
           </div>
           <div className={styles.resultModalItemStyle}>
@@ -153,6 +124,4 @@ const Page = () => {
       </Modal>
     </div>
   );
-};
-
-export default Page;
+}

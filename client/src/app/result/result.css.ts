@@ -14,15 +14,6 @@ export const resultModalItemStyle = style({
   },
 });
 
-export const resultHeadImageWrapperStyle = style({
-  display: "block",
-  position: "relative",
-  width: "100%",
-  maxWidth: "400px",
-  aspectRatio: "1",
-  margin: "0 auto",
-});
-
 export const resultCardStyle = style({
   padding: 20,
   backgroundColor: grayDark.gray7,
@@ -62,10 +53,6 @@ export const resultButtonGroupStyle = style({
   alignItems: "center",
   justifyContent: "center",
   gap: 6,
-});
-
-export const resultLinkStyle = style({
-  width: "100%",
 });
 
 export const resultPromptStyle = style({
