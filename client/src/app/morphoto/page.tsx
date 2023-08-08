@@ -1,9 +1,9 @@
 import { SearchBar } from "@/ui";
 
-import * as styles from "./morphotos-page.css";
+import * as styles from "./morphoto-page.css";
 import { Morphotos } from "./_component";
 
-export default function MorphotosPage() {
+export default function MorphotoPage() {
   return (
     <div className={styles.pageStyle}>
       <div className={styles.pageContentStyle}>
