@@ -130,7 +130,10 @@ const Page = () => {
                     const photos: ReactNode[] = [];
                     for (let i = 0; i < 5; i++) {
                       photos.push(
-                        <div className={styles.resultCardImageWrapperStyle}>
+                        <div
+                          key={i}
+                          className={styles.resultCardImageWrapperStyle}
+                        >
                           <Image
                             className={styles.resultImageStyle}
                             src={"/assets/nijika1.png"}
