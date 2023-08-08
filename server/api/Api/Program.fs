@@ -11,18 +11,17 @@ module Env =
         abstract member DB_DATABASE: string
         abstract member CLIENT_URL: string
 
+    let isDev =
+        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
+
     let env =
-        if
-            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
-        then
+        if isDev then
             DotNetEnv.Env.Load("../../.env.local") |> ignore
 
         let ENVIRONMENT = Environment.GetEnvironmentVariable("ENVIRONMENT")
 
         let DB_HOST =
-            if
-                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
-            then
+            if isDev then
                 "localhost"
             else
                 Environment.GetEnvironmentVariable("DB_HOST")
@@ -41,7 +40,8 @@ module Env =
             member _.CLIENT_URL = CLIENT_URL }
 
     let dbEnv: Infra.Database.DBEnv =
-        { DB_HOST = env.DB_HOST
+        { IS_DEV = isDev
+          DB_HOST = env.DB_HOST
           DB_USER = env.DB_USER
           DB_PASSWORD = env.DB_PASSWORD
           DB_DATABASE = env.DB_DATABASE }
@@ -67,6 +67,19 @@ module Program =
             add_service (fun (svc: IServiceCollection) ->
                 svc.AddSingleton<Infra.Repo.MorphotoRepo>(fun _ ->
                     Infra.Database.morphotoRepo Env.dbEnv))
+
+            use_cors "CorsPolicy" (fun options ->
+                options.AddPolicy(
+                    "CorsPolicy",
+                    fun builder ->
+                        builder.AllowAnyHeader() |> ignore
+                        builder.AllowAnyMethod() |> ignore
+
+                        builder
+                            .WithOrigins(Env.env.CLIENT_URL)
+                            .AllowCredentials()
+                        |> ignore
+                ))
 
 
             endpoints

@@ -5,9 +5,9 @@ import modal
 import uvicorn
 from fastapi import FastAPI
 from modal import asgi_app
+from starlette.middleware.cors import CORSMiddleware
 from omegaconf import OmegaConf
 from PIL import Image
-
 from configs import MorphotoConfig
 from models import InferenceRequest
 from morphoto import Morphoto
@@ -15,6 +15,14 @@ from morphoto import Morphoto
 morphoto_config = OmegaConf.create(MorphotoConfig)
 morphoto = Morphoto(morphoto_config)
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://morphoto.app", "https://www.morphoto.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 stub = modal.Stub("mophoto-fastapi")
 modal_image = modal.Image.debian_slim().poetry_install_from_file(
     poetry_pyproject_toml="pyproject.toml", poetry_lockfile="poetry.lock"  # , force_build=True

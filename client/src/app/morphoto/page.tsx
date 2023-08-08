@@ -1,98 +1,21 @@
-import Link from "next/link";
+import { Morphotos, Title, SearchBar } from "./_components";
 
-const Page = () => {
+import * as styles from "./morphoto-page.css";
+
+export default function MorphotoPage() {
   return (
-    <>
-      <h2>Morphoto Page</h2>
-      <div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span>入力</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-          <div>
-            <span>結果</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
+    <div className={styles.pageStyle}>
+      <div className={styles.pageContentStyle}>
+        <div className={styles.pageItemStyle}>
+          <Title />
         </div>
-        <div>
-          <Link href="/timeline">詳細</Link>
+        <div className={styles.pageItemStyle}>
+          <SearchBar />
+        </div>
+        <div className={styles.pageItemStyle}>
+          <Morphotos />
         </div>
       </div>
-      <div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span>入力</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-          <div>
-            <span>結果</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Link href="/timeline">詳細</Link>
-        </div>
-      </div>
-      <div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span>入力</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1130117141228703824/1130117281016451072/result_0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-          <div>
-            <span>結果</span>
-            <div>
-              <img
-                src="https://cdn.discordapp.com/attachments/1126485571108360313/1129936798685069373/result_1.0.png"
-                alt=""
-                width={240}
-                height={240}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Link href="/timeline">詳細</Link>
-        </div>
-      </div>
-    </>
+    </div>
   );
-};
-
-export default Page;
+}
