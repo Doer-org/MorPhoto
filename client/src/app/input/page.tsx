@@ -97,8 +97,9 @@ const InputPage = ({
     }
 
     // 生成前の画像の処理
+    let currentFile;
     if (!searchParams.parent_id) {
-      const currentFile = await upload(data.image);
+      currentFile = await upload(data.image);
       if (currentFile.err) return window.location.reload();
       const currentMorphoto = await createMorphoto({
         morphoto_id: currentFile.fileName,
@@ -126,7 +127,7 @@ const InputPage = ({
     const morphoto = await createMorphoto({
       morphoto_id: convertedFile.fileName,
       img_url: `https://storage.googleapis.com/morphoto_strage/${convertedFile.fileName}`,
-      parent_id: searchParams.parent_id,
+      parent_id: currentFile?.fileName,
     });
     if (morphoto.type === "error") {
       confirm("API通信に失敗しました");
