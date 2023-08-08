@@ -29,7 +29,9 @@ export const FileUploader = forwardRef<HTMLDivElement, Props>(
   ({ setValue, setImageUrlBase64 }, ref) => {
     const [isDragActive, setisDragActive] = useState<boolean>(false);
 
-    const handleImage = (file?: File) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+
       if (!file) {
         return;
       }
@@ -44,14 +46,23 @@ export const FileUploader = forwardRef<HTMLDivElement, Props>(
       };
     };
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-      handleImage(e.target.files?.[0]);
-    };
-
     const handleImageDrop = (e: DragEvent<HTMLLabelElement>) => {
       e.preventDefault();
       setisDragActive(false);
-      handleImage(e.dataTransfer.files?.[0]);
+      const file = e.dataTransfer.files?.[0];
+
+      if (!file) {
+        return;
+      }
+      setValue("image", file);
+
+      // base64変換
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const imageUrlBase64 = reader.result as string;
+        setImageUrlBase64(imageUrlBase64);
+      };
     };
 
     return (
