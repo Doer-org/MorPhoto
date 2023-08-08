@@ -11,7 +11,7 @@ import {
   SaveLink,
   TwitterShareButton,
 } from "./_component";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import * as styles from "./result.css";
 
@@ -37,14 +37,20 @@ export default function ResultPage({
       >
         <div className={styles.resultModalContentStyle}>
           <div className={styles.resultModalItemStyle}>
-            <ResultImage morphoto_id={searchParams.morphoto_id} />
+            <Suspense>
+              <ResultImage morphoto_id={searchParams.morphoto_id} />
+            </Suspense>
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultButtonGroupStyle}>
               {searchParams.morphoto_id && (
                 <>
-                  <RemixLink morphoto_id={searchParams.morphoto_id} />
-                  <SaveLink morphoto_id={searchParams.morphoto_id} />
+                  <Suspense>
+                    <RemixLink morphoto_id={searchParams.morphoto_id} />
+                  </Suspense>
+                  <Suspense>
+                    <SaveLink morphoto_id={searchParams.morphoto_id} />
+                  </Suspense>
                 </>
               )}
             </div>
@@ -78,7 +84,9 @@ export default function ResultPage({
               </div>
               <div className={styles.resultCardItemStyle}>
                 {searchParams.morphoto_id && (
-                  <Parents morphoto_id={searchParams.morphoto_id} />
+                  <Suspense>
+                    <Parents morphoto_id={searchParams.morphoto_id} />
+                  </Suspense>
                 )}
               </div>
             </div>
