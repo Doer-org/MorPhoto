@@ -1,16 +1,22 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { uploadImage } from "@/api";
-import { Card } from "@/ui";
-import { Modal, Slider } from "@/app/_component";
-import { InputButton } from "./_component";
+import { Modal } from "@/app/_component";
+import {
+  FileUploader,
+  InputButton,
+  PromptCard,
+  Title,
+  UploadCard,
+  Slider,
+} from "./_components";
 
-import * as styles from "./input.css";
+import * as styles from "./input-page.css";
 
 type Inputs = {
   prompt: string;
@@ -18,7 +24,7 @@ type Inputs = {
   strength: number[];
 };
 
-const Page = ({
+const InputPage = ({
   params,
   searchParams,
 }: {
@@ -26,10 +32,6 @@ const Page = ({
   searchParams: { inputImageUrl?: string };
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
-  const [isDragActive, setisDragActive] = useState<boolean>(false);
-  const [textareaVariant, setTextareaVariant] = useState<"default" | "onfocus">(
-    "default"
-  );
 
   const router = useRouter();
 
@@ -83,16 +85,6 @@ const Page = ({
     };
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    handleImage(e.target.files?.[0]);
-  };
-
-  const handleImageDrop = (e: DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    setisDragActive(false);
-    handleImage(e.dataTransfer.files?.[0]);
-  };
-
   useEffect(() => {
     (async () => {
       const pathName = searchParams.inputImageUrl;
@@ -110,95 +102,41 @@ const Page = ({
     <div className={styles.inputPageStyle}>
       <div className={styles.inputPageContentStyle}>
         <div className={styles.inputPageItemStyle}>
-          <h2 className={styles.inputPageHeadingVariantStyle["default"]}>
-            Let{"'"}s start
-            <br />
-            <span className={styles.inputPageHeadingVariantStyle["primary"]}>
-              morphing!
-            </span>
-          </h2>
+          <Title />
         </div>
         <div className={styles.inputPageItemStyle}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.inputPageFormItemStyle}>
-              <Card>
-                <div className={styles.promptCardStyle}>
-                  <div className={styles.promptCardHeaderStyle}>
-                    <span className={styles.promptCardTitleStyle}>Prompt</span>
-                  </div>
-                  <div className={styles.promptCardContentStyle}>
-                    <textarea
-                      className={
-                        styles.promptCardTextareaVariantStyle[textareaVariant]
-                      }
-                      {...register("prompt")}
-                      onFocus={() => setTextareaVariant("onfocus")}
-                      onBlur={() => setTextareaVariant("default")}
-                    ></textarea>
-                  </div>
-                </div>
-              </Card>
+              <PromptCard register={register} />
             </div>
             <div className={styles.inputPageFormItemStyle}>
-              <Card>
-                <div className={styles.uploadCardStyle}>
-                  <div className={styles.uploadCardHeaderStyle}>
-                    <span className={styles.uploadCardTitleStyle}>
-                      Upload Photo
-                    </span>
-                  </div>
-                  <div className={styles.uploadCardContentStyle}>
-                    <div className={styles.uploadCardItemStyle}>
-                      <div className={styles.uploadCardImageListStyle}>
-                        <div className={styles.uploadCardImageWrapperStyle}>
-                          {imageUrlBase64 ? (
-                            <Image
-                              className={styles.uploadCardImageStyle}
-                              src={imageUrlBase64}
-                              fill
-                              alt="入力画像"
-                            />
-                          ) : (
-                            <ImageIcon width={60} height={60} />
-                          )}
-                        </div>
-                        <label
-                          className={
-                            styles.uploadCardLabelVariantStyle[
-                              isDragActive ? "drag" : "default"
-                            ]
-                          }
-                          onDragEnter={() => setisDragActive(true)}
-                          onDragLeave={() => setisDragActive(false)}
-                          onDragOver={(e) => e.preventDefault()}
-                          onDrop={handleImageDrop}
-                        >
-                          <input
-                            className={styles.uploadCardInputStyle}
-                            type="file"
-                            accept="image/jpeg,image/png"
-                            onChange={handleImageChange}
-                          />
-                        </label>
-                      </div>
-                    </div>
-                    <div className={styles.uploadCardItemStyle}>
-                      <div className={styles.uploadCardSliderHeaderStyle}>
-                        <span className={styles.uploadCardTitleStyle}>
-                          Strength
-                        </span>
-                        <span>{Math.round(strength[0] * 100)}%</span>
-                      </div>
-                      <div className={styles.uploadCardSliderInputStyle}>
-                        <Slider
-                          value={strength}
-                          onValueChange={(v) => setValue("strength", v)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              <UploadCard
+                renderPreview={(className) =>
+                  imageUrlBase64 ? (
+                    <Image
+                      className={className}
+                      src={imageUrlBase64}
+                      fill
+                      alt="入力画像"
+                    />
+                  ) : (
+                    <ImageIcon width={60} height={60} />
+                  )
+                }
+                fileUploader={
+                  <FileUploader
+                    setValue={setValue}
+                    setImageUrlBase64={setImageUrlBase64}
+                  />
+                }
+                slider={
+                  <Slider
+                    value={strength}
+                    onValueChange={(v) => setValue("strength", v)}
+                  />
+                }
+                strength={strength}
+              />
             </div>
             <div className={styles.inputPageFormItemStyle}>
               <InputButton type="submit" value={"Generate Photo"} />
@@ -213,4 +151,4 @@ const Page = ({
   );
 };
 
-export default Page;
+export default InputPage;
