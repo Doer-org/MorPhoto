@@ -22,6 +22,7 @@ import {
 } from "./_components";
 
 import * as styles from "./input-page.css";
+import { env } from "@/constants";
 
 type Inputs = {
   prompt: string;
@@ -110,13 +111,15 @@ const InputPage = ({
     }
 
     // 生成された画像の処理
-    const convertedImageUrl = inference.value.converted_image;
-    const convertedImage = await fetch(convertedImageUrl)
-      .then((res) => res.blob())
-      .then(
-        (blob) =>
-          new File([blob], convertedImageUrl.split("/").pop() || "morphoto.png")
-      );
+    const convertedImageBase64 = inference.value.converted_image;
+    const bin = atob(convertedImageBase64);
+    const buffer = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) {
+      buffer[i] = bin.charCodeAt(i);
+    }
+    const convertedImage = new File([buffer.buffer], "morphoto.png", {
+      type: "image/jpeg",
+    });
     const convertedFile = await upload(convertedImage);
     if (convertedFile.err) return window.location.reload();
 
@@ -131,7 +134,7 @@ const InputPage = ({
     }
 
     // 結果ページへリダイレクト
-    const url = new URL("/result");
+    const url = new URL(`${env.CLIENT_URL}/result`);
     url.searchParams.set("morphoto_id", morphoto.value.data.morphoto_id);
     url.searchParams.set("prompt", data.prompt);
     router.push(url.toString());

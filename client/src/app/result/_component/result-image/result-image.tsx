@@ -16,12 +16,10 @@ export const ResultImage: FC<Props> = async ({ morphoto_id }) => {
 
   return (
     <div className={styles.imageWrapperStyle}>
-      <Image
+      <img
         className={styles.imageStyle}
         src={morphoto.value.data.img_url}
-        fill
         alt="出力画像"
-        priority
       />
     </div>
   );

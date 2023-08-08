@@ -10,5 +10,6 @@ export const imageWrapperStyle = style({
 });
 
 export const imageStyle = style({
+  width: "100%",
   objectFit: "cover",
 });
