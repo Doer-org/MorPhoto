@@ -13,7 +13,6 @@ export default function MorphotoPage() {
           <SearchBar />
         </div>
         <div className={styles.pageItemStyle}>
-          {/* @ts-expect-error Server Component */}
           <Morphotos />
         </div>
       </div>
