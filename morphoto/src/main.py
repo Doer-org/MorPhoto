@@ -4,9 +4,9 @@ import sys
 
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 from omegaconf import OmegaConf
 from PIL import Image
-
 from models import InferenceRequest
 from morphoto import Morphoto
 
@@ -16,6 +16,14 @@ from config import MorphotoConfig
 morphoto_config = OmegaConf.create(MorphotoConfig)
 morphoto = Morphoto(morphoto_config)
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://morphoto.app", "https://www.morphoto.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/inference")
