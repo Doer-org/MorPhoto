@@ -1,25 +1,24 @@
-import { style, styleVariants } from "@vanilla-extract/css";
-import { blackA } from "@radix-ui/colors";
+import { style } from "@vanilla-extract/css";
 
-export const uploadCardHeaderStyle = style({});
+export const headerStyle = style({});
 
-export const uploadCardTitleStyle = style({
+export const titleStyle = style({
   fontSize: 16,
   fontWeight: "bold",
 });
 
-export const uploadCardContentStyle = style({
+export const contentStyle = style({
   marginTop: 8,
 });
 
-export const uploadCardItemStyle = style({
+export const itemStyle = style({
   marginTop: 12,
   ":first-child": {
     marginTop: 0,
   },
 });
 
-export const uploadCardImageListStyle = style({
+export const imageListStyle = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -27,7 +26,7 @@ export const uploadCardImageListStyle = style({
   padding: "12px 0",
 });
 
-export const uploadCardImageWrapperStyle = style({
+export const imageWrapperStyle = style({
   position: "relative",
   height: 240,
   width: "100%",
@@ -36,16 +35,16 @@ export const uploadCardImageWrapperStyle = style({
   justifyContent: "center",
 });
 
-export const uploadCardImageStyle = style({
+export const imageStyle = style({
   objectFit: "contain",
 });
 
-export const uploadCardSliderHeaderStyle = style({
+export const sliderHeaderStyle = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
 });
 
-export const uploadCardSliderInputStyle = style({
+export const sliderInputStyle = style({
   marginTop: 8,
 });
