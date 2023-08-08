@@ -1,5 +1,4 @@
-import { SearchBar } from "@/ui";
-import { Morphotos, Title } from "./_components";
+import { Morphotos, Title, SearchBar } from "./_components";
 
 import * as styles from "./morphoto-page.css";
 
