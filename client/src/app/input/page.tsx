@@ -5,7 +5,7 @@ import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
-import { uploadImage } from "@/api";
+import { createInference, createMorphoto, uploadImage } from "@/api";
 import { Modal } from "@/app/_component";
 import {
   FileUploader,
@@ -23,6 +23,16 @@ type Inputs = {
   image: File;
   strength: number[];
 };
+
+type uploadResponseType =
+  | {
+      fileName: string;
+      err: false;
+    }
+  | {
+      fileName: null;
+      err: true;
+    };
 
 const InputPage = ({
   params,
@@ -43,11 +53,16 @@ const InputPage = ({
     formState: { errors, isSubmitting, isSubmitted },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const imageIDinGcs = await uploadImage(data.image);
+  const upload = async (file: File): Promise<uploadResponseType> => {
+    const imageIDinGcs = await uploadImage(file);
     console.log("upload", imageIDinGcs?.fileName);
-    if (!imageIDinGcs) return alert("画像のアップロードに失敗しました。");
+    if (!imageIDinGcs) {
+      confirm("画像のアップロードに失敗しました。");
+      return { fileName: null, err: true };
+    }
+
     const { fileName } = imageIDinGcs;
+    return { fileName: fileName, err: false };
 
     console.log(
       "url",
@@ -60,8 +75,60 @@ const InputPage = ({
       const JSONRes = await res.json();
       console.log("singed url(不要)", JSONRes);
     })();
+  };
 
-    router.push("/result");
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // 画像変換処理
+    const imageUrl = imageUrlBase64.split(",")[1];
+    const inference = await createInference({
+      prompt: data.prompt,
+      strength: data.strength[0],
+      image: imageUrl,
+    });
+    if (inference.type === "error") {
+      confirm("画像変換に失敗しました");
+      return window.location.reload();
+    }
+
+    // 生成前の画像の処理
+    if (!searchParams.inputImageUrl) {
+      const currentFile = await upload(data.image);
+      if (currentFile.err) return window.location.reload();
+      const currentMorphoto = await createMorphoto({
+        morphoto_id: currentFile.fileName,
+        img_url: `https://storage.googleapis.com/morphoto_strage/${currentFile.fileName}`,
+      });
+      if (currentMorphoto.type === "error") {
+        confirm("API通信に失敗しました");
+        return window.location.reload();
+      }
+    }
+
+    // 生成された画像の処理
+    const convertedImageUrl = inference.value.converted_image;
+    const convertedImage = await fetch(convertedImageUrl)
+      .then((res) => res.blob())
+      .then(
+        (blob) =>
+          new File([blob], convertedImageUrl.split("/").pop() || "morphoto.png")
+      );
+    const convertedFile = await upload(convertedImage);
+    if (convertedFile.err) return window.location.reload();
+
+    const morphoto = await createMorphoto({
+      morphoto_id: convertedFile.fileName,
+      img_url: `https://storage.googleapis.com/morphoto_strage/${convertedFile.fileName}`,
+      parent_id: searchParams.inputImageUrl,
+    });
+    if (morphoto.type === "error") {
+      confirm("API通信に失敗しました");
+      return window.location.reload();
+    }
+
+    // 結果ページへリダイレクト
+    const url = new URL("/result");
+    url.searchParams.set("morphoto_id", morphoto.value.data.morphoto_id);
+    router.push(url.toString());
   };
 
   const strength = useWatch({
