@@ -33,21 +33,6 @@ export const resultCardTitleStyle = style({
   textAlign: "center",
 });
 
-export const resultCardImageListStyle = style({
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gap: 10,
-});
-
-export const resultCardImageWrapperStyle = style({
-  position: "relative",
-  aspectRatio: "1",
-});
-
-export const resultImageStyle = style({
-  objectFit: "cover",
-});
-
 export const resultButtonGroupStyle = style({
   display: "flex",
   alignItems: "center",

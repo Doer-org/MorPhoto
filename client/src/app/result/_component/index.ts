@@ -1,5 +1,6 @@
-export * from "./icon-button";
+export * from "./copy-button";
 export * from "./misskey-share-button";
+export * from "./parents";
 export * from "./remix-link";
 export * from "./result-image";
 export * from "./save-link";
