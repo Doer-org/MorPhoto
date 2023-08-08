@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
 import { SearchBar } from "@/ui";
-import Image from "next/image";
 
-import * as styles from "./morphoto.css";
+import * as styles from "./morphoto-page.css";
+import { Morphotos } from "./_component";
 
 const Page = () => {
   return (
@@ -17,24 +16,8 @@ const Page = () => {
           <SearchBar />
         </div>
         <div className={styles.pageItemStyle}>
-          <div className={styles.imageListStyle}>
-            {(() => {
-              const photos: ReactNode[] = [];
-              for (let i = 0; i < 10; i++) {
-                photos.push(
-                  <div className={styles.imageWrapperStyle}>
-                    <Image
-                      className={styles.imageStyle}
-                      src={"/assets/nijika2.png"}
-                      fill
-                      alt="morphoto"
-                    />
-                  </div>
-                );
-              }
-              return photos;
-            })()}
-          </div>
+          {/* @ts-expect-error Server Component */}
+          <Morphotos />
         </div>
       </div>
     </div>
