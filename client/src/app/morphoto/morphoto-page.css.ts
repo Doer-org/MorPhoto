@@ -1,5 +1,4 @@
 import { style } from "@vanilla-extract/css";
-import { blueDark } from "@radix-ui/colors";
 
 export const pageStyle = style({
   padding: "18px 16px 120px",
