@@ -15,7 +15,6 @@ export default function MorphotoPage() {
         </div>
         <div className={styles.pageItemStyle}>
           <Suspense>
-            {/* @ts-expect-error Async Server Component */}
             <Morphotos />
           </Suspense>
         </div>
