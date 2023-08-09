@@ -58,8 +58,6 @@ print(data_dir)
 
 @stub.function(
     image=modal_image,
-    # .envによりfrom, toを指定&読み込み
-    # .envは直接SECRETSに設定（WEB) たぶんこのままだとOPENAI_API_KEY等が読み込まれない
     mounts=[modal.Mount.from_local_dir(data_dir, remote_path="/root/data")],
     secret=modal.Secret.from_name("morphoto-ml-secrets"),
 )
