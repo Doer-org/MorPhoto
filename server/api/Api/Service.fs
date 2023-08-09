@@ -6,67 +6,58 @@ open Infra.Repo
 module Usecase =
     open FsToolkit.ErrorHandling
 
-    let getAllUsers (userRepo: UserRepo) =
-        result {
-            let! users = userRepo.users ()
-            users |> printfn "%A"
-            return users
+    /// start morphing
+    let registerStatus (parent_id: string) (statusStore: StatusRepo) =
+        taskResult {
+            let! status =
+                statusStore.registerStatus {
+                    parent_id = parent_id
+                    is_done = false
+                    view_count = 0
+                    created_at = System.DateTime.Now
+                }
+
+            return status
         }
 
-    let registerMorphoto (morphoto: Morphoto) (morphotoRepo: MorphotoRepo) =
+    let incrViewCountAndGetStatus
+        (parent_id: string)
+        (statusStore: StatusRepo)
+        =
+        taskResult {
+            let! status = statusStore.getStatus parent_id
+
+            let! status =
+                statusStore.updateStatus {
+                    status with
+                        view_count = status.view_count + 1
+                }
+
+            return status
+        }
+
+    let registerMorphoto
+        (morphoto: Morphoto)
+        (morphotoRepo: MorphotoRepo, statusRepo: StatusRepo)
+        =
         taskResult {
             let! morphoto = morphotoRepo.register morphoto
-
-            let! _ =
-                morphotoRepo.regiserLog {
-                    created_at = System.DateTime.Now
-                    morphoto_id = morphoto.morphoto_id
-                    view_count = 0
-                }
+            let! status = statusRepo.getStatus morphoto.parent_id
+            let! _ = statusRepo.updateStatus { status with is_done = true }
 
             return morphoto
         }
 
-    let getMorphoto (morphoto_id: string) (morphotoRepo: MorphotoRepo) =
+    let getMorphoto (parent_id: string) (morphotoRepo: MorphotoRepo) =
         taskResult {
-            let! morphoto = morphotoRepo.getMorphoto morphoto_id
-            let! log = morphotoRepo.getLog morphoto_id
-
-            let! _ =
-                morphotoRepo.updateLog {
-                    log with
-                        view_count = log.view_count + 1
-                }
-
+            let! morphoto = morphotoRepo.getMorphoto parent_id
             return morphoto
         }
 
-    let getMorphotos (morphotoRepo: MorphotoRepo) =
+    let getAllMorphotos (morphotoRepo: MorphotoRepo) =
         taskResult {
-            let! morphotos = morphotoRepo.getMorphotos ()
-            morphotos |> printfn "%A"
+            let! morphotos = morphotoRepo.getAllMorphotos ()
             return morphotos
-        }
-
-    let getTimeline (morphoto_id: string) (morphotoRepo: MorphotoRepo) =
-        taskResult {
-            let! morphotos = morphotoRepo.getTimeline morphoto_id
-            return morphotos
-        }
-
-    let getLog (morphoto_id: string) (morphotoRepo: MorphotoRepo) =
-        taskResult {
-            let! morphotoLogs = morphotoRepo.getLog morphoto_id
-            morphotoLogs |> printfn "getLog: %A"
-            return morphotoLogs
-        }
-
-
-    let updateLog (morphotoLog: MorphotoLog) (morphotoRepo: MorphotoRepo) =
-        taskResult {
-            let! log = morphotoRepo.updateLog morphotoLog
-            log |> printfn "updateLog: %A"
-            return log
         }
 
 
@@ -78,29 +69,71 @@ module Handler =
 
     let errorHandler (e: string) : HttpHandler =
         Response.withStatusCode 500
-        >> Response.ofJson {| error = "error" |}
+        >> Response.ofJson {| error = "error!" |}
 
-    let getAllUsers: HttpHandler =
+    /// ### Endpoint
+    /// - `POST: /status/:parent_id`
+    /// ### Response
+    /// - `{| data: Status |}`
+    let registerStatus: HttpHandler =
         fun ctx ->
-            let userRepo = ctx.RequestServices.GetService<Infra.Repo.UserRepo>()
+            let route = Request.getRoute ctx
+            let parent_id = route.Get("parent_id")
+            let statusRepo = ctx.RequestServices.GetService<StatusRepo>()
 
-            Usecase.getAllUsers userRepo
-            |> function
-                | Ok users -> ctx |> Response.ofJson {| data = users |}
-                | Error e -> errorHandler e ctx
+            task {
+                let! status = Usecase.registerStatus parent_id statusRepo
 
+                return
+                    status
+                    |> function
+                        | Ok status ->
+                            ctx |> Response.ofJson {| data = status |}
+                        | Error e -> errorHandler e ctx
+            }
+
+    // TODO: GET?? API側でGCS画像登録、ML APIの呼び出しを行う.
+    /// add view_count and return status
+    /// ### Endpoint
+    /// - `GET: /status/:parent_id`
+    /// ### Response
+    /// - `{| data: Status |}`
+    let getStatus: HttpHandler =
+        fun ctx ->
+            let route = Request.getRoute ctx
+            let parent_id = route.Get("parent_id")
+            let statusRepo = ctx.RequestServices.GetService<StatusRepo>()
+
+            task {
+                let! status =
+                    Usecase.incrViewCountAndGetStatus parent_id statusRepo
+
+                return
+                    status
+                    |> function
+                        | Ok status ->
+                            ctx |> Response.ofJson {| data = status |}
+                        | Error e -> errorHandler e ctx
+            }
+
+    /// ### Endpoint
+    /// - `POST: /morphoto`
+    /// - `body: Morphoto`
+    /// ### Request
+    /// - `{| data: Morphoto |}`
     let registerMorphoto: HttpHandler =
         fun ctx ->
+            let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
+            let statusRepo = ctx.RequestServices.GetService<StatusRepo>()
+
             task {
                 let! morphoto =
                     Request.getJsonOptions<Morphoto>
                         JsonSerializerOptions.Default
                         ctx
 
-                let morphotoRepo =
-                    ctx.RequestServices.GetService<MorphotoRepo>()
-
-                let! morphoto = Usecase.registerMorphoto morphoto morphotoRepo
+                let! morphoto =
+                    Usecase.registerMorphoto morphoto (morphotoRepo, statusRepo)
 
                 return
                     morphoto
@@ -110,14 +143,18 @@ module Handler =
                         | Error e -> errorHandler e ctx
             }
 
+    /// ### Endpoint
+    /// - `GET: /morphoto/{parent_id}`
+    /// ### Request
+    /// - `{| data: Morphoto |}`
     let getMorphoto: HttpHandler =
         fun ctx ->
-            let query = Request.getRoute ctx
-            let morphoto_id = query.Get("morphoto_id")
+            let route = Request.getRoute ctx
+            let parent_id = route.Get("parent_id")
             let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
 
             task {
-                let! morphoto = Usecase.getMorphoto morphoto_id morphotoRepo
+                let! morphoto = Usecase.getMorphoto parent_id morphotoRepo
 
                 return
                     morphoto
@@ -127,53 +164,21 @@ module Handler =
                         | Error e -> errorHandler e ctx
             }
 
-    let getMorphotos: HttpHandler =
+    /// ### Endpoint
+    /// - `GET: /morphoto/all`
+    /// ### Request
+    /// - `{| data: Morphoto[] |}`
+    let getAllMorphotos: HttpHandler =
         fun ctx ->
             let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
 
             task {
-                let! morphotos = Usecase.getMorphotos morphotoRepo
+                let! morphotos = Usecase.getAllMorphotos morphotoRepo
 
                 return
                     morphotos
                     |> function
                         | Ok morphotos ->
                             ctx |> Response.ofJson {| data = morphotos |}
-                        | Error e -> errorHandler e ctx
-            }
-
-    let getTimeline: HttpHandler =
-        fun ctx ->
-            let query = Request.getQuery ctx
-            let morphoto_id = query.Get("morphoto_id")
-            printfn "getTimeline morphoto_id: %s" morphoto_id
-            let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
-
-            task {
-                let! morphotos = Usecase.getTimeline morphoto_id morphotoRepo
-
-                return
-                    morphotos
-                    |> function
-                        | Ok morphotos ->
-                            printfn "resp: %A" morphotos
-                            ctx |> Response.ofJson {| data = morphotos |}
-                        | Error e -> errorHandler e ctx
-            }
-
-    let getLog: HttpHandler =
-        fun ctx ->
-            let query = Request.getRoute ctx
-            let morphoto_id = query.Get("morphoto_id")
-            let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
-
-            task {
-                let! morphotoLogs = Usecase.getLog morphoto_id morphotoRepo
-
-                return
-                    morphotoLogs
-                    |> function
-                        | Ok morphotoLogs ->
-                            ctx |> Response.ofJson {| data = morphotoLogs |}
                         | Error e -> errorHandler e ctx
             }
