@@ -2,7 +2,7 @@ CREATE TABLE `Morphoto`(
   `parent_id` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `child_id`  varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `prompt`    varchar(255) COLLATE utf8mb4_bin NOT NULL, 
-  `strength`  float NOT NULL,
+  `strength`  double NOT NULL,
   PRIMARY KEY (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
