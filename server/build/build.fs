@@ -14,6 +14,7 @@ let DOCKER_COMPOSE_LOCAL_SERVER =
 
 let DOCKER_COMPOSE_LOCAL_ML = $"{DOCKER_FILER_DIR}/docker-compose.local.ml.yaml"
 
+let PROJECT_NAME = "morphoto-dev"
 
 module Command =
     [<Literal>]
@@ -44,21 +45,13 @@ let initTargets () =
         Shell.Exec(
             "docker",
             [
-                "compose"
-                "-p"
-                "morphoto-dev"
-                "-f"
-                DOCKER_COMPONSE_LOCAL
-                "-f"
-                DOCKER_COMPOSE_LOCAL_DATABASE
-                "-f"
-                DOCKER_COMPOSE_LOCAL_SERVER
-                "-f"
-                DOCKER_COMPOSE_LOCAL_ML
-                "--env-file"
-                ENV
-                "up"
-                "-d"
+                $"compose -p {PROJECT_NAME}"
+                $"-f {DOCKER_COMPONSE_LOCAL}"
+                $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
+                $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
+                $"-f {DOCKER_COMPOSE_LOCAL_ML}"
+                $"--env-file {ENV}"
+                "up -d"
             ]
             |> String.concat " "
         )
@@ -70,24 +63,13 @@ let initTargets () =
         Shell.Exec(
             "docker",
             [
-                "compose"
-                "-p"
-                "morphoto-dev"
-                "-f"
-                DOCKER_COMPONSE_LOCAL
-                "-f"
-                DOCKER_COMPOSE_LOCAL_DATABASE
-                "-f"
-                DOCKER_COMPOSE_LOCAL_SERVER
-                "-f"
-                DOCKER_COMPOSE_LOCAL_ML
-                "--env-file"
-                ENV
-                "down"
-                "--rmi"
-                "all"
-                "--volumes"
-                "--remove-orphans"
+                $"compose -p {PROJECT_NAME}"
+                $"-f {DOCKER_COMPONSE_LOCAL}"
+                $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
+                $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
+                $"-f {DOCKER_COMPOSE_LOCAL_ML}"
+                $"--env-file {ENV}"
+                "down --rmi all --volumes --remove-orphans"
             ]
             |> String.concat " "
         )
