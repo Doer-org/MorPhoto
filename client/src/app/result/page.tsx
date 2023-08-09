@@ -1,44 +1,32 @@
 "use client";
 
 import { Button } from "@/ui";
-import { Modal } from "@/app/_component";
-import Image from "next/image";
-import Link from "next/link";
 import {
-  CheckIcon,
-  CopyIcon,
-  DownloadIcon,
-  ImageIcon,
-} from "@radix-ui/react-icons";
-import {
-  IconButton,
+  CopyButton,
   MisskeyShareButton,
+  Parents,
+  RemixLink,
+  ResultImage,
+  SaveLink,
   TwitterShareButton,
-} from "./_component";
-import { useEffect, useState, ReactNode } from "react";
+  Modal,
+} from "./_components";
+import { Suspense, useEffect, useState } from "react";
 
 import * as styles from "./result.css";
 
-const Page = () => {
+export default function ResultPage({
+  params,
+  searchParams,
+}: {
+  params: {};
+  searchParams: { morphoto_id?: string; prompt?: string };
+}) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [prompt, setPrompt] = useState<string>(
-    " best quality masterpiece makoto shinkai"
-  );
-  const [copied, setCopied] = useState<boolean>(false);
 
   useEffect(() => {
     setModalOpen(true);
   }, []);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(prompt).then(
-      () => {
-        console.log("Copying to clipboard was successful!");
-        setCopied(true);
-      },
-      (err) => console.log("Copying to clipboard was failed", err)
-    );
-  };
 
   return (
     <div className={styles.resultStyle}>
@@ -49,67 +37,37 @@ const Page = () => {
       >
         <div className={styles.resultModalContentStyle}>
           <div className={styles.resultModalItemStyle}>
-            <div className={styles.resultHeadImageWrapperStyle}>
-              <Image
-                className={styles.resultImageStyle}
-                src={"/assets/nijika2.png"}
-                fill
-                sizes="500px"
-                alt="出力画像"
-                priority
-              />
-            </div>
+            <Suspense>
+              <ResultImage morphoto_id={searchParams.morphoto_id} />
+            </Suspense>
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultButtonGroupStyle}>
-              <Link
-                className={styles.resultLinkStyle}
-                href={{
-                  pathname: "/input",
-                  query: { inputImageUrl: "/assets/nijika2.png" },
-                }}
-              >
-                <IconButton
-                  tabIndex={-1}
-                  renderIcon={(className) => (
-                    <ImageIcon className={className} />
-                  )}
-                  label="Remix"
-                />
-              </Link>
-              {/* TODO: GCSに保存された変換画像のURLに変更する */}
-              <a
-                className={styles.resultLinkStyle}
-                href={"/assets/nijika2.png"}
-                download={"nijika2.png"}
-              >
-                <IconButton
-                  tabIndex={-1}
-                  renderIcon={(className) => (
-                    <DownloadIcon className={className} />
-                  )}
-                  label="Save"
-                />
-              </a>
+              {searchParams.morphoto_id && (
+                <>
+                  <Suspense>
+                    <RemixLink morphoto_id={searchParams.morphoto_id} />
+                  </Suspense>
+                  <Suspense>
+                    <SaveLink morphoto_id={searchParams.morphoto_id} />
+                  </Suspense>
+                </>
+              )}
             </div>
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultCardStyle}>
               <div className={styles.resultCardItemStyle}>
-                <p className={styles.resultPromptStyle}>{prompt}</p>
+                {searchParams.prompt && (
+                  <p className={styles.resultPromptStyle}>
+                    {searchParams.prompt}
+                  </p>
+                )}
               </div>
               <div className={styles.resultCardItemStyle}>
-                <IconButton
-                  onClick={handleCopy}
-                  renderIcon={(className) =>
-                    copied ? (
-                      <CheckIcon className={className} />
-                    ) : (
-                      <CopyIcon className={className} />
-                    )
-                  }
-                  label={copied ? "Copied!" : "Copy Prompt"}
-                />
+                {searchParams.prompt && (
+                  <CopyButton prompt={searchParams.prompt} />
+                )}
               </div>
               <div className={styles.resultCardItemStyle}>
                 <div className={styles.resultSnsListStyle}>
@@ -125,27 +83,11 @@ const Page = () => {
                 <span className={styles.resultCardTitleStyle}>Before</span>
               </div>
               <div className={styles.resultCardItemStyle}>
-                <div className={styles.resultCardImageListStyle}>
-                  {(() => {
-                    const photos: ReactNode[] = [];
-                    for (let i = 0; i < 5; i++) {
-                      photos.push(
-                        <div
-                          key={i}
-                          className={styles.resultCardImageWrapperStyle}
-                        >
-                          <Image
-                            className={styles.resultImageStyle}
-                            src={"/assets/nijika1.png"}
-                            fill
-                            alt="出力画像"
-                          />
-                        </div>
-                      );
-                    }
-                    return photos;
-                  })()}
-                </div>
+                {searchParams.morphoto_id && (
+                  <Suspense>
+                    <Parents morphoto_id={searchParams.morphoto_id} />
+                  </Suspense>
+                )}
               </div>
             </div>
           </div>
@@ -153,6 +95,4 @@ const Page = () => {
       </Modal>
     </div>
   );
-};
-
-export default Page;
+}

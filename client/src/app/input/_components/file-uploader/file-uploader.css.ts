@@ -1,7 +1,12 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 import { blackA } from "@radix-ui/colors";
 
-const uploadCardLabelBase = style({
+export const wrapperVariantStyle = styleVariants({
+  default: [{ pointerEvents: "auto" }],
+  disabled: [{ pointerEvents: "none" }],
+});
+
+const labelBase = style({
   position: "absolute",
   width: "100%",
   height: "100%",
@@ -12,21 +17,21 @@ const uploadCardLabelBase = style({
     backgroundColor: blackA.blackA8,
   },
 });
-export const uploadCardLabelVariantStyle = styleVariants({
+export const labelVariantStyle = styleVariants({
   default: [
-    uploadCardLabelBase,
+    labelBase,
     {
       backgroundColor: "transparent",
     },
   ],
   drag: [
-    uploadCardLabelBase,
+    labelBase,
     {
       backgroundColor: blackA.blackA8,
     },
   ],
 });
 
-export const uploadCardInputStyle = style({
+export const inputStyle = style({
   display: "none",
 });

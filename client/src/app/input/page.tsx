@@ -1,12 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useForm, useWatch, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  useWatch,
+  SubmitHandler,
+  SubmitErrorHandler,
+} from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
-import { uploadImage } from "@/api";
-import { Modal } from "@/app/_component";
+import {
+  createInference,
+  createMorphoto,
+  readMorphoto,
+  uploadImage,
+} from "@/api";
 import {
   FileUploader,
   InputButton,
@@ -14,6 +23,7 @@ import {
   Title,
   UploadCard,
   Slider,
+  Modal,
 } from "./_components";
 
 import * as styles from "./input-page.css";
@@ -24,12 +34,22 @@ type Inputs = {
   strength: number[];
 };
 
+type uploadResponse =
+  | {
+      fileName: string;
+      err: false;
+    }
+  | {
+      fileName: null;
+      err: true;
+    };
+
 const InputPage = ({
   params,
   searchParams,
 }: {
   params: {};
-  searchParams: { inputImageUrl?: string };
+  searchParams: { parent_id?: string };
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
 
@@ -43,11 +63,16 @@ const InputPage = ({
     formState: { errors, isSubmitting, isSubmitted },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const imageIDinGcs = await uploadImage(data.image);
+  const upload = async (file: File): Promise<uploadResponse> => {
+    const imageIDinGcs = await uploadImage(file);
     console.log("upload", imageIDinGcs?.fileName);
-    if (!imageIDinGcs) return alert("画像のアップロードに失敗しました。");
+    if (!imageIDinGcs) {
+      confirm("画像のアップロードに失敗しました。");
+      return { fileName: null, err: true };
+    }
+
     const { fileName } = imageIDinGcs;
+    return { fileName: fileName, err: false };
 
     console.log(
       "url",
@@ -60,8 +85,80 @@ const InputPage = ({
       const JSONRes = await res.json();
       console.log("singed url(不要)", JSONRes);
     })();
+  };
 
-    router.push("/result");
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // 画像変換処理
+    const imageUrl = imageUrlBase64.split(",")[1];
+    const inference = await createInference({
+      prompt: data.prompt,
+      strength: data.strength[0],
+      image: imageUrl,
+      // is_mock: true,
+    });
+    if (inference.type === "error") {
+      confirm("画像変換に失敗しました");
+      return window.location.reload();
+    }
+
+    // 生成前の画像の処理
+    let currentFile;
+    if (!searchParams.parent_id) {
+      currentFile = await upload(data.image);
+      if (currentFile.err) return window.location.reload();
+      const currentMorphoto = await createMorphoto({
+        morphoto_id: currentFile.fileName,
+        img_url: `https://storage.googleapis.com/morphoto_strage/${currentFile.fileName}`,
+      });
+      if (currentMorphoto.type === "error") {
+        confirm("API通信に失敗しました");
+        return window.location.reload();
+      }
+    }
+
+    // 生成された画像の処理
+    const convertedImageBase64 = inference.value.converted_image;
+    const bin = atob(convertedImageBase64);
+    const buffer = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) {
+      buffer[i] = bin.charCodeAt(i);
+    }
+    const convertedImage = new File([buffer.buffer], "morphoto.png", {
+      type: "image/jpeg",
+    });
+    const convertedFile = await upload(convertedImage);
+    if (convertedFile.err) return window.location.reload();
+
+    const morphoto = await createMorphoto({
+      morphoto_id: convertedFile.fileName,
+      img_url: `https://storage.googleapis.com/morphoto_strage/${convertedFile.fileName}`,
+      parent_id: searchParams.parent_id || currentFile?.fileName,
+    });
+    if (morphoto.type === "error") {
+      confirm("API通信に失敗しました");
+      return window.location.reload();
+    }
+
+    // 結果ページへリダイレクト
+    router.push(
+      `/result?morphoto_id=${morphoto.value.data.morphoto_id}&prompt=${data.prompt}`
+    );
+  };
+
+  const onInvalid: SubmitErrorHandler<Inputs> = (errors) => {
+    let message = "";
+
+    if (errors.prompt?.message) {
+      message += `${errors.prompt.message}\n`;
+    }
+    if (errors.image?.message) {
+      message += `${errors.image.message}\n`;
+    }
+    if (errors.strength?.message) {
+      message += errors.strength.message;
+    }
+
+    return alert(message);
   };
 
   const strength = useWatch({
@@ -86,16 +183,23 @@ const InputPage = ({
   };
 
   useEffect(() => {
+    setValue("strength", strength);
+
     (async () => {
-      const pathName = searchParams.inputImageUrl;
+      if (!searchParams.parent_id) return;
+      const morphoto = await readMorphoto(searchParams.parent_id);
+      if (morphoto.type === "error") return;
+      const pathName = morphoto.value.data.img_url;
       if (pathName) {
         const file = await fetch(pathName)
           .then((res) => res.blob())
-          .then((blob) => new File([blob], "nijika2.png"));
+          .then(
+            (blob) =>
+              new File([blob], pathName.split("/").pop() || "morphoto.png")
+          );
         handleImage(file);
       }
     })();
-    setValue("strength", strength);
   }, []);
 
   return (
@@ -105,7 +209,7 @@ const InputPage = ({
           <Title />
         </div>
         <div className={styles.inputPageItemStyle}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
             <div className={styles.inputPageFormItemStyle}>
               <PromptCard register={register} />
             </div>
@@ -127,6 +231,7 @@ const InputPage = ({
                   <FileUploader
                     setValue={setValue}
                     setImageUrlBase64={setImageUrlBase64}
+                    disabled={Boolean(searchParams.parent_id)}
                   />
                 }
                 slider={
@@ -144,9 +249,9 @@ const InputPage = ({
           </form>
         </div>
       </div>
-      {(isSubmitting || isSubmitted) && (
-        <Modal open>{isSubmitting ? "ちょっとまってね" : "おわったよ"}</Modal>
-      )}
+      <Modal open={isSubmitting}>
+        {isSubmitting ? "ちょっとまってね" : "おわったよ"}
+      </Modal>
     </div>
   );
 };

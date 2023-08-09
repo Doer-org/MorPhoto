@@ -1,22 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: "standalone",
-    experimental: {
-        appDir: true,
-    },
-    build: {
-        env: {
-        NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
-        NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
-        },
-    },
+  output: "standalone",
+  experimental: {
+    appDir: true,
+  },
+  build: {
     env: {
-        NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
-        NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
+      NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+      NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
     },
-    compiler: {
-        styledComponents: true,
-    },
+  },
+  env: {
+    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
+  },
+  compiler: {
+    styledComponents: true,
+  },
+  images: {
+    domains: ["storage.googleapis.com"],
+  },
 };
 
 const { createVanillaExtractPlugin } = require("@vanilla-extract/next-plugin");
