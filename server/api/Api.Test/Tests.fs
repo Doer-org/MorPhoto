@@ -57,6 +57,35 @@ let testStatusAPI () =
 
     resp.data.view_count |> should equal 2
 
+[<Fact>]
+let ``error: 同じキーでStatus登録`` () =
+
+
+    let parent_id = "test_" + Guid.NewGuid().ToString()
+
+    let resp =
+        http {
+            POST $"{endpoint}/status/{parent_id}"
+            CacheControl "no-cache"
+
+        }
+        |> Request.send
+
+    let resp =
+        http {
+            POST $"{endpoint}/status/{parent_id}"
+            CacheControl "no-cache"
+
+        }
+        |> Request.send
+
+    // FIXME: ??
+    // Response.print resp |> should equal "error!"
+
+    resp.statusCode
+    |> should equal HttpStatusCode.InternalServerError
+
+
 
 [<Fact>]
 let testMorphotoAPI () =
