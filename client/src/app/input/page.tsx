@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useForm, useWatch, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  useWatch,
+  SubmitHandler,
+  SubmitErrorHandler,
+} from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "@radix-ui/react-icons";
@@ -22,7 +27,6 @@ import {
 } from "./_components";
 
 import * as styles from "./input-page.css";
-import { env } from "@/constants";
 
 type Inputs = {
   prompt: string;
@@ -141,6 +145,22 @@ const InputPage = ({
     );
   };
 
+  const onInvalid: SubmitErrorHandler<Inputs> = (errors) => {
+    let message = "";
+
+    if (errors.prompt?.message) {
+      message += `${errors.prompt.message}\n`;
+    }
+    if (errors.image?.message) {
+      message += `${errors.image.message}\n`;
+    }
+    if (errors.strength?.message) {
+      message += errors.strength.message;
+    }
+
+    return alert(message);
+  };
+
   const strength = useWatch({
     control,
     name: "strength",
@@ -189,7 +209,7 @@ const InputPage = ({
           <Title />
         </div>
         <div className={styles.inputPageItemStyle}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
             <div className={styles.inputPageFormItemStyle}>
               <PromptCard register={register} />
             </div>
@@ -229,9 +249,9 @@ const InputPage = ({
           </form>
         </div>
       </div>
-      {(isSubmitting || isSubmitted) && (
-        <Modal open>{isSubmitting ? "ちょっとまってね" : "おわったよ"}</Modal>
-      )}
+      <Modal open={isSubmitting}>
+        {isSubmitting ? "ちょっとまってね" : "おわったよ"}
+      </Modal>
     </div>
   );
 };

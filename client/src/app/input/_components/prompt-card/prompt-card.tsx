@@ -28,7 +28,7 @@ export const PromptCard = forwardRef<HTMLDivElement, Props>(
         <div className={styles.contentStyle}>
           <textarea
             className={styles.textareaVariantStyle[variant]}
-            {...register("prompt")}
+            {...register("prompt", { required: "promptを入力してください" })}
             onFocus={() => setVariant("onfocus")}
             onBlur={() => setVariant("default")}
           ></textarea>
