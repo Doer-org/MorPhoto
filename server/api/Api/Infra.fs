@@ -40,11 +40,10 @@ module Database =
 
     let conn (env: DBEnv) : IDbConnection =
         let connStr =
-            let s =
+            if env.IS_DEV then
                 $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
-
-            if env.IS_DEV then s else s + ";SslMode=VerifyFull"
-
+            else
+                $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD};SslMode=VerifyFull"
 
         new MySqlConnection(connStr)
 

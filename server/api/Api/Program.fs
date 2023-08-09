@@ -11,20 +11,21 @@ module Env =
         abstract member DB_DATABASE: string
         abstract member CLIENT_URL: string
 
-    let isDev =
-        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
-
     let env =
-        if isDev then
+        if
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
+        then
             DotNetEnv.Env.Load("../../.env.local") |> ignore
 
         let ENVIRONMENT = Environment.GetEnvironmentVariable("ENVIRONMENT")
 
         let DB_HOST =
-            if isDev then
+            if
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
+            then
                 "localhost"
             else
-                Environment.GetEnvironmentVariable("DB_HOST")
+                Environment.GetEnvironmentVariable("DB_HOST") // コンテナ内間通信ではlocalhostを指定できない
 
         let DB_USER = Environment.GetEnvironmentVariable("DB_USER")
         let DB_PASSWORD = Environment.GetEnvironmentVariable("DB_PASSWORD")
@@ -41,7 +42,7 @@ module Env =
         }
 
     let dbEnv: Infra.Database.DBEnv = {
-        IS_DEV = isDev
+        IS_DEV = env.ENVIRONMENT = "test" || env.ENVIRONMENT = "local"
         DB_HOST = env.DB_HOST
         DB_USER = env.DB_USER
         DB_PASSWORD = env.DB_PASSWORD
@@ -85,7 +86,7 @@ module Program =
 
 
             endpoints [
-                get "/health" (Response.ofPlainText "ok")
+                get "/health" (Response.ofJson {| env = Env.env.ENVIRONMENT |})
                 get "/users" Handler.getAllUsers
                 get "/morphoto/{morphoto_id}" Handler.getMorphoto
                 // TODO: 検索条件（検索条件: 閲覧回数, 最新）を指定できるようにする
