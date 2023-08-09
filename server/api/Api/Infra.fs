@@ -30,12 +30,13 @@ module Database =
 
     OptionTypes.register ()
 
-    type DBEnv =
-        { IS_DEV: bool
-          DB_HOST: string
-          DB_USER: string
-          DB_PASSWORD: string
-          DB_DATABASE: string }
+    type DBEnv = {
+        IS_DEV: bool
+        DB_HOST: string
+        DB_USER: string
+        DB_PASSWORD: string
+        DB_DATABASE: string
+    }
 
     let conn (env: DBEnv) : IDbConnection =
         let connStr =
@@ -63,7 +64,8 @@ module Database =
                 try
                     raw env |> Seq.toArray |> Ok
                 with e ->
-                    sprintf "%A" e |> Error }
+                    sprintf "%A" e |> Error
+        }
 
     let morphotoRepo env =
         { new Repo.MorphotoRepo with
@@ -208,4 +210,5 @@ module Database =
                     |> Task.map (fun _ -> Ok arg1)
 
                 with e ->
-                    Error e.Message |> Task.singleton }
+                    Error e.Message |> Task.singleton
+        }

@@ -18,10 +18,11 @@ module Usecase =
             let! morphoto = morphotoRepo.register morphoto
 
             let! _ =
-                morphotoRepo.regiserLog
-                    { created_at = System.DateTime.Now
-                      morphoto_id = morphoto.morphoto_id
-                      view_count = 0 }
+                morphotoRepo.regiserLog {
+                    created_at = System.DateTime.Now
+                    morphoto_id = morphoto.morphoto_id
+                    view_count = 0
+                }
 
             return morphoto
         }
@@ -32,9 +33,10 @@ module Usecase =
             let! log = morphotoRepo.getLog morphoto_id
 
             let! _ =
-                morphotoRepo.updateLog
-                    { log with
-                        view_count = log.view_count + 1 }
+                morphotoRepo.updateLog {
+                    log with
+                        view_count = log.view_count + 1
+                }
 
             return morphoto
         }

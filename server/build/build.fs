@@ -61,12 +61,14 @@ let initTargets () =
     Target.create Command.Clean ignore
 
 
-    [ Command.Down ==> Command.Clean
-      Command.DelData ==> Command.Clean
-      Command.Down ?=> Command.DelData
-      Command.Clean ==> Command.Re
-      Command.Up ==> Command.Re
-      Command.Clean ?=> Command.Up ]
+    [
+        Command.Down ==> Command.Clean
+        Command.DelData ==> Command.Clean
+        Command.Down ?=> Command.DelData
+        Command.Clean ==> Command.Re
+        Command.Up ==> Command.Re
+        Command.Clean ?=> Command.Up
+    ]
     |> ignore
 
 [<EntryPoint>]

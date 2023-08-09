@@ -37,14 +37,16 @@ module Env =
             member _.DB_USER = DB_USER
             member _.DB_PASSWORD = DB_PASSWORD
             member _.DB_DATABASE = DB_DATABASE
-            member _.CLIENT_URL = CLIENT_URL }
+            member _.CLIENT_URL = CLIENT_URL
+        }
 
-    let dbEnv: Infra.Database.DBEnv =
-        { IS_DEV = isDev
-          DB_HOST = env.DB_HOST
-          DB_USER = env.DB_USER
-          DB_PASSWORD = env.DB_PASSWORD
-          DB_DATABASE = env.DB_DATABASE }
+    let dbEnv: Infra.Database.DBEnv = {
+        IS_DEV = isDev
+        DB_HOST = env.DB_HOST
+        DB_USER = env.DB_USER
+        DB_PASSWORD = env.DB_PASSWORD
+        DB_DATABASE = env.DB_DATABASE
+    }
 
 
 module Program =
@@ -82,15 +84,16 @@ module Program =
                 ))
 
 
-            endpoints
-                [ get "/health" (Response.ofPlainText "ok")
-                  get "/users" Handler.getAllUsers
-                  get "/morphoto/{morphoto_id}" Handler.getMorphoto
-                  // TODO: 検索条件（検索条件: 閲覧回数, 最新）を指定できるようにする
-                  get "/morphoto" Handler.getMorphotos
-                  post "/morphoto" Handler.registerMorphoto
-                  get "/timeline" Handler.getTimeline
-                  get "/log/{morphoto_id}" Handler.getLog ]
+            endpoints [
+                get "/health" (Response.ofPlainText "ok")
+                get "/users" Handler.getAllUsers
+                get "/morphoto/{morphoto_id}" Handler.getMorphoto
+                // TODO: 検索条件（検索条件: 閲覧回数, 最新）を指定できるようにする
+                get "/morphoto" Handler.getMorphotos
+                post "/morphoto" Handler.registerMorphoto
+                get "/timeline" Handler.getTimeline
+                get "/log/{morphoto_id}" Handler.getLog
+            ]
 
         }
 
