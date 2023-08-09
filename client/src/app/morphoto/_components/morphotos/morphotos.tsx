@@ -12,11 +12,11 @@ export const Morphotos = () => {
   const [morphotos, setMorphotos] = useState<Result<
     {
       data: ({
-        morphoto_id: string;
-        img_url: string;
-      } & {
-        parent_id?: string | undefined;
-      })[];
+        parent_id: string;
+        child_id: string;
+        prompt: string;
+        strength: number;
+      } & {})[];
     } & {},
     ResponseError
   > | null>(null); // 状態を管理
@@ -47,7 +47,7 @@ export const Morphotos = () => {
   return (
     <div className={styles.morphotosStyle}>
       {morphotos.value.data.map((morphoto) => (
-        <Morphoto key={morphoto.morphoto_id} morphoto={morphoto} />
+        <Morphoto key={morphoto.child_id} morphoto={morphoto} />
       ))}
     </div>
   );

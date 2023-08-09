@@ -13,7 +13,7 @@ export const Morphoto: FC<Props> = ({ morphoto }) => {
     <div className={styles.morphotoStyle}>
       <Image
         className={styles.morphotoImageStyle}
-        src={morphoto.img_url}
+        src={`https://storage.googleapis.com/${morphoto.child_id}`}
         fill
         alt="morphoto"
       />
