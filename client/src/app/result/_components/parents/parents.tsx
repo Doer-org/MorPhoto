@@ -22,12 +22,12 @@ export const Parents: FC<Props> = async ({ morphoto_id }) => {
       {[parent].map((p) => {
         return (
           <div
-            key={p.value.data.morphoto_id}
+            key={p.value.data.parent_id}
             className={styles.imageWrapperStyle}
           >
             <Image
               className={styles.imageStyle}
-              src={p.value.data.img_url}
+              src={p.value.data.parent_id}
               fill
               alt="出力画像"
             />

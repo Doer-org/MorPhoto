@@ -25,6 +25,7 @@ import {
   Slider,
   Modal,
 } from "./_components";
+import { env } from "@/constants";
 
 import * as styles from "./input-page.css";
 
@@ -107,8 +108,11 @@ const InputPage = ({
       currentFile = await upload(data.image);
       if (currentFile.err) return window.location.reload();
       const currentMorphoto = await createMorphoto({
-        morphoto_id: currentFile.fileName,
-        img_url: `https://storage.googleapis.com/morphoto_strage/${currentFile.fileName}`,
+        // TODO: resultページへ移行
+        parent_id: "a",
+        child_id: "a",
+        prompt: "a",
+        strength: 0,
       });
       if (currentMorphoto.type === "error") {
         confirm("API通信に失敗しました");
@@ -130,9 +134,11 @@ const InputPage = ({
     if (convertedFile.err) return window.location.reload();
 
     const morphoto = await createMorphoto({
-      morphoto_id: convertedFile.fileName,
-      img_url: `https://storage.googleapis.com/morphoto_strage/${convertedFile.fileName}`,
-      parent_id: searchParams.parent_id || currentFile?.fileName,
+      // TODO: resultページへ移行
+      parent_id: "a",
+      child_id: "a",
+      prompt: "a",
+      strength: 0,
     });
     if (morphoto.type === "error") {
       confirm("API通信に失敗しました");
@@ -141,7 +147,7 @@ const InputPage = ({
 
     // 結果ページへリダイレクト
     router.push(
-      `/result?morphoto_id=${morphoto.value.data.morphoto_id}&prompt=${data.prompt}`
+      `/result?morphoto_id=${morphoto.value.data.parent_id}&prompt=${data.prompt}`
     );
   };
 
@@ -189,7 +195,7 @@ const InputPage = ({
       if (!searchParams.parent_id) return;
       const morphoto = await readMorphoto(searchParams.parent_id);
       if (morphoto.type === "error") return;
-      const pathName = morphoto.value.data.img_url;
+      const pathName = `${env.GCS_URL}`;
       if (pathName) {
         const file = await fetch(pathName)
           .then((res) => res.blob())
