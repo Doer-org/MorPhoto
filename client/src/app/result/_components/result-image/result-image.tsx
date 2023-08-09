@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import * as styles from "./result-image.css";
 import { readMorphoto } from "@/api";
+import { getImageUrl } from "@/utils";
 
 type Props = {
   morphoto_id?: string;
@@ -18,7 +19,7 @@ export const ResultImage: FC<Props> = async ({ morphoto_id }) => {
     <div className={styles.imageWrapperStyle}>
       <Image
         className={styles.imageStyle}
-        src={morphoto.value.data.img_url}
+        src={getImageUrl(morphoto.value.data.child_id)}
         fill
         alt="出力画像"
       />

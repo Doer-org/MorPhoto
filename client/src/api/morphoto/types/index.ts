@@ -3,11 +3,10 @@ import { JTDDataType } from "ajv/dist/core";
 const morphotoResponseBaseSchema = {
   type: "object",
   properties: {
-    morphoto_id: { type: "string" },
-    img_url: { type: "string" },
-  },
-  optionalProperties: {
     parent_id: { type: "string" },
+    child_id: { type: "string" },
+    prompt: { type: "string" },
+    strength: { type: "float32" },
   },
 } as const;
 
@@ -32,9 +31,10 @@ const morphotosResponseSchema = {
 export type MorphotosResponse = JTDDataType<typeof morphotosResponseSchema>;
 
 type MorphotoBase = {
-  morphoto_id: string;
-  img_url: string;
-  parent_id?: string;
+  parent_id: string;
+  child_id: string;
+  prompt: string;
+  strength: number;
 };
 
 export type MorphotoCreate = MorphotoBase;

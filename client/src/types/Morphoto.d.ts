@@ -1,5 +1,6 @@
 export type TMorphoto = {
-  morphoto_id: string;
-  img_url: string;
-  parent_id?: string;
+  parent_id: string;
+  child_id: string;
+  prompt: string;
+  strength: number;
 };

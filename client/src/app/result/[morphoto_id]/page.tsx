@@ -5,15 +5,16 @@ import {
   CopyButton,
   MisskeyShareButton,
   Parents,
-  RemixLink,
+  CreateLink,
   ResultImage,
   SaveLink,
   TwitterShareButton,
   Modal,
-} from "./_components";
+} from "../_components";
 import { Suspense, useEffect, useState } from "react";
 
-import * as styles from "./result.css";
+import * as styles from "../result.css";
+import { env } from "@/constants";
 
 export default function ResultPage({
   params,
@@ -43,11 +44,9 @@ export default function ResultPage({
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultButtonGroupStyle}>
+              <CreateLink />
               {searchParams.morphoto_id && (
                 <>
-                  <Suspense>
-                    <RemixLink morphoto_id={searchParams.morphoto_id} />
-                  </Suspense>
                   <Suspense>
                     <SaveLink morphoto_id={searchParams.morphoto_id} />
                   </Suspense>
@@ -71,8 +70,16 @@ export default function ResultPage({
               </div>
               <div className={styles.resultCardItemStyle}>
                 <div className={styles.resultSnsListStyle}>
-                  <TwitterShareButton text="test" />
-                  <MisskeyShareButton title="test" text="test test" />
+                  <TwitterShareButton
+                    text="MorPhotoで画像を生成したよ！"
+                    hashtags={["morphoto"]}
+                    url={`${env.CLIENT_URL}`}
+                  />
+                  <MisskeyShareButton
+                    title="MorPhotoで画像を生成したよ！"
+                    text="#morphoto"
+                    url={`${env.CLIENT_URL}`}
+                  />
                 </div>
               </div>
             </div>
