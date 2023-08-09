@@ -1,5 +1,6 @@
 export * from "./copy-button";
 export * from "./misskey-share-button";
+export * from "./modal";
 export * from "./parents";
 export * from "./remix-link";
 export * from "./result-image";

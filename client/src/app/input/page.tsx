@@ -11,7 +11,6 @@ import {
   readMorphoto,
   uploadImage,
 } from "@/api";
-import { Modal } from "@/app/_component";
 import {
   FileUploader,
   InputButton,
@@ -19,6 +18,7 @@ import {
   Title,
   UploadCard,
   Slider,
+  Modal,
 } from "./_components";
 
 import * as styles from "./input-page.css";

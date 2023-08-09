@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/ui";
-import { Modal } from "@/app/_component";
 import {
   CopyButton,
   MisskeyShareButton,
@@ -10,6 +9,7 @@ import {
   ResultImage,
   SaveLink,
   TwitterShareButton,
+  Modal,
 } from "./_component";
 import { Suspense, useEffect, useState } from "react";
 
