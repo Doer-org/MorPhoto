@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { MorphotoHeader } from "./_component";
+import { MorphotoHeader } from "./_components";
 
 const inter = Inter({ subsets: ["latin"] });
 

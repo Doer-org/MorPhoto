@@ -10,7 +10,7 @@ import {
   SaveLink,
   TwitterShareButton,
   Modal,
-} from "./_component";
+} from "./_components";
 import { Suspense, useEffect, useState } from "react";
 
 import * as styles from "./result.css";
