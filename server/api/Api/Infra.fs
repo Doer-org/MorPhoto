@@ -30,20 +30,20 @@ module Database =
 
     OptionTypes.register ()
 
-    type DBEnv =
-        { IS_DEV: bool
-          DB_HOST: string
-          DB_USER: string
-          DB_PASSWORD: string
-          DB_DATABASE: string }
+    type DBEnv = {
+        IS_DEV: bool
+        DB_HOST: string
+        DB_USER: string
+        DB_PASSWORD: string
+        DB_DATABASE: string
+    }
 
     let conn (env: DBEnv) : IDbConnection =
         let connStr =
-            let s =
+            if env.IS_DEV then
                 $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
-
-            if env.IS_DEV then s else s + ";SslMode=VerifyFull"
-
+            else
+                $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD};SslMode=VerifyFull"
 
         new MySqlConnection(connStr)
 
@@ -63,7 +63,8 @@ module Database =
                 try
                     raw env |> Seq.toArray |> Ok
                 with e ->
-                    sprintf "%A" e |> Error }
+                    sprintf "%A" e |> Error
+        }
 
     let morphotoRepo env =
         { new Repo.MorphotoRepo with
@@ -208,4 +209,5 @@ module Database =
                     |> Task.map (fun _ -> Ok arg1)
 
                 with e ->
-                    Error e.Message |> Task.singleton }
+                    Error e.Message |> Task.singleton
+        }

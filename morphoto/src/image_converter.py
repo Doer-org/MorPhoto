@@ -1,13 +1,11 @@
 import os
-import sys
 
 import torch
 from diffusers import StableDiffusionImg2ImgPipeline
 from dotenv import load_dotenv
 from PIL import Image
 
-sys.path.append("configs")
-from config import DiffusionConfig
+from configs import DiffusionConfig
 
 
 class ImageConverter:
@@ -19,9 +17,7 @@ class ImageConverter:
     def _inference_setup(self):
         load_dotenv()
         token = os.environ.get("HUGGING_FACE_TOKEN")
-        model = StableDiffusionImg2ImgPipeline.from_pretrained(
-            self.config.model, use_auth_token=token
-        )
+        model = StableDiffusionImg2ImgPipeline.from_pretrained(self.config.model, use_auth_token=token)
         model = model.to(self.device)
         model.safety_checker = lambda images, **kwargs: (images, [False])
         generator = torch.Generator(device=self.device).manual_seed(self.config.seed)

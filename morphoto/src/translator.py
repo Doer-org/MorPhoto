@@ -1,9 +1,6 @@
-import sys
-
 from googletrans import Translator
 
-sys.path.append("configs")
-from config import TranslationConfig
+from configs import TranslationConfig
 
 
 class CustomTranslator:
@@ -12,9 +9,7 @@ class CustomTranslator:
         self.translator = Translator()
 
     def translate(self, text: str) -> str:
-        translation = self.translator.translate(
-            text, dest=self.config.dest, src=self.config.src
-        ).text
+        translation : str = self.translator.translate(text, dest=self.config.dest, src=self.config.src).text
         return translation
 
 

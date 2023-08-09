@@ -25,6 +25,8 @@ transformers = "^4.30.2"
 fastapi = "0.70.0"
 uvicorn = "^0.23.0"
 accelerate = "^0.21.0"
+modal-client = "^0.50.2927"
+yarl = "^1.9.2"
 
 
 [[tool.poetry.source]]
@@ -75,3 +77,7 @@ max-line-length = 128
 extend-ignore = ["E203", "W503"]
 exclude = [".venv", ".git", "__pycache__"]
 max-complexity = 10
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = ["tests"]
