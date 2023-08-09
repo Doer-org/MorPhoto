@@ -1,17 +1,18 @@
 import base64
 import io
-import sys
+import os
+from dotenv import load_dotenv
 
+import modal
 import uvicorn
 from fastapi import FastAPI
+from modal import asgi_app
 from starlette.middleware.cors import CORSMiddleware
 from omegaconf import OmegaConf
 from PIL import Image
+from configs import MorphotoConfig, DiffusionConfig
 from models import InferenceRequest
 from morphoto import Morphoto
-
-sys.path.append("configs")
-from config import MorphotoConfig
 
 morphoto_config = OmegaConf.create(MorphotoConfig)
 morphoto = Morphoto(morphoto_config)
@@ -23,6 +24,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+stub = modal.Stub("mophoto-fastapi")
+modal_image = modal.Image.debian_slim().poetry_install_from_file(
+    poetry_pyproject_toml="pyproject.toml", poetry_lockfile="poetry.lock"
 )
 
 
@@ -43,8 +49,28 @@ def inference(request: InferenceRequest) -> dict[str, str]:
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    return {"status": "ok", "device": DiffusionConfig.device}
+
+
+load_dotenv()
+data_dir = os.getenv("DATA_DIR") or "data"
+
+
+@stub.function(
+    image=modal_image,
+    mounts=[modal.Mount.from_local_dir(data_dir, remote_path="/root/data")],
+    secret=modal.Secret.from_name("morphoto-ml-secrets"),
+    gpu="T4",
+)
+@asgi_app()
+def fastapi_app() -> FastAPI:
+    return app
+
+
+@stub.local_entrypoint()
+def main() -> None:
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    main()

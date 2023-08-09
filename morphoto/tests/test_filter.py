@@ -1,11 +1,8 @@
-import sys
 import unittest
 
 from omegaconf import OmegaConf
 
-sys.path.append("configs")
-from config import TextFilterConfig
-
+from src.configs import TextFilterConfig
 from src.filter import TextFilter
 
 

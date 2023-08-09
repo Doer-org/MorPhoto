@@ -1,15 +1,22 @@
-import re
 from dataclasses import dataclass, field
-from typing import List, Tuple
-
+from typing import Tuple
+import os
 import torch
 
 
 @dataclass
 class TextFilterConfig:
     replace_word: str = "***"  # 不適切な単語を何に置換するか
-    sexual_file_path: str = "data/inappropriate-words-ja/Sexual.txt"
-    offensive_file_path: str = "data/inappropriate-words-ja/Offensive.txt"
+    sexual_file_path: str = (
+        "data/inappropriate-words-ja/Sexual.txt"
+        if os.path.exists("data/inappropriate-words-ja/Sexual.txt")
+        else "/root/data/inappropriate-words-ja/Sexual.txt"
+    )
+    offensive_file_path: str = (
+        "data/inappropriate-words-ja/Offensive.txt"
+        if os.path.exists("data/inappropriate-words-ja/Offensive.txt")
+        else "/root/data/inappropriate-words-ja/Offensive.txt"
+    )
 
 
 @dataclass
