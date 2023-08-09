@@ -14,12 +14,16 @@ export const RemixLink: FC<Props> = async ({ morphoto_id }) => {
   const morphoto = await readMorphoto(morphoto_id);
   if (morphoto.type === "error") return <></>;
 
+  const params = new URLSearchParams();
+  const parent_id = morphoto.value.data.parent_id;
+  if (parent_id) params.set("parent_id", parent_id);
+
   return (
     <Link
       className={styles.linkStyle}
       href={{
         pathname: "/input",
-        query: { inputImageUrl: morphoto.value.data.img_url },
+        query: params.toString(),
       }}
     >
       <IconButton

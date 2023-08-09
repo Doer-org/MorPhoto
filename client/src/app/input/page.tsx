@@ -30,7 +30,7 @@ type Inputs = {
   strength: number[];
 };
 
-type uploadResponseType =
+type uploadResponse =
   | {
       fileName: string;
       err: false;
@@ -59,7 +59,7 @@ const InputPage = ({
     formState: { errors, isSubmitting, isSubmitted },
   } = useForm<Inputs>();
 
-  const upload = async (file: File): Promise<uploadResponseType> => {
+  const upload = async (file: File): Promise<uploadResponse> => {
     const imageIDinGcs = await uploadImage(file);
     console.log("upload", imageIDinGcs?.fileName);
     if (!imageIDinGcs) {
@@ -128,7 +128,7 @@ const InputPage = ({
     const morphoto = await createMorphoto({
       morphoto_id: convertedFile.fileName,
       img_url: `https://storage.googleapis.com/morphoto_strage/${convertedFile.fileName}`,
-      parent_id: currentFile?.fileName,
+      parent_id: searchParams.parent_id || currentFile?.fileName,
     });
     if (morphoto.type === "error") {
       confirm("API通信に失敗しました");
@@ -211,6 +211,7 @@ const InputPage = ({
                   <FileUploader
                     setValue={setValue}
                     setImageUrlBase64={setImageUrlBase64}
+                    disabled={Boolean(searchParams.parent_id)}
                   />
                 }
                 slider={
