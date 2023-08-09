@@ -28,6 +28,8 @@ app.add_middleware(
 
 @app.post("/inference")
 def inference(request: InferenceRequest) -> dict[str, str]:
+    if request.is_mock:
+        return {"converted_image": request.image, "prompt": request.prompt}
     image = io.BytesIO(base64.b64decode(request.image))
     image = Image.open(image)
     converted_image, prompt = morphoto.convert(request.prompt, image, request.strength)
