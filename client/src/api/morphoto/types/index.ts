@@ -6,7 +6,7 @@ const morphotoResponseBaseSchema = {
     parent_id: { type: "string" },
     child_id: { type: "string" },
     prompt: { type: "string" },
-    strength: { type: "number" },
+    strength: { type: "float32" },
   },
 } as const;
 
