@@ -10,7 +10,7 @@ from modal import asgi_app
 from starlette.middleware.cors import CORSMiddleware
 from omegaconf import OmegaConf
 from PIL import Image
-from configs import MorphotoConfig
+from configs import MorphotoConfig, DiffusionConfig
 from models import InferenceRequest
 from morphoto import Morphoto
 
@@ -25,9 +25,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 stub = modal.Stub("mophoto-fastapi")
 modal_image = modal.Image.debian_slim().poetry_install_from_file(
-    poetry_pyproject_toml="pyproject.toml", poetry_lockfile="poetry.lock"  # , force_build=True
+    poetry_pyproject_toml="pyproject.toml", poetry_lockfile="poetry.lock"
 )
 
 
@@ -48,18 +49,18 @@ def inference(request: InferenceRequest) -> dict[str, str]:
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    return {"status": "ok", "device": DiffusionConfig.device}
 
 
 load_dotenv()
 data_dir = os.getenv("DATA_DIR") or "data"
-print(data_dir)
 
 
 @stub.function(
     image=modal_image,
     mounts=[modal.Mount.from_local_dir(data_dir, remote_path="/root/data")],
     secret=modal.Secret.from_name("morphoto-ml-secrets"),
+    gpu="T4",
 )
 @asgi_app()
 def fastapi_app() -> FastAPI:
