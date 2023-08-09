@@ -7,8 +7,8 @@ from configs import TextFilterConfig
 class TextFilter:
     def __init__(self, filter_config: TextFilterConfig):
         self.config = filter_config
-        self.sexual_vocabs = []  # self._create_filtering_vocabs(self.config.sexual_file_path)
-        self.offensive_vocabs = []  # self._create_filtering_vocabs(self.config.offensive_file_path)
+        self.sexual_vocabs = self._create_filtering_vocabs(self.config.sexual_file_path)
+        self.offensive_vocabs = self._create_filtering_vocabs(self.config.offensive_file_path)
         self.pattern = self._create_filter_pattern()
 
     def _create_filtering_vocabs(self, path: str) -> List[str]:

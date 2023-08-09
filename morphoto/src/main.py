@@ -1,5 +1,7 @@
 import base64
 import io
+import os
+from dotenv import load_dotenv
 
 import modal
 import uvicorn
@@ -49,7 +51,18 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@stub.function(image=modal_image)
+load_dotenv()
+data_dir = os.getenv("DATA_DIR") or "data"
+print(data_dir)
+
+
+@stub.function(
+    image=modal_image,
+    # .envによりfrom, toを指定&読み込み
+    # .envは直接SECRETSに設定（WEB) たぶんこのままだとOPENAI_API_KEY等が読み込まれない
+    mounts=[modal.Mount.from_local_dir(data_dir, remote_path="/root/data")],
+    secret=modal.Secret.from_name("morphoto-ml-secrets"),
+)
 @asgi_app()
 def fastapi_app() -> FastAPI:
     return app

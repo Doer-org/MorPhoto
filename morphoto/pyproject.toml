@@ -26,6 +26,7 @@ fastapi = "0.70.0"
 uvicorn = "^0.23.0"
 accelerate = "^0.21.0"
 modal-client = "^0.50.2927"
+yarl = "^1.9.2"
 
 
 [[tool.poetry.source]]
