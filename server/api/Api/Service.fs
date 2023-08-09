@@ -6,13 +6,6 @@ open Infra.Repo
 module Usecase =
     open FsToolkit.ErrorHandling
 
-    let getAllUsers (userRepo: UserRepo) =
-        result {
-            let! users = userRepo.users ()
-            users |> printfn "%A"
-            return users
-        }
-
     let registerMorphoto (morphoto: Morphoto) (morphotoRepo: MorphotoRepo) =
         taskResult {
             let! morphoto = morphotoRepo.register morphoto
@@ -79,15 +72,6 @@ module Handler =
     let errorHandler (e: string) : HttpHandler =
         Response.withStatusCode 500
         >> Response.ofJson {| error = "error" |}
-
-    let getAllUsers: HttpHandler =
-        fun ctx ->
-            let userRepo = ctx.RequestServices.GetService<Infra.Repo.UserRepo>()
-
-            Usecase.getAllUsers userRepo
-            |> function
-                | Ok users -> ctx |> Response.ofJson {| data = users |}
-                | Error e -> errorHandler e ctx
 
     let registerMorphoto: HttpHandler =
         fun ctx ->

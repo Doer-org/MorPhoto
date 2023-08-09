@@ -62,10 +62,6 @@ module Program =
     let main _ =
 
         webHost [||] {
-            add_service (fun (svc: IServiceCollection) ->
-                svc.AddSingleton<Infra.Repo.UserRepo>(fun _ ->
-                    Infra.Database.userRepo Env.dbEnv))
-
 
             add_service (fun (svc: IServiceCollection) ->
                 svc.AddSingleton<Infra.Repo.MorphotoRepo>(fun _ ->
@@ -87,7 +83,6 @@ module Program =
 
             endpoints [
                 get "/health" (Response.ofJson {| env = Env.env.ENVIRONMENT |})
-                get "/users" Handler.getAllUsers
                 get "/morphoto/{morphoto_id}" Handler.getMorphoto
                 // TODO: 検索条件（検索条件: 閲覧回数, 最新）を指定できるようにする
                 get "/morphoto" Handler.getMorphotos

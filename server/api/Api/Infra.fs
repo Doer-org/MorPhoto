@@ -5,9 +5,6 @@ open FsToolkit.ErrorHandling
 
 module Repo =
 
-    type UserRepo =
-        abstract member users: unit -> Result<User[], string>
-
     type MorphotoRepo =
         abstract member register: Morphoto -> TaskResult<Morphoto, string>
         abstract member getMorphoto: string -> TaskResult<Morphoto, string>
@@ -46,25 +43,6 @@ module Database =
                 $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD};SslMode=VerifyFull"
 
         new MySqlConnection(connStr)
-
-    let raw env =
-        (conn env).Query<User>(@"SELECT * FROM User")
-
-    let sugared env =
-        select {
-            for _ in table<User> do
-                selectAll
-        }
-        |> (conn env).SelectAsync<User>
-
-    let userRepo env =
-        { new Repo.UserRepo with
-            member _.users() =
-                try
-                    raw env |> Seq.toArray |> Ok
-                with e ->
-                    sprintf "%A" e |> Error
-        }
 
     let morphotoRepo env =
         { new Repo.MorphotoRepo with
