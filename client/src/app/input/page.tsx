@@ -90,6 +90,7 @@ const InputPage = ({
       prompt: data.prompt,
       strength: data.strength[0],
       image: imageUrl,
+      // is_mock: true,
     });
     if (inference.type === "error") {
       confirm("画像変換に失敗しました");
@@ -135,10 +136,9 @@ const InputPage = ({
     }
 
     // 結果ページへリダイレクト
-    const url = new URL(`${env.CLIENT_URL}/result`);
-    url.searchParams.set("morphoto_id", morphoto.value.data.morphoto_id);
-    url.searchParams.set("prompt", data.prompt);
-    router.push(url.toString());
+    router.push(
+      `/result?morphoto_id=${morphoto.value.data.morphoto_id}&prompt=${data.prompt}`
+    );
   };
 
   const strength = useWatch({

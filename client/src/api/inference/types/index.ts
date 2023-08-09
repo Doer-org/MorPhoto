@@ -14,4 +14,5 @@ export type InferenceCreate = {
   prompt: string;
   strength: number;
   image: string;
+  is_mock?: boolean;
 };
