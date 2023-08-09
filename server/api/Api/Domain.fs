@@ -2,20 +2,16 @@ module Domain
 
 open System
 
-type User = {
-    user_id: string
-    user_name: string
-    image_url: string
-}
-
 type Morphoto = {
-    morphoto_id: string
-    img_url: string
-    parent_id: string option
+    parent_id: string
+    child_id: string
+    prompt: string
+    strength: float
 }
 
-type MorphotoLog = {
-    morphoto_id: string
+type Status = {
+    parent_id: string
+    is_done: bool
     view_count: int
     created_at: DateTime
 }
