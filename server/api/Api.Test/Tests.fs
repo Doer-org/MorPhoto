@@ -42,10 +42,11 @@ let ``register and get morphoto info`` () =
             CacheControl "no-cache"
             body
 
-            jsonSerialize
-                {| morphoto_id = key
-                   img_url = key
-                   parent_id = None |}
+            jsonSerialize {|
+                morphoto_id = key
+                img_url = key
+                parent_id = None
+            |}
         }
         |> Request.send
 
@@ -89,8 +90,10 @@ let timeline () =
         let key = "test_" + Guid.NewGuid().ToString()
         let keys = [| 0..5 |] |> Array.map (string >> (+) "_" >> (+) key)
 
-        [| for i in 1 .. keys.Length - 1 -> (keys[i - 1], Some keys[i])
-           yield (keys[keys.Length - 1], None) |]
+        [|
+            for i in 1 .. keys.Length - 1 -> (keys[i - 1], Some keys[i])
+            yield (keys[keys.Length - 1], None)
+        |]
 
 
     keys
@@ -100,10 +103,11 @@ let timeline () =
             CacheControl "no-cache"
             body
 
-            jsonSerialize
-                {| morphoto_id = child
-                   img_url = child
-                   parent_id = parent |}
+            jsonSerialize {|
+                morphoto_id = child
+                img_url = child
+                parent_id = parent
+            |}
         }
         |> Request.send
         |> ignore)

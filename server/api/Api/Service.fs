@@ -18,10 +18,11 @@ module Usecase =
             let! morphoto = morphotoRepo.register morphoto
 
             let! _ =
-                morphotoRepo.regiserLog
-                    { created_at = System.DateTime.Now
-                      morphoto_id = morphoto.morphoto_id
-                      view_count = 0 }
+                morphotoRepo.regiserLog {
+                    created_at = System.DateTime.Now
+                    morphoto_id = morphoto.morphoto_id
+                    view_count = 0
+                }
 
             return morphoto
         }
@@ -32,9 +33,10 @@ module Usecase =
             let! log = morphotoRepo.getLog morphoto_id
 
             let! _ =
-                morphotoRepo.updateLog
-                    { log with
-                        view_count = log.view_count + 1 }
+                morphotoRepo.updateLog {
+                    log with
+                        view_count = log.view_count + 1
+                }
 
             return morphoto
         }
@@ -74,6 +76,10 @@ module Handler =
     open Microsoft.Extensions.DependencyInjection
     open System.Text.Json
 
+    let errorHandler (e: string) : HttpHandler =
+        Response.withStatusCode 500
+        >> Response.ofJson {| error = "error" |}
+
     let getAllUsers: HttpHandler =
         fun ctx ->
             let userRepo = ctx.RequestServices.GetService<Infra.Repo.UserRepo>()
@@ -81,10 +87,8 @@ module Handler =
             Usecase.getAllUsers userRepo
             |> function
                 | Ok users -> ctx |> Response.ofJson {| data = users |}
-                | Error e ->
-                    ctx |> Response.withStatusCode 500 |> Response.ofPlainText e
+                | Error e -> errorHandler e ctx
 
-    /// Log追加も行う
     let registerMorphoto: HttpHandler =
         fun ctx ->
             task {
@@ -103,13 +107,9 @@ module Handler =
                     |> function
                         | Ok morphoto ->
                             ctx |> Response.ofJson {| data = morphoto |}
-                        | Error e ->
-                            ctx
-                            |> Response.withStatusCode 500
-                            |> Response.ofPlainText e
+                        | Error e -> errorHandler e ctx
             }
 
-    /// Log更新も行う(閲覧回数を加算)
     let getMorphoto: HttpHandler =
         fun ctx ->
             let query = Request.getRoute ctx
@@ -124,10 +124,7 @@ module Handler =
                     |> function
                         | Ok morphoto ->
                             ctx |> Response.ofJson {| data = morphoto |}
-                        | Error e ->
-                            ctx
-                            |> Response.withStatusCode 500
-                            |> Response.ofPlainText e
+                        | Error e -> errorHandler e ctx
             }
 
     let getMorphotos: HttpHandler =
@@ -142,10 +139,7 @@ module Handler =
                     |> function
                         | Ok morphotos ->
                             ctx |> Response.ofJson {| data = morphotos |}
-                        | Error e ->
-                            ctx
-                            |> Response.withStatusCode 500
-                            |> Response.ofPlainText e
+                        | Error e -> errorHandler e ctx
             }
 
     let getTimeline: HttpHandler =
@@ -164,10 +158,7 @@ module Handler =
                         | Ok morphotos ->
                             printfn "resp: %A" morphotos
                             ctx |> Response.ofJson {| data = morphotos |}
-                        | Error e ->
-                            ctx
-                            |> Response.withStatusCode 500
-                            |> Response.ofPlainText e
+                        | Error e -> errorHandler e ctx
             }
 
     let getLog: HttpHandler =
@@ -184,8 +175,5 @@ module Handler =
                     |> function
                         | Ok morphotoLogs ->
                             ctx |> Response.ofJson {| data = morphotoLogs |}
-                        | Error e ->
-                            ctx
-                            |> Response.withStatusCode 500
-                            |> Response.ofPlainText e
+                        | Error e -> errorHandler e ctx
             }

@@ -14,6 +14,7 @@ let DOCKER_COMPOSE_LOCAL_SERVER =
 
 let DOCKER_COMPOSE_LOCAL_ML = $"{DOCKER_FILER_DIR}/docker-compose.local.ml.yaml"
 
+let PROJECT_NAME = "morphoto-dev"
 
 module Command =
     [<Literal>]
@@ -40,18 +41,41 @@ let initTargets () =
     Target.create Command.Default (fun _ -> printfn "hello from FAKE!")
 
     Target.create Command.Up (fun _ ->
-        Shell.AsyncExec(
+
+        Shell.Exec(
             "docker",
-            $"compose -p morphoto-dev -f {DOCKER_COMPONSE_LOCAL} -f {DOCKER_COMPOSE_LOCAL_DATABASE} -f {DOCKER_COMPOSE_LOCAL_SERVER} -f {DOCKER_COMPOSE_LOCAL_ML} --env-file {ENV} up -d "
+            [
+                $"compose -p {PROJECT_NAME}"
+                $"-f {DOCKER_COMPONSE_LOCAL}"
+                $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
+                $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
+                $"-f {DOCKER_COMPOSE_LOCAL_ML}"
+                $"--env-file {ENV}"
+                "up -d"
+            ]
+            |> String.concat " "
         )
-        |> ignore)
+        |> ignore
+
+    )
 
     Target.create Command.Down (fun _ ->
         Shell.Exec(
             "docker",
-            $"compose -p morphoto-dev -f {DOCKER_COMPONSE_LOCAL} -f {DOCKER_COMPOSE_LOCAL_DATABASE} -f {DOCKER_COMPOSE_LOCAL_SERVER} -f {DOCKER_COMPOSE_LOCAL_ML} --env-file {ENV} down --rmi all --volumes --remove-orphans"
+            [
+                $"compose -p {PROJECT_NAME}"
+                $"-f {DOCKER_COMPONSE_LOCAL}"
+                $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
+                $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
+                $"-f {DOCKER_COMPOSE_LOCAL_ML}"
+                $"--env-file {ENV}"
+                "down --rmi all --volumes --remove-orphans"
+            ]
+            |> String.concat " "
         )
-        |> ignore)
+        |> ignore
+
+    )
 
     Target.create Command.DelData (fun _ ->
         if Directory.Exists(DATA_DIR) then
@@ -61,12 +85,14 @@ let initTargets () =
     Target.create Command.Clean ignore
 
 
-    [ Command.Down ==> Command.Clean
-      Command.DelData ==> Command.Clean
-      Command.Down ?=> Command.DelData
-      Command.Clean ==> Command.Re
-      Command.Up ==> Command.Re
-      Command.Clean ?=> Command.Up ]
+    [
+        Command.Down ==> Command.Clean
+        Command.DelData ==> Command.Clean
+        Command.Down ?=> Command.DelData
+        Command.Clean ==> Command.Re
+        Command.Up ==> Command.Re
+        Command.Clean ?=> Command.Up
+    ]
     |> ignore
 
 [<EntryPoint>]
