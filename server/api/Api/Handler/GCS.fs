@@ -24,7 +24,7 @@ let register env : HttpHandler =
                     ctx
 
             let gcsResponse =
-                Infra.GCS.uploadFile (request.base64) env
+                Infra.GCS.uploadFile request.base64 env
                 |> Async.RunSynchronously
 
             return
@@ -63,7 +63,6 @@ let get env : HttpHandler =
                             data = {|
                                 id = id
                                 url = $"{env.GCS_URL}/{id}"
-                                base64 = base64
                             |}
                         |}
                     | Error e -> errorHandler e ctx

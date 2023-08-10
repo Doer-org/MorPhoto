@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { grayDark, sageDark } from "@radix-ui/colors";
+import { slate } from "@radix-ui/colors";
 
 export const modalOverlay = style({
   backgroundColor: "rgba(0 0 0 / 0.5)",
@@ -20,11 +20,11 @@ export const modalContent = style({
   maxWidth: "600px",
   width: "100%",
   boxSizing: "border-box",
-  backgroundColor: grayDark.gray6,
+  backgroundColor: "white",
   margin: "64px auto",
   padding: "52px 20px 20px 20px",
   borderRadius: "10px",
-  color: "white",
+  color: slate.slate12,
 });
 
 export const modalClose = style({
@@ -36,14 +36,14 @@ export const modalClose = style({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "white",
+  color: slate.slate12,
   backgroundColor: "transparent",
   position: "absolute",
   top: "20px",
   right: "20px",
   transition: "background-color .2s ease",
   ":hover": {
-    backgroundColor: sageDark.sage10,
+    backgroundColor: slate.slate6,
   },
 });
 

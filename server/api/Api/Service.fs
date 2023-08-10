@@ -80,10 +80,7 @@ module Usecase =
         |> Async.RunSynchronously
         |> function
             | Error e -> Error "parent_idが登録されていません"
-            | Ok parentBase64 ->
-                let base64 =
-                    regex.Match parentBase64 |> fun m -> m.Groups.[2].Value
-
+            | Ok base64 ->
                 let morphoto =
                     morphotoRepo.getMorphoto parent_id |> TaskResult.unwrap
 

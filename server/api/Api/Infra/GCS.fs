@@ -6,6 +6,7 @@ open System.Net.Http
 open System
 open System.IO
 open System.Text
+open System.Text.RegularExpressions
 
 type GCS_ENV = {
     GCP_CREDENTIALS: string
@@ -17,7 +18,7 @@ let private downloadImageAndConvertToBase64 (imageUrl: string) =
     use httpClient = new HttpClient()
     let imageBytes = httpClient.GetByteArrayAsync(imageUrl)
     imageBytes.Wait()
-    let base64String = Encoding.UTF8.GetString(imageBytes.Result)
+    let base64String = Convert.ToBase64String(imageBytes.Result)
     base64String
 
 let getBase64FromGCS (fileName: string) (env: GCS_ENV) =
@@ -38,13 +39,21 @@ let uploadFile (base64: string) (env: GCS_ENV) =
             let cred = GoogleCredential.FromJson(env.GCP_CREDENTIALS)
             let storage = StorageClient.Create(cred)
 
-            use stream = new MemoryStream(Encoding.UTF8.GetBytes(base64))
+            let regex = Regex("data:image/(.*);base64,(.*)")
+
+            let base64 =
+                if regex.IsMatch base64 then
+                    regex.Match base64 |> fun m -> m.Groups.[2].Value
+                else
+                    base64
+
+            use stream = new MemoryStream(Convert.FromBase64String(base64))
 
             let r =
                 storage.UploadObject(
                     env.GCP_BUCKET_NAME,
                     Guid.NewGuid().ToString(),
-                    null,
+                    "image/png",
                     stream
                 )
 

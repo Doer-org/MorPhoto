@@ -56,3 +56,6 @@ dmypy.json
 # VSCode
 .vscode
 settings.json
+
+# Diffusion Model
+data/stable-diffusion-v1-5

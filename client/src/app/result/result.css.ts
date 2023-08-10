@@ -1,4 +1,4 @@
-import { grayDark } from "@radix-ui/colors";
+import { slate } from "@radix-ui/colors";
 import { style } from "@vanilla-extract/css";
 
 export const resultStyle = style({
@@ -16,7 +16,7 @@ export const resultModalItemStyle = style({
 
 export const resultCardStyle = style({
   padding: 20,
-  backgroundColor: grayDark.gray7,
+  backgroundColor: slate.slate3,
 });
 
 export const resultCardItemStyle = style({
@@ -31,6 +31,7 @@ export const resultCardTitleStyle = style({
   fontSize: 14,
   fontWeight: 600,
   textAlign: "center",
+  color: slate.slate11,
 });
 
 export const resultButtonGroupStyle = style({

@@ -1,6 +1,6 @@
 import { styleVariants } from "@vanilla-extract/css";
 
-import { blueDark, grayDark } from "@radix-ui/colors";
+import { blueDark, grayDark, indigo, slate } from "@radix-ui/colors";
 import { style } from "@vanilla-extract/css";
 
 const base = style({
@@ -12,22 +12,23 @@ export const buttonVariantStyle = styleVariants({
   primary: [
     base,
     {
-      backgroundColor: blueDark.blue7,
+      backgroundColor: indigo.indigo11,
       border: "none",
       borderRadius: "0.5rem",
       ":hover": {
-        backgroundColor: blueDark.blue3,
+        backgroundColor: indigo.indigo12,
       },
     },
   ],
   secondary: [
     base,
     {
-      backgroundColor: grayDark.gray7,
-      border: `1px solid ${grayDark.gray10}`,
+      backgroundColor: slate.slate3,
+      border: `1px solid ${slate.slate6}`,
       borderRadius: "0.1rem",
+      color: slate.slate11,
       ":hover": {
-        backgroundColor: grayDark.gray3,
+        backgroundColor: slate.slate6,
       },
     },
   ],
