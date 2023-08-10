@@ -31,10 +31,6 @@ let inference (gcsEnv, mlEnv) : HttpHandler =
                     JsonSerializerOptions.Default
                     ctx
 
-            printfn "request: %A" request
-            printfn "parent_id: %A" parent_id
-            printfn "mlEnv: %A" mlEnv
-
             let morphoto =
                 Usecase.inference
                     {
