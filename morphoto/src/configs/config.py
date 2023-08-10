@@ -34,8 +34,8 @@ class ChatGPTConfig:
 
 @dataclass
 class DiffusionConfig:
-    model: str = "runwayml/stable-diffusion-v1-5"
-    image_size: Tuple[int, int] = (512, 512)
+    model: str = "data/stable-diffusion-v1-5"
+    image_size: Tuple[int, int] = (400, 400)
     seed: int = 10
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
 
