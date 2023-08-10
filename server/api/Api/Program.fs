@@ -113,7 +113,12 @@ module Program =
                         builder.AllowAnyMethod() |> ignore
 
                         builder
-                            .WithOrigins(Env.env.CLIENT_URL)
+                            .WithOrigins(
+                                [|
+                                    Env.env.CLIENT_URL
+                                    "http://localhost:3000"
+                                |]
+                            )
                             .AllowCredentials()
                         |> ignore
                 ))
