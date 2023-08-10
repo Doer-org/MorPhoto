@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { blueDark } from "@radix-ui/colors";
+import { indigo } from "@radix-ui/colors";
 
 export const headerStyle = style({
   padding: "12px 16px",
@@ -13,5 +13,5 @@ export const logoStyle = style({
 });
 
 export const logoBlueStyle = style({
-  color: blueDark.blue7,
+  color: indigo.indigo11,
 });

@@ -18,9 +18,7 @@ export const MorphotoHeader = forwardRef<HTMLElement, Props>(({}, ref) => {
           </Link>
         </h1>
       }
-      rightChildren={
-        <Image src={"/assets/nijika1.png"} width={20} height={20} alt="ロゴ" />
-      }
+      rightChildren={<div></div>}
       ref={ref}
     />
   );

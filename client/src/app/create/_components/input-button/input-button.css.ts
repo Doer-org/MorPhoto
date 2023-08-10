@@ -1,4 +1,4 @@
-import { blueDark } from "@radix-ui/colors";
+import { indigo } from "@radix-ui/colors";
 import { style } from "@vanilla-extract/css";
 
 const base = style({
@@ -9,14 +9,14 @@ const base = style({
 export const inputButtonStyle = style([
   base,
   {
-    backgroundColor: blueDark.blue7,
+    backgroundColor: indigo.indigo11,
     border: "none",
     borderRadius: "0.5rem",
     width: "100%",
     fontSize: 18,
     fontWeight: "bold",
     ":hover": {
-      backgroundColor: blueDark.blue3,
+      backgroundColor: indigo.indigo12,
     },
   },
 ]);
