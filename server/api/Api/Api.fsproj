@@ -7,8 +7,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
-    <Compile Include="Infra.fs" />
+    <Compile Include="Infra/GCS.fs" />
+    <Compile Include="Infra/Database.fs" />
     <Compile Include="Service.fs" />
+    <Compile Include="Handler/Error.fs" />
+    <Compile Include="Handler/Morphoto.fs" />
+    <Compile Include="Handler/GCS.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -22,6 +26,7 @@
     <PackageReference Include="FSharpPlus" Version="1.4.1" />
     <PackageReference Include="FsToolkit.ErrorHandling" Version="4.9.0" />
     <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="4.9.0" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="MySql.Data" Version="8.1.0" />
   </ItemGroup>
