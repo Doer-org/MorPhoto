@@ -10,11 +10,11 @@ import {
   SaveLink,
   TwitterShareButton,
   Modal,
-} from "../_components";
+} from "./_components";
 import { Suspense, useEffect, useState } from "react";
-
-import * as styles from "../result.css";
 import { env } from "@/constants";
+
+import * as styles from "./result.css";
 
 export default function ResultPage({
   params,
