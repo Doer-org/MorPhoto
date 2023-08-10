@@ -17,7 +17,7 @@ let private downloadImageAndConvertToBase64 (imageUrl: string) =
     use httpClient = new HttpClient()
     let imageBytes = httpClient.GetByteArrayAsync(imageUrl)
     imageBytes.Wait()
-    let base64String = Convert.ToBase64String(imageBytes.Result)
+    let base64String = Encoding.UTF8.GetString(imageBytes.Result)
     base64String
 
 let getBase64FromGCS (fileName: string) (env: GCS_ENV) =
@@ -38,8 +38,7 @@ let uploadFile (base64: string) (env: GCS_ENV) =
             let cred = GoogleCredential.FromJson(env.GCP_CREDENTIALS)
             let storage = StorageClient.Create(cred)
 
-            use stream =
-                new MemoryStream(Encoding.GetEncoding("UTF-8").GetBytes(base64))
+            use stream = new MemoryStream(Encoding.UTF8.GetBytes(base64))
 
             let r =
                 storage.UploadObject(
