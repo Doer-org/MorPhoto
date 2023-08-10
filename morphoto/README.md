@@ -12,7 +12,7 @@ echo 'HUGGING_FACE_TOKEN=your_huggingface_token' >> .env
 ### モデルのダウンロード
 ```bash
 poetry install
-poetry run python src/image_converter.py
+poetry run python src/download_model.py
 ```
 ### 実行 + テスト
 ```bash
