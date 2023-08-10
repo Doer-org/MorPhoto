@@ -43,7 +43,7 @@ export const modalClose = style({
   right: "20px",
   transition: "background-color .2s ease",
   ":hover": {
-    backgroundColor: slate.slate2,
+    backgroundColor: slate.slate6,
   },
 });
 

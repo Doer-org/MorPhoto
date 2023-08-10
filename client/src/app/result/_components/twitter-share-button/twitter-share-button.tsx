@@ -46,9 +46,9 @@ export const TwitterShareButton = forwardRef<HTMLAnchorElement, Props>(
       >
         <div className={styles.iconWrapperStyle}>
           <Image
-            src={"/assets/sns/twitter.svg"}
-            width={32}
-            height={32}
+            src={"/assets/sns/twitter.png"}
+            width={30}
+            height={25}
             alt="twitter"
           />
         </div>
