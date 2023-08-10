@@ -21,6 +21,11 @@ poetry run uvicorn src.main:app --reload
 poetry run pytest # テスト
 ```
 
+### デプロイ
+```bash
+poetry run modal deploy src/main.py
+```
+
 ## 変換結果
 ### 変換例1 : 新海誠風
 ![](assets/example1.png)
