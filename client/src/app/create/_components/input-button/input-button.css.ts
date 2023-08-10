@@ -9,14 +9,14 @@ const base = style({
 export const inputButtonStyle = style([
   base,
   {
-    backgroundColor: indigo.indigo11,
+    background: "linear-gradient(90deg, #793AAF, #3451B2)",
     border: "none",
     borderRadius: "0.5rem",
     width: "100%",
     fontSize: 18,
     fontWeight: "bold",
     ":hover": {
-      backgroundColor: indigo.indigo12,
+      background: "linear-gradient(90deg, #2B0E44, #101D46)",
     },
   },
 ]);
