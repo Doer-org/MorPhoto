@@ -13,6 +13,7 @@ module Env =
         abstract member GCP_CREDENTIALS: string
         abstract member GCP_BUCKET_NAME: string
         abstract member GCS_URL: string
+        abstract member ML_URL: string
 
     let env =
         if
@@ -28,7 +29,8 @@ module Env =
             then
                 "localhost"
             else
-                Environment.GetEnvironmentVariable("DB_HOST") // コンテナ内間通信ではlocalhostを指定できない
+                // コンテナ内間通信ではlocalhostを指定できない
+                Environment.GetEnvironmentVariable("DB_HOST")
 
         let DB_USER = Environment.GetEnvironmentVariable("DB_USER")
         let DB_PASSWORD = Environment.GetEnvironmentVariable("DB_PASSWORD")
@@ -43,6 +45,16 @@ module Env =
 
         let GCS_URL = Environment.GetEnvironmentVariable("GCS_URL")
 
+        let ML_URL =
+            if
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") = "Development"
+            then
+                "http://localhost:8000"
+            else
+                // コンテナ名をホスト名として扱う
+                Environment.GetEnvironmentVariable("ML_URL")
+
+
         { new IEnv with
             member _.ENVIRONMENT = ENVIRONMENT
             member _.DB_HOST = DB_HOST
@@ -53,6 +65,7 @@ module Env =
             member _.GCP_CREDENTIALS = GCP_CREDENTIALS
             member _.GCP_BUCKET_NAME = GCP_BUCKET_NAME
             member _.GCS_URL = GCS_URL
+            member _.ML_URL = ML_URL
         }
 
     let dbEnv: Infra.Database.DBEnv = {
@@ -68,6 +81,8 @@ module Env =
         GCP_BUCKET_NAME = env.GCP_BUCKET_NAME
         GCS_URL = env.GCS_URL
     }
+
+    let ML_ENV: Infra.ML.MLEnv = { ML_URL = env.ML_URL }
 
 module Program =
 
@@ -113,6 +128,10 @@ module Program =
                 post "/morphoto" Handler.Morphoto.registerMorphoto
                 post "/gcs" (Handler.GCS.register Env.GCS_ENV)
                 get "/gcs/{id}" (Handler.GCS.get Env.GCS_ENV)
+                post
+                    "/inference/{id}"
+                    (Handler.Morphoto.inference (Env.GCS_ENV, Env.ML_ENV))
+
             ]
 
         }

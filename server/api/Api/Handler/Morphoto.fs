@@ -10,6 +10,57 @@ open System.Text.Json
 open Handler.Error
 
 /// ### Endpoint
+/// - `POST: /inference/:id`
+/// - `body: { prompt: string, strength: float, is_mock?: bool }`
+/// ### Response
+/// - `Morphoto`
+let inference (gcsEnv, mlEnv) : HttpHandler =
+    fun ctx ->
+        let route = Request.getRoute ctx
+        let parent_id = route.Get("id")
+        let morphotoRepo = ctx.RequestServices.GetService<MorphotoRepo>()
+        let statusRepo = ctx.RequestServices.GetService<StatusRepo>()
+
+        task {
+            let! request =
+                Request.getJsonOptions<{|
+                    prompt: string
+                    strength: float
+                    is_mock: bool option
+                |}>
+                    JsonSerializerOptions.Default
+                    ctx
+
+            printfn "request: %A" request
+            printfn "parent_id: %A" parent_id
+            printfn "mlEnv: %A" mlEnv
+
+            let morphoto =
+                Usecase.inference
+                    {
+                        parent_id = parent_id
+                        prompt = request.prompt
+                        strength = request.strength
+                        is_mock = request.is_mock
+                    }
+                    (morphotoRepo,
+                     statusRepo,
+                     Infra.GCS.gcsStore gcsEnv,
+                     Infra.ML.mlRepo mlEnv)
+
+            printfn "morphoto: %A" morphoto
+
+            return
+                morphoto
+                |> function
+                    | Ok morphoto ->
+                        ctx |> Response.ofJson {| data = morphoto |}
+                    | Error e -> errorHandler e ctx
+        }
+
+
+
+/// ### Endpoint
 /// - `POST: /status/:parent_id`
 /// ### Response
 /// - `{| data: Status |}`
@@ -29,7 +80,6 @@ let registerStatus: HttpHandler =
                     | Error e -> errorHandler e ctx
         }
 
-// TODO: GET?? API側でGCS画像登録、ML APIの呼び出しを行う.
 /// add view_count and return status
 /// ### Endpoint
 /// - `GET: /status/:parent_id`

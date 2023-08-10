@@ -117,7 +117,12 @@ let morphotoRepo env =
                         take 1
                 }
                 |> conn.SelectAsync<Morphoto>
-                |> Task.map (Seq.head >> Ok)
+                |> Task.map (
+                    Seq.tryHead
+                    >> function
+                        | Some s -> Ok s
+                        | None -> Error "not found"
+                )
             with e ->
                 Error e.Message |> Task.singleton
 
