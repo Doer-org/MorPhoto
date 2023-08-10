@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
+    <Compile Include="Infra\ML.fs" />
     <Compile Include="Infra/GCS.fs" />
     <Compile Include="Infra/Database.fs" />
     <Compile Include="Service.fs" />
@@ -24,6 +25,7 @@
     <PackageReference Include="DotNetEnv" Version="2.5.0" />
     <PackageReference Include="Falco" Version="4.0.4" />
     <PackageReference Include="FSharpPlus" Version="1.4.1" />
+    <PackageReference Include="FsHttp" Version="11.0.0" />
     <PackageReference Include="FsToolkit.ErrorHandling" Version="4.9.0" />
     <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="4.9.0" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0" />

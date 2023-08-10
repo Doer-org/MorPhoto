@@ -33,3 +33,21 @@ type GCPRepo =
         string -> Async<Result<Google.Apis.Storage.v1.Data.Object, string>>
 
     abstract member downloadBase64: string -> Async<Result<string, string>>
+
+type MorphotoInferenceReq = {
+    parent_id: string
+    prompt: string
+    strength: float
+    is_mock: bool option
+}
+
+type MorphotoInferenceResp = {
+    converted_image: string
+    prompt: string
+}
+
+type MLRepo =
+    abstract member inference:
+        MorphotoInferenceReq ->
+        string ->
+            Async<Result<MorphotoInferenceResp, string>>
