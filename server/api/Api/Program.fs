@@ -10,6 +10,9 @@ module Env =
         abstract member DB_PASSWORD: string
         abstract member DB_DATABASE: string
         abstract member CLIENT_URL: string
+        abstract member GCP_CREDENTIALS: string
+        abstract member GCP_BUCKET_NAME: string
+        abstract member GCS_URL: string
 
     let env =
         if
@@ -32,6 +35,14 @@ module Env =
         let DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE")
         let CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")
 
+        let GCP_CREDENTIALS =
+            Environment.GetEnvironmentVariable("GCP_CREDENTIALS")
+
+        let GCP_BUCKET_NAME =
+            Environment.GetEnvironmentVariable("GCP_BUCKET_NAME")
+
+        let GCS_URL = Environment.GetEnvironmentVariable("GCS_URL")
+
         { new IEnv with
             member _.ENVIRONMENT = ENVIRONMENT
             member _.DB_HOST = DB_HOST
@@ -39,6 +50,9 @@ module Env =
             member _.DB_PASSWORD = DB_PASSWORD
             member _.DB_DATABASE = DB_DATABASE
             member _.CLIENT_URL = CLIENT_URL
+            member _.GCP_CREDENTIALS = GCP_CREDENTIALS
+            member _.GCP_BUCKET_NAME = GCP_BUCKET_NAME
+            member _.GCS_URL = GCS_URL
         }
 
     let dbEnv: Infra.Database.DBEnv = {
@@ -49,6 +63,11 @@ module Env =
         DB_DATABASE = env.DB_DATABASE
     }
 
+    let GCS_ENV: Infra.GCS.GCS_ENV = {
+        GCP_CREDENTIALS = env.GCP_CREDENTIALS
+        GCP_BUCKET_NAME = env.GCP_BUCKET_NAME
+        GCS_URL = env.GCS_URL
+    }
 
 module Program =
 
@@ -56,7 +75,7 @@ module Program =
     open Falco.Routing
     open Falco.HostBuilder
     open Microsoft.Extensions.DependencyInjection
-    open Service
+    open Domain
 
     [<EntryPoint>]
     let main _ =
@@ -64,11 +83,11 @@ module Program =
         webHost [||] {
 
             add_service (fun (svc: IServiceCollection) ->
-                svc.AddSingleton<Infra.Repo.StatusRepo>(fun _ ->
+                svc.AddSingleton<StatusRepo>(fun _ ->
                     Infra.Database.statusRepo Env.dbEnv))
 
             add_service (fun (svc: IServiceCollection) ->
-                svc.AddSingleton<Infra.Repo.MorphotoRepo>(fun _ ->
+                svc.AddSingleton<MorphotoRepo>(fun _ ->
                     Infra.Database.morphotoRepo Env.dbEnv))
 
             use_cors "CorsPolicy" (fun options ->
@@ -87,11 +106,13 @@ module Program =
 
             endpoints [
                 get "/health" (Response.ofJson {| env = Env.env.ENVIRONMENT |})
-                post "/status/{parent_id}" Handler.registerStatus
-                get "/status/{parent_id}" Handler.getStatus
-                get "/morphoto/{parent_id}" Handler.getMorphoto
-                get "/morphoto/all" Handler.getAllMorphotos
-                post "/morphoto" Handler.registerMorphoto
+                post "/status/{parent_id}" Handler.Morphoto.registerStatus
+                get "/status/{parent_id}" Handler.Morphoto.getStatus
+                get "/morphoto/{parent_id}" Handler.Morphoto.getMorphoto
+                get "/morphoto/all" Handler.Morphoto.getAllMorphotos
+                post "/morphoto" Handler.Morphoto.registerMorphoto
+                post "/gcs" (Handler.GCS.register Env.GCS_ENV)
+                get "/gcs/{id}" (Handler.GCS.get Env.GCS_ENV)
             ]
 
         }
