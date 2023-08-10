@@ -4,10 +4,29 @@ import { Inter } from "next/font/google";
 import { MorphotoHeader } from "./_components";
 
 const inter = Inter({ subsets: ["latin"] });
+const siteName = "MorPhoto";
+const description = "Let's start morphing!";
+const url = "https://www.morphoto.app/";
 
 export const metadata: Metadata = {
-  title: "MorPhoto",
-  description: "Let's start morphing!",
+  title: {
+    default: siteName,
+    template: `%s｜${siteName}`,
+  },
+  description,
+  openGraph: {
+    title: siteName,
+    description,
+    url,
+    siteName,
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description,
+  },
 };
 
 export default function RootLayout({
