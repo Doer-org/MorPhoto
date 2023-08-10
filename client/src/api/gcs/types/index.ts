@@ -1,10 +1,17 @@
 import { JTDDataType } from "ajv/dist/core";
 
-const gcsResponseSchema = {
+const gcsResponseBaseSchema = {
   type: "object",
   properties: {
     id: { type: "string" },
     url: { type: "string" },
+  },
+} as const;
+
+const gcsResponseSchema = {
+  type: "object",
+  properties: {
+    data: gcsResponseBaseSchema,
   },
 } as const;
 
