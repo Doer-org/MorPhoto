@@ -4,29 +4,59 @@ import { Button } from "@/ui";
 import {
   CopyButton,
   MisskeyShareButton,
-  Parents,
+  Parent,
   CreateLink,
   ResultImage,
   SaveLink,
   TwitterShareButton,
   Modal,
 } from "../_components";
-import { Suspense, useEffect, useState } from "react";
-
-import * as styles from "../result.css";
+import { useEffect, useState } from "react";
+import { TMorphoto } from "@/types/Morphoto";
+import { createInference, readMorphoto } from "@/api";
 import { env } from "@/constants";
 
+import * as styles from "../result.css";
+
 export default function ResultPage({
-  params,
-  searchParams,
+  params: { morphoto_id },
+  searchParams: { prompt, strength },
 }: {
-  params: {};
-  searchParams: { morphoto_id?: string; prompt?: string };
+  params: { morphoto_id: string };
+  searchParams: { prompt: string; strength: string };
 }) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [morphoto, setMorphoto] = useState<TMorphoto | null>(null);
 
   useEffect(() => {
     setModalOpen(true);
+    createInference(morphoto_id, {
+      prompt: prompt,
+      strength: Number(strength),
+      is_mock: true,
+    })
+      .then((result) => {
+        if (result.type === "error")
+          return <p>データの読み込みに失敗しました</p>;
+        if (!result.value.data) return <p>データがありません</p>;
+        setMorphoto(result.value.data);
+        console.log(result.value.data.parent_id);
+      })
+      .catch((err) => {
+        console.error("何らかのエラーが発生しました", err);
+      });
+
+    readMorphoto(morphoto_id)
+      .then((result) => {
+        if (result.type === "error")
+          return <p>データの読み込みに失敗しました</p>;
+        if (!result.value.data) return <p>データがありません</p>;
+        setMorphoto(result.value.data);
+        console.log(result.value.data.parent_id);
+      })
+      .catch((err) => {
+        console.error("何らかのエラーが発生しました", err);
+      });
   }, []);
 
   return (
@@ -38,49 +68,39 @@ export default function ResultPage({
       >
         <div className={styles.resultModalContentStyle}>
           <div className={styles.resultModalItemStyle}>
-            <Suspense>
-              <ResultImage morphoto_id={searchParams.morphoto_id} />
-            </Suspense>
+            {morphoto && <ResultImage child_id={morphoto.child_id} />}
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultButtonGroupStyle}>
               <CreateLink />
-              {searchParams.morphoto_id && (
-                <>
-                  <Suspense>
-                    <SaveLink morphoto_id={searchParams.morphoto_id} />
-                  </Suspense>
-                </>
-              )}
+              {morphoto && <SaveLink child_id={morphoto.child_id} />}
             </div>
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultCardStyle}>
               <div className={styles.resultCardItemStyle}>
-                {searchParams.prompt && (
-                  <p className={styles.resultPromptStyle}>
-                    {searchParams.prompt}
-                  </p>
+                {morphoto && (
+                  <p className={styles.resultPromptStyle}>{morphoto.prompt}</p>
                 )}
               </div>
               <div className={styles.resultCardItemStyle}>
-                {searchParams.prompt && (
-                  <CopyButton prompt={searchParams.prompt} />
-                )}
+                {morphoto && <CopyButton prompt={morphoto.prompt} />}
               </div>
               <div className={styles.resultCardItemStyle}>
-                <div className={styles.resultSnsListStyle}>
-                  <TwitterShareButton
-                    text="MorPhotoで画像を生成したよ！"
-                    hashtags={["morphoto"]}
-                    url={`${env.CLIENT_URL}`}
-                  />
-                  <MisskeyShareButton
-                    title="MorPhotoで画像を生成したよ！"
-                    text="#morphoto"
-                    url={`${env.CLIENT_URL}`}
-                  />
-                </div>
+                {morphoto && (
+                  <div className={styles.resultSnsListStyle}>
+                    <TwitterShareButton
+                      text="MorPhotoで画像を生成したよ！"
+                      hashtags={["morphoto"]}
+                      url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
+                    />
+                    <MisskeyShareButton
+                      title="MorPhotoで画像を生成したよ！"
+                      text="#morphoto"
+                      url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -90,11 +110,7 @@ export default function ResultPage({
                 <span className={styles.resultCardTitleStyle}>Before</span>
               </div>
               <div className={styles.resultCardItemStyle}>
-                {searchParams.morphoto_id && (
-                  <Suspense>
-                    <Parents morphoto_id={searchParams.morphoto_id} />
-                  </Suspense>
-                )}
+                {morphoto && <Parent parent_id={morphoto.parent_id} />}
               </div>
             </div>
           </div>
