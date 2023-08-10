@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { indigo, slate } from "@radix-ui/colors";
+import { slate } from "@radix-ui/colors";
 
 const base = style({ fontSize: 42 });
 
@@ -13,7 +13,9 @@ export const titleVariantStyle = styleVariants({
   primary: [
     base,
     {
-      color: indigo.indigo11,
+      background: "linear-gradient(90deg, #793AAF, #3451B2)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
     },
   ],
 });
