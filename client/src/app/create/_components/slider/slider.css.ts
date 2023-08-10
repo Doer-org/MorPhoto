@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { blueA, olive, sageDark } from "@radix-ui/colors";
+import { indigo, slate } from "@radix-ui/colors";
 
 export const sliderRoot = style({
   position: "relative",
@@ -11,7 +11,7 @@ export const sliderRoot = style({
 });
 
 export const sliderTrack = style({
-  backgroundColor: sageDark.sage10,
+  backgroundColor: slate.slate11,
   position: "relative",
   flexGrow: 1,
   borderRadius: "9999px",
@@ -20,7 +20,7 @@ export const sliderTrack = style({
 
 export const sliderRange = style({
   position: "absolute",
-  backgroundColor: blueA.blueA11,
+  backgroundColor: indigo.indigo9,
   borderRadius: "9999px",
   height: "100%",
 });
@@ -29,10 +29,10 @@ export const sliderThumb = style({
   display: "block",
   width: "12px",
   height: "12px",
-  backgroundColor: olive.olive8,
+  backgroundColor: slate.slate6,
   borderRadius: "10px",
   ":hover": {
-    backgroundColor: olive.olive9,
+    backgroundColor: slate.slate8,
   },
   ":focus": {
     outline: "none",

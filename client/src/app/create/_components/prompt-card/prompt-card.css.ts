@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { sageDark, blackA } from "@radix-ui/colors";
+import { slate, blackA } from "@radix-ui/colors";
 
 export const headerStyle = style({});
 
@@ -18,7 +18,7 @@ const textareaBase = style({
   height: 68,
   resize: "none",
   fontSize: 16,
-  color: sageDark.sage10,
+  color: slate.slate11,
   border: "none",
   outline: "none",
   transition: "background-color 0.3s ease",
