@@ -1,5 +1,4 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { slate } from "@radix-ui/colors";
 
 const base = style({ fontSize: 42 });
 
@@ -7,7 +6,10 @@ export const titleVariantStyle = styleVariants({
   default: [
     base,
     {
-      color: slate.slate12,
+      display: "inline-block",
+      background: "linear-gradient(90deg, #11181C, #3D4449)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
     },
   ],
   primary: [

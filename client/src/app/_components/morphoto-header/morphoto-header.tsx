@@ -1,6 +1,5 @@
 import { Header } from "@/ui";
 import { ComponentPropsWithoutRef, forwardRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import * as styles from "./morphoto-header.css";
@@ -14,7 +13,8 @@ export const MorphotoHeader = forwardRef<HTMLElement, Props>(({}, ref) => {
       leftChildren={
         <h1 className={styles.logoStyle}>
           <Link href={"/"}>
-            <span className={styles.logoBlueStyle}>Mor</span>Photo
+            <span className={styles.logoBlueStyle}>Mor</span>
+            <span className={styles.logoGrayStyle}>Photo</span>
           </Link>
         </h1>
       }

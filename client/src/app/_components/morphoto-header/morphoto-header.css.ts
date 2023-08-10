@@ -17,3 +17,10 @@ export const logoBlueStyle = style({
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 });
+
+export const logoGrayStyle = style({
+  display: "inline-block",
+  background: "linear-gradient(90deg, #11181C, #3D4449)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+});
