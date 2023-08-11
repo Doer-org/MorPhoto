@@ -172,12 +172,20 @@ export default function ResultPage({
               {morphoto && (
                 <div className={styles.resultSnsListStyle}>
                   <TwitterShareButton
-                    text={`「${prompt}」で変換画像を生成しました！`}
+                    text={
+                      prompt
+                        ? `「${prompt}」で変換画像を生成しました！`
+                        : "変換画像を生成しました！"
+                    }
                     hashtags={["MorPhoto"]}
                     url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
                   />
                   <MisskeyShareButton
-                    title={`「${prompt}」で変換画像を生成しました！`}
+                    title={
+                      prompt
+                        ? `「${prompt}」で変換画像を生成しました！`
+                        : "変換画像を生成しました！"
+                    }
                     text="#MorPhoto"
                     url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
                   />
