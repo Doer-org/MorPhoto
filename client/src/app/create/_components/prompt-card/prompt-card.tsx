@@ -4,7 +4,15 @@ import { Card } from "@/ui";
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { UseFormRegister } from "react-hook-form";
 
+import { Inter, Noto_Sans_JP } from "next/font/google";
+
 import * as styles from "./prompt-card.css";
+
+const notoSansJP = Noto_Sans_JP({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  preload: false,
+});
 
 type Inputs = {
   prompt: string;
@@ -31,7 +39,10 @@ export const PromptCard = forwardRef<HTMLDivElement, Props>(
         </div>
         <div className={styles.contentStyle}>
           <textarea
-            className={styles.textareaVariantStyle[variant]}
+            className={[
+              styles.textareaVariantStyle[variant],
+              notoSansJP.className,
+            ].join(" ")}
             {...register("prompt", { required: "promptを入力してください" })}
             onFocus={() => setVariant("onfocus")}
             onBlur={() => setVariant("default")}
