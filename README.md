@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="75%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/72bf2d4b-2a76-4dbb-ac0f-fcd106b62fdd">
+  <img width="55%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/72bf2d4b-2a76-4dbb-ac0f-fcd106b62fdd">
 </div>
 
 ## Tech Stack
