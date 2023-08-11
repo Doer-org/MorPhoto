@@ -4,16 +4,18 @@
   <br>
 </div>
 
-## Mophing Process
+## What's MorPhoto?
+MorPhoto is a service that allows you to generate images by inputting an initial image and a transformation direction string. 
+So why not have some fun and freely transform SNS icons, header images, and more?
+Once you've crafted some intriguing images, don't hesitate to share them with others! 
 
+## Mophing Process
 <div align="center">
   <img width="75%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/e15e0677-4d84-4695-b0f7-11a7f5228f92">
 </div>
 
-<br>
-
 ### Core Technologies
-MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion**.
+MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion"**.
 
 - In **"Prompt Conversion"**, input text is transformed into a format suitable for image conversion. While regular sentences can also be converted, this step is crucial for achieving higher-performance image conversion.
 
@@ -25,7 +27,6 @@ MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion
 </div>
 
 ## Contributers
-
 <table>
   <tr>
     <td>
