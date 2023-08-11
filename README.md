@@ -9,25 +9,12 @@ MorPhoto is a service that allows you to generate images by inputting an initial
 So why not have some fun and freely transform SNS icons, header images, and more?
 Once you've crafted some intriguing images, don't hesitate to share them with others! 
 
-## Mophing Process
-<div align="center">
-  <img width="800px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/e15e0677-4d84-4695-b0f7-11a7f5228f92">
-</div>
-
-### Core Technologies
-MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion"**.
-
-- In **"Prompt Conversion"**, input text is transformed into a format suitable for image conversion. While regular sentences can also be converted, this step is crucial for achieving higher-performance image conversion.
-
-- In the context of **"Image Conversion"**, morphing is conducted using a latent diffusion model based on the provided prompts. This approach contributes to the creation of high-quality images aligned with the intended visual outcomes.
-
 ## Morphing Examples
-
-<table border="1">
+<table>
   <tr>
-    <td width="220px"><img height="200px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/13c00241-d902-494b-8796-dd4412beff86"/></td>
-    <td width="220px"><img height="200px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/9a59bc5c-e3d1-4148-aa83-9948f86fbbcb"/></td>
-    <td width="500px">
+    <td width="25%"><img src="https://github.com/Doer-org/MorPhoto/assets/55625375/13c00241-d902-494b-8796-dd4412beff86"/></td>
+    <td width="25%"><img src="https://github.com/Doer-org/MorPhoto/assets/55625375/9a59bc5c-e3d1-4148-aa83-9948f86fbbcb"/></td>
+    <td width="50%">
       <p>
         Input Prompt: 金魚すくい.<br>
         Strength: 0.85<br>
@@ -40,6 +27,18 @@ MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion
   </tr>
 </table>
 
+
+## Mophing Process
+<div align="center">
+  <img width="800px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/e15e0677-4d84-4695-b0f7-11a7f5228f92">
+</div>
+
+### Core Technologies
+MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion"**.
+
+- In **"Prompt Conversion"**, input text is transformed into a format suitable for image conversion. While regular sentences can also be converted, this step is crucial for achieving higher-performance image conversion.
+
+- In the context of **"Image Conversion"**, morphing is conducted using a latent diffusion model based on the provided prompts. This approach contributes to the creation of high-quality images aligned with the intended visual outcomes.
 
 ## Tech Stack
 <div align="center">
