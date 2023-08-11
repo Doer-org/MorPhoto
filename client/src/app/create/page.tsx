@@ -137,11 +137,12 @@ const InputPage = ({
                 type="submit"
                 value={
                   done
-                    ? "Start morphing"
+                    ? "Start morphing..."
                     : loading
                     ? "Loading..."
                     : "Generate Photo"
                 }
+                disabled={loading || done}
               />
             </div>
           </form>
