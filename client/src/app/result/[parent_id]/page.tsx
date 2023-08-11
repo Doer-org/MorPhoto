@@ -13,7 +13,7 @@ import {
 } from "../_components";
 import { useEffect, useRef, useState } from "react";
 import { TMorphoto } from "@/types/Morphoto";
-import { createInference, readMorphoto, readStatus } from "@/api";
+import { createInference, readGcs, readStatus } from "@/api";
 import { env } from "@/constants";
 
 import * as styles from "../result.css";
@@ -28,6 +28,21 @@ export default function ResultPage({
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [morphoto, setMorphoto] = useState<TMorphoto | null>(null);
   const [done, setDone] = useState<boolean>(false);
+  const [gcsRegistered, setGcsRegistered] = useState<boolean>(true);
+
+  const checkGcs = () => {
+    readGcs(parent_id)
+      .then((result) => {
+        if (result.type === "error") {
+          setGcsRegistered(false);
+          return alert("不正なURLです。URLを確認してください。");
+        }
+        setGcsRegistered(true);
+      })
+      .catch((err) => {
+        console.error("何らかのエラーが発生しました", err);
+      });
+  };
 
   const checkStatus = () => {
     readStatus(parent_id)
@@ -65,6 +80,10 @@ export default function ResultPage({
   const callbackRef = useRef(morphing);
 
   useEffect(() => {
+    if (!gcsRegistered) {
+      callbackRef.current = () => null;
+      return;
+    }
     if (!done) {
       callbackRef.current = morphing;
       return;
@@ -80,6 +99,7 @@ export default function ResultPage({
   }, []);
 
   useEffect(() => {
+    checkGcs();
     setModalOpen(true);
     checkStatus();
     morphing();
@@ -97,7 +117,9 @@ export default function ResultPage({
             {done && morphoto ? (
               <ResultImage child_id={morphoto.child_id} />
             ) : (
-              <p>少々お待ちください</p>
+              <p>
+                {gcsRegistered ? "Wait a minute..." : "URLを確認してください。"}
+              </p>
             )}
           </div>
           <div className={styles.resultModalItemStyle}>
