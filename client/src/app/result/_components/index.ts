@@ -6,3 +6,4 @@ export * from "./create-link";
 export * from "./result-image";
 export * from "./save-link";
 export * from "./twitter-share-button";
+export * from "./title";

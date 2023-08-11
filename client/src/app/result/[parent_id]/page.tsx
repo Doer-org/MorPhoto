@@ -9,7 +9,7 @@ import {
   ResultImage,
   SaveLink,
   TwitterShareButton,
-  Modal,
+  Title,
 } from "../_components";
 import { useEffect, useRef, useState } from "react";
 import { TMorphoto } from "@/types/Morphoto";
@@ -127,67 +127,68 @@ export default function ResultPage({
 
   return (
     <div className={styles.resultStyle}>
-      <Modal
-        trigger={<Button variant="primary">View Result</Button>}
-        open={modalOpen}
-        onOpenChange={(open) => setModalOpen(open)}
+      <div
+        style={{
+          textAlign: "center",
+        }}
       >
-        <div className={styles.resultModalContentStyle}>
-          <div className={styles.resultModalItemStyle}>
-            {done && morphoto ? (
-              <ResultImage child_id={morphoto.child_id} />
-            ) : (
-              <p>
-                {gcsRegistered ? "Wait a minute..." : "URLを確認してください。"}
-              </p>
-            )}
+        <Title />
+      </div>
+      <div className={styles.resultModalContentStyle}>
+        <div className={styles.resultModalItemStyle}>
+          {done && morphoto ? (
+            <ResultImage child_id={morphoto.child_id} />
+          ) : (
+            <p>
+              {gcsRegistered ? "Wait a minute..." : "URLを確認してください。"}
+            </p>
+          )}
+        </div>
+        <div className={styles.resultModalItemStyle}>
+          <div className={styles.resultButtonGroupStyle}>
+            <CreateLink />
+            {morphoto && <SaveLink child_id={morphoto.child_id} />}
           </div>
-          <div className={styles.resultModalItemStyle}>
-            <div className={styles.resultButtonGroupStyle}>
-              <CreateLink />
-              {morphoto && <SaveLink child_id={morphoto.child_id} />}
+        </div>
+        <div className={styles.resultModalItemStyle}>
+          <div className={styles.resultCardStyle}>
+            <div className={styles.resultCardItemStyle}>
+              {morphoto && (
+                <p className={styles.resultPromptStyle}>{morphoto.prompt}</p>
+              )}
             </div>
-          </div>
-          <div className={styles.resultModalItemStyle}>
-            <div className={styles.resultCardStyle}>
-              <div className={styles.resultCardItemStyle}>
-                {morphoto && (
-                  <p className={styles.resultPromptStyle}>{morphoto.prompt}</p>
-                )}
-              </div>
-              <div className={styles.resultCardItemStyle}>
-                {morphoto && <CopyButton prompt={morphoto.prompt} />}
-              </div>
-              <div className={styles.resultCardItemStyle}>
-                {morphoto && (
-                  <div className={styles.resultSnsListStyle}>
-                    <TwitterShareButton
-                      text="MorPhotoで画像を生成したよ！"
-                      hashtags={["morphoto"]}
-                      url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
-                    />
-                    <MisskeyShareButton
-                      title="MorPhotoで画像を生成したよ！"
-                      text="#morphoto"
-                      url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
-                    />
-                  </div>
-                )}
-              </div>
+            <div className={styles.resultCardItemStyle}>
+              {morphoto && <CopyButton prompt={morphoto.prompt} />}
             </div>
-          </div>
-          <div className={styles.resultModalItemStyle}>
-            <div className={styles.resultCardStyle}>
-              <div className={styles.resultCardItemStyle}>
-                <span className={styles.resultCardTitleStyle}>Before</span>
-              </div>
-              <div className={styles.resultCardItemStyle}>
-                {morphoto && <Parent parent_id={morphoto.parent_id} />}
-              </div>
+            <div className={styles.resultCardItemStyle}>
+              {morphoto && (
+                <div className={styles.resultSnsListStyle}>
+                  <TwitterShareButton
+                    text="MorPhotoで画像を生成したよ！"
+                    hashtags={["morphoto"]}
+                    url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
+                  />
+                  <MisskeyShareButton
+                    title="MorPhotoで画像を生成したよ！"
+                    text="#morphoto"
+                    url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </Modal>
+        <div className={styles.resultModalItemStyle}>
+          <div className={styles.resultCardStyle}>
+            <div className={styles.resultCardItemStyle}>
+              <span className={styles.resultCardTitleStyle}>Before</span>
+            </div>
+            <div className={styles.resultCardItemStyle}>
+              {morphoto && <Parent parent_id={morphoto.parent_id} />}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
