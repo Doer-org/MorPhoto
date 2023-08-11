@@ -106,7 +106,7 @@ module Usecase =
                                     created_at = System.DateTime.Now
                                 }
 
-                            let! child_id =
+                            let! child_id, mlResp =
                                 asyncResult {
                                     let! ml_morphoto =
                                         mlRepo.inference mlInput base64
@@ -115,14 +115,14 @@ module Usecase =
                                         gcsRepo.upload
                                             ml_morphoto.converted_image
 
-                                    return registered.Name
+                                    return registered.Name, ml_morphoto
                                 }
 
                             let! morphoto =
                                 morphotoRepo.register {
                                     parent_id = parent_id
                                     child_id = child_id
-                                    prompt = mlInput.prompt
+                                    prompt = mlResp.prompt
                                     strength = mlInput.strength
                                 }
 
