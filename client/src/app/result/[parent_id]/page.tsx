@@ -173,12 +173,12 @@ export default function ResultPage({
                 <div className={styles.resultSnsListStyle}>
                   <TwitterShareButton
                     text="MorPhotoで画像を生成したよ！"
-                    hashtags={["morphoto"]}
+                    hashtags={["MorPhoto"]}
                     url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
                   />
                   <MisskeyShareButton
                     title="MorPhotoで画像を生成したよ！"
-                    text="#morphoto"
+                    text="#MorPhoto"
                     url={`${env.CLIENT_URL}/result/${morphoto.parent_id}`}
                   />
                 </div>
