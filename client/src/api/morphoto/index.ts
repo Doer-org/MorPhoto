@@ -1,16 +1,10 @@
 import { env } from "@/constants";
 import { apiClient } from "../core";
-import { MorphotoCreate, MorphotoResponse, MorphotosResponse } from "./types";
+import { MorphotoResponse, MorphotosResponse } from "./types";
 
-export const createMorphoto = async (morphoto: MorphotoCreate) =>
-  await apiClient.post<MorphotoResponse>(
-    `${env.SERVER_URL}/morphoto`,
-    morphoto
-  );
-
-export const readMorphoto = async (morphoto_id: string) =>
+export const readMorphoto = async (parent_id: string) =>
   await apiClient.get<MorphotoResponse>(
-    `${env.SERVER_URL}/morphoto/${morphoto_id}`
+    `${env.SERVER_URL}/morphoto/${parent_id}`
   );
 
 export const readAllMorphotos = async () =>

@@ -9,7 +9,7 @@ import {
   ChangeEvent,
   DragEvent,
 } from "react";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { UseFormSetValue } from "react-hook-form";
 
 import * as styles from "./file-uploader.css";
 
@@ -22,11 +22,10 @@ type Inputs = {
 type Props = ComponentPropsWithoutRef<"label"> & {
   setValue: UseFormSetValue<Inputs>;
   setImageUrlBase64: Dispatch<SetStateAction<string>>;
-  disabled?: boolean;
 };
 
 export const FileUploader = forwardRef<HTMLLabelElement, Props>(
-  ({ setValue, setImageUrlBase64, disabled, ...props }, ref) => {
+  ({ setValue, setImageUrlBase64, ...props }, ref) => {
     const [labelVariant, setLabelVariant] = useState<"default" | "drag">(
       "default"
     );
@@ -70,15 +69,6 @@ export const FileUploader = forwardRef<HTMLLabelElement, Props>(
     return (
       <label
         className={styles.labelVariantStyle[labelVariant]}
-        style={
-          disabled
-            ? {
-                pointerEvents: "none",
-              }
-            : {
-                pointerEvents: "auto",
-              }
-        }
         onDragEnter={() => setLabelVariant("drag")}
         onDragLeave={() => setLabelVariant("default")}
         onDragOver={(e) => e.preventDefault()}

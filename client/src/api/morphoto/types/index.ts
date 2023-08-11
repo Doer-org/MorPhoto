@@ -29,12 +29,3 @@ const morphotosResponseSchema = {
 } as const;
 
 export type MorphotosResponse = JTDDataType<typeof morphotosResponseSchema>;
-
-type MorphotoBase = {
-  parent_id: string;
-  child_id: string;
-  prompt: string;
-  strength: number;
-};
-
-export type MorphotoCreate = MorphotoBase;

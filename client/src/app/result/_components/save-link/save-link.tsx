@@ -7,21 +7,15 @@ import * as styles from "./save-link.css";
 import { getImageUrl } from "@/utils";
 
 type Props = {
-  morphoto_id: string;
+  child_id: string;
 };
 
-export const SaveLink: FC<Props> = async ({ morphoto_id }) => {
-  const morphoto = await readMorphoto(morphoto_id);
-  if (morphoto.type === "error") return <></>;
-
-  const imageUrl = getImageUrl(morphoto.value.data.child_id);
-  const fileName = imageUrl.split("/").pop();
-
+export const SaveLink: FC<Props> = ({ child_id }) => {
   return (
     <a
       className={styles.linkStyle}
-      href={imageUrl}
-      download={fileName || "morphoto.png"}
+      href={getImageUrl(child_id)}
+      download={child_id}
     >
       <IconButton
         tabIndex={-1}
