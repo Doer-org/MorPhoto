@@ -11,12 +11,12 @@ export const MorphotoHeader = forwardRef<HTMLElement, Props>(({}, ref) => {
     <Header
       className={styles.headerStyle}
       leftChildren={
-        <h1 className={styles.logoStyle}>
+        <h2 className={styles.logoStyle}>
           <Link href={"/"}>
             <span className={styles.logoBlueStyle}>Mor</span>
             <span className={styles.logoGrayStyle}>Photo</span>
           </Link>
-        </h1>
+        </h2>
       }
       rightChildren={<div></div>}
       ref={ref}
