@@ -7,7 +7,7 @@
 ## What's MorPhoto?
 MorPhoto is a service that allows you to generate images by inputting an initial image and a transformation direction string. 
 So why not have some fun and freely transform SNS icons, header images, and more?
-Once you've crafted some intriguing images, don't hesitate to share them with others! 
+Once you've crafted some intriguing images, don't hesitate to share them with others!
 
 ## Morphing Examples
 <table>
@@ -22,6 +22,20 @@ Once you've crafted some intriguing images, don't hesitate to share them with ot
       </p>
       <blockquote>
         A vibrant, lively scene of goldfish scooping at a traditional Japanese festival, illuminated by lantern light. Festive, joyful, cultural, intricate, highly detailed, digital painting, night scene, lanterns, reflection.
+      </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="https://github.com/Doer-org/MorPhoto/assets/55625375/13c00241-d902-494b-8796-dd4412beff86"/></td>
+    <td width="25%"><img src="https://github.com/Doer-org/MorPhoto/assets/55625375/aa51b43d-6589-45a2-aebf-a55700691095"/></td>
+    <td width="50%">
+      <p>
+        Input Prompt: 遊園地<br>
+        Strength: 0.83<br>
+        <a href="https://www.morphoto.app/result/2641d813-4c84-473e-80bb-86f53ba82f87">MorPhoto Result</a>
+      </p>
+      <blockquote>
+        A bustling amusement park at dusk, illuminated by vibrant neon lights. Exciting, energetic, lively, digital painting, concept art, dynamic lighting, crowded, roller coasters, ferris wheel, joyful atmosphere.
       </blockquote>
     </td>
   </tr>
