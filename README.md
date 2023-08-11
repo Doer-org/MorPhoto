@@ -11,7 +11,7 @@ Once you've crafted some intriguing images, don't hesitate to share them with ot
 
 ## Mophing Process
 <div align="center">
-  <img width="75%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/e15e0677-4d84-4695-b0f7-11a7f5228f92">
+  <img width="800px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/e15e0677-4d84-4695-b0f7-11a7f5228f92">
 </div>
 
 ### Core Technologies
@@ -23,8 +23,14 @@ MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion
 
 ## Tech Stack
 <div align="center">
-  <img width="75%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/28c2b31f-61ac-4d7c-8dee-7bfdce5e0d66">
+  <img width="800px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/28c2b31f-61ac-4d7c-8dee-7bfdce5e0d66">
 </div>
+
+### ML Deployment
+The machine learning component has been deployed on [Modal](https://modal.com/), a usage-based billing model cloud computing service. This deployment structure incurs charges exclusively during inference, leading to a rationalization of hosting costs.
+
+### BFF
+Resource management to prevent redundant re-inference of identical images is managed by a Backend for Frontend (BFF) coded in F#.
 
 ## Contributers
 <table>
