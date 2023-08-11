@@ -7,9 +7,6 @@ const base = style({
   borderRadius: "10px",
   boxSizing: "border-box",
   color: slate.slate11,
-  ":focus": {
-    outline: `2px solid ${indigo.indigo9}`,
-  },
 });
 
 export const cardVariantStyle = styleVariants({

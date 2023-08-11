@@ -19,6 +19,10 @@ type Props = ComponentPropsWithoutRef<"div"> & {
 export const PromptCard = forwardRef<HTMLDivElement, Props>(
   ({ register }, ref) => {
     const [variant, setVariant] = useState<"default" | "onfocus">("default");
+    const message = [
+      "(例) 花火大会 夏 すいか",
+      "(ex) firework summer watermelon",
+    ].join("\n");
 
     return (
       <Card ref={ref}>
@@ -31,6 +35,7 @@ export const PromptCard = forwardRef<HTMLDivElement, Props>(
             {...register("prompt", { required: "promptを入力してください" })}
             onFocus={() => setVariant("onfocus")}
             onBlur={() => setVariant("default")}
+            placeholder={message}
           ></textarea>
         </div>
       </Card>

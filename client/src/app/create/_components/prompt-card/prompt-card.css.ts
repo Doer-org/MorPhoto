@@ -10,6 +10,7 @@ export const titleStyle = style({
 
 export const contentStyle = style({
   marginTop: 8,
+  backgroundColor: "fff",
 });
 
 const textareaBase = style({
@@ -19,16 +20,20 @@ const textareaBase = style({
   resize: "none",
   fontSize: 16,
   color: slate.slate11,
+  backgroundColor: "fff",
   border: "none",
   outline: "none",
   transition: "background-color 0.3s ease",
+  "::placeholder": {
+    color: slate.slate8,
+  },
 });
 export const textareaVariantStyle = styleVariants({
   default: [
     textareaBase,
     {
       ":hover": {
-        backgroundColor: blackA.blackA8,
+        backgroundColor: blackA.blackA5,
       },
     },
   ],

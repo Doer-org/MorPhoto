@@ -14,7 +14,7 @@ const labelBase = style({
   borderRadius: 10,
   transition: "background-color 0.3s ease",
   ":hover": {
-    backgroundColor: blackA.blackA8,
+    backgroundColor: blackA.blackA6,
   },
 });
 export const labelVariantStyle = styleVariants({
@@ -27,7 +27,7 @@ export const labelVariantStyle = styleVariants({
   drag: [
     labelBase,
     {
-      backgroundColor: blackA.blackA8,
+      backgroundColor: blackA.blackA6,
     },
   ],
 });

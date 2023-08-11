@@ -13,7 +13,7 @@ import {
 } from "../_components";
 import { useEffect, useRef, useState } from "react";
 import { TMorphoto } from "@/types/Morphoto";
-import { createInference, readGcs, readStatus } from "@/api";
+import { createInference, readGcs, readMorphoto, readStatus } from "@/api";
 import { env } from "@/constants";
 
 import * as styles from "../result.css";
@@ -29,6 +29,23 @@ export default function ResultPage({
   const [morphoto, setMorphoto] = useState<TMorphoto | null>(null);
   const [done, setDone] = useState<boolean>(false);
   const [gcsRegistered, setGcsRegistered] = useState<boolean>(true);
+
+  const getMorphoto = () => {
+    if (!prompt || !strength) {
+      readMorphoto(parent_id)
+        .then((result) => {
+          if (result.type === "error" || !result.value.data) {
+            return console.log("少々お待ちください");
+          }
+          console.log(result);
+          setMorphoto(result.value.data);
+          setDone(true);
+        })
+        .catch((err) => {
+          console.error("何らかのエラーが発生しました", err);
+        });
+    }
+  };
 
   const checkGcs = () => {
     readGcs(parent_id)
@@ -59,22 +76,24 @@ export default function ResultPage({
   };
 
   const morphing = () => {
-    createInference(parent_id, {
-      prompt: prompt || "hoge",
-      strength: Number(strength),
-      // is_mock: true,
-    })
-      .then((result) => {
-        if (result.type === "error" || !result.value.data) {
-          return console.log("少々お待ちください");
-        }
-        console.log(result);
-        setMorphoto(result.value.data);
-        setDone(true);
+    if (prompt && strength) {
+      createInference(parent_id, {
+        prompt: prompt,
+        strength: Number(strength),
+        // is_mock: true,
       })
-      .catch((err) => {
-        console.error("何らかのエラーが発生しました", err);
-      });
+        .then((result) => {
+          if (result.type === "error" || !result.value.data) {
+            return console.log("少々お待ちください");
+          }
+          console.log(result);
+          setMorphoto(result.value.data);
+          setDone(true);
+        })
+        .catch((err) => {
+          console.error("何らかのエラーが発生しました", err);
+        });
+    }
   };
 
   const callbackRef = useRef(morphing);
@@ -103,6 +122,7 @@ export default function ResultPage({
     setModalOpen(true);
     checkStatus();
     morphing();
+    getMorphoto();
   }, []);
 
   return (
