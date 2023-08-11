@@ -1,6 +1,6 @@
 <div align="center">
   <img width="55%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/72bf2d4b-2a76-4dbb-ac0f-fcd106b62fdd">
-  <h4>MorPhoto converts images using a latent diffusion model</h4>
+  <h4>Let's enjoy AI-Driven Morphing Photographs!</h4>
   <br>
 </div>
 
