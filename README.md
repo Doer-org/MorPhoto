@@ -21,6 +21,26 @@ MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion
 
 - In the context of **"Image Conversion"**, morphing is conducted using a latent diffusion model based on the provided prompts. This approach contributes to the creation of high-quality images aligned with the intended visual outcomes.
 
+## Morphing Examples
+
+<table border="1">
+  <tr>
+    <td width="220px"><img height="200px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/13c00241-d902-494b-8796-dd4412beff86"/></td>
+    <td width="220px"><img height="200px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/9a59bc5c-e3d1-4148-aa83-9948f86fbbcb"/></td>
+    <td width="500px">
+      <p>
+        Input Prompt: 金魚すくい.<br>
+        Strength: 0.85<br>
+        <a href="https://www.morphoto.app/result/67b200c0-f43e-4261-8f3e-cb9128221a13">MorPhoto Result</a>
+      </p>
+      <blockquote>
+        A vibrant, lively scene of goldfish scooping at a traditional Japanese festival, illuminated by lantern light. Festive, joyful, cultural, intricate, highly detailed, digital painting, night scene, lanterns, reflection.
+      </blockquote>
+    </td>
+  </tr>
+</table>
+
+
 ## Tech Stack
 <div align="center">
   <img width="800px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/28c2b31f-61ac-4d7c-8dee-7bfdce5e0d66">
