@@ -116,6 +116,7 @@ module Program =
                             .WithOrigins(
                                 [|
                                     Env.env.CLIENT_URL
+                                    "https://morphoto.app"
                                     "http://localhost:3000"
                                 |]
                             )
