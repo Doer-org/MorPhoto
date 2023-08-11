@@ -36,6 +36,8 @@ const InputPage = ({
   searchParams: { parent_id?: string };
 }) => {
   const [imageUrlBase64, setImageUrlBase64] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [done, setDone] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -48,6 +50,7 @@ const InputPage = ({
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
     // GCS画像登録
     const gcsResult = await createGcs({ base64: imageUrlBase64 });
     if (gcsResult.type === "error")
@@ -59,6 +62,8 @@ const InputPage = ({
     router.push(
       `/result/${gcsResult.value.data.id}?prompt=${data.prompt}&strength=${data.strength[0]}`
     );
+    setLoading(false);
+    setDone(true);
   };
 
   const onInvalid: SubmitErrorHandler<Inputs> = (errors) => {
@@ -128,7 +133,16 @@ const InputPage = ({
               />
             </div>
             <div className={styles.inputPageFormItemStyle}>
-              <InputButton type="submit" value={"Generate Photo"} />
+              <InputButton
+                type="submit"
+                value={
+                  done
+                    ? "Start morphing"
+                    : loading
+                    ? "Loading..."
+                    : "Generate Photo"
+                }
+              />
             </div>
           </form>
         </div>

@@ -11,9 +11,9 @@ import {
   TwitterShareButton,
   Modal,
 } from "../_components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TMorphoto } from "@/types/Morphoto";
-import { createInference, readMorphoto } from "@/api";
+import { createInference, readMorphoto, readStatus } from "@/api";
 import { env } from "@/constants";
 
 import * as styles from "../result.css";
@@ -23,40 +23,66 @@ export default function ResultPage({
   searchParams: { prompt, strength },
 }: {
   params: { morphoto_id: string };
-  searchParams: { prompt: string; strength: string };
+  searchParams: { prompt?: string; strength?: string };
 }) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [morphoto, setMorphoto] = useState<TMorphoto | null>(null);
+  const [done, setDone] = useState<boolean>(false);
+
+  const checkStatus = () => {
+    readStatus(morphoto_id)
+      .then((result) => {
+        console.log(result);
+        if (result.type === "error" || !result.value.data) {
+          return console.log("まだ登録されていません");
+        }
+        setDone(result.value.data.is_done);
+      })
+      .catch((err) => {
+        console.error("何らかのエラーが発生しました", err);
+      });
+  };
+
+  const morphing = () => {
+    createInference(morphoto_id, {
+      prompt: prompt || "hoge",
+      strength: Number(strength),
+      // is_mock: true,
+    })
+      .then((result) => {
+        if (result.type === "error" || !result.value.data) {
+          return console.log("少々お待ちください");
+        }
+        console.log(result);
+        setMorphoto(result.value.data);
+        setDone(true);
+      })
+      .catch((err) => {
+        console.error("何らかのエラーが発生しました", err);
+      });
+  };
+
+  const callbackRef = useRef(morphing);
+
+  useEffect(() => {
+    if (!done) {
+      callbackRef.current = morphing;
+      return;
+    }
+    callbackRef.current = () => null;
+  }, [morphing]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      callbackRef.current();
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     setModalOpen(true);
-    createInference(morphoto_id, {
-      prompt: prompt,
-      strength: Number(strength),
-      is_mock: true,
-    })
-      .then((result) => {
-        if (result.type === "error")
-          return <p>データの読み込みに失敗しました</p>;
-        if (!result.value.data) return <p>データがありません</p>;
-        setMorphoto(result.value.data);
-        console.log(result.value.data.parent_id);
-      })
-      .catch((err) => {
-        console.error("何らかのエラーが発生しました", err);
-      });
-
-    readMorphoto(morphoto_id)
-      .then((result) => {
-        if (result.type === "error")
-          return <p>データの読み込みに失敗しました</p>;
-        if (!result.value.data) return <p>データがありません</p>;
-        setMorphoto(result.value.data);
-        console.log(result.value.data.parent_id);
-      })
-      .catch((err) => {
-        console.error("何らかのエラーが発生しました", err);
-      });
+    checkStatus();
+    morphing();
   }, []);
 
   return (
@@ -68,7 +94,11 @@ export default function ResultPage({
       >
         <div className={styles.resultModalContentStyle}>
           <div className={styles.resultModalItemStyle}>
-            {morphoto && <ResultImage child_id={morphoto.child_id} />}
+            {done && morphoto ? (
+              <ResultImage child_id={morphoto.child_id} />
+            ) : (
+              <p>少々お待ちください</p>
+            )}
           </div>
           <div className={styles.resultModalItemStyle}>
             <div className={styles.resultButtonGroupStyle}>
