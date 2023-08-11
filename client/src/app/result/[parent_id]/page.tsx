@@ -19,10 +19,10 @@ import { env } from "@/constants";
 import * as styles from "../result.css";
 
 export default function ResultPage({
-  params: { morphoto_id },
+  params: { parent_id },
   searchParams: { prompt, strength },
 }: {
-  params: { morphoto_id: string };
+  params: { parent_id: string };
   searchParams: { prompt?: string; strength?: string };
 }) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function ResultPage({
   const [done, setDone] = useState<boolean>(false);
 
   const checkStatus = () => {
-    readStatus(morphoto_id)
+    readStatus(parent_id)
       .then((result) => {
         console.log(result);
         if (result.type === "error" || !result.value.data) {
@@ -44,7 +44,7 @@ export default function ResultPage({
   };
 
   const morphing = () => {
-    createInference(morphoto_id, {
+    createInference(parent_id, {
       prompt: prompt || "hoge",
       strength: Number(strength),
       // is_mock: true,
