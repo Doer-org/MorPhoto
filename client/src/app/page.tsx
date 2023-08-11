@@ -114,7 +114,7 @@ export default function Home() {
                     width: 22,
                     height: 22,
                     padding: 2,
-                    color: "linear-gradient(90deg, #793AAF, #3451B2)",
+                    color: "#793AAF",
                     position: "absolute",
                     top: "50%",
                     left: "50%",
