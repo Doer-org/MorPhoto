@@ -1,9 +1,8 @@
 <div align="center">
-  <img width="60%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/72bf2d4b-2a76-4dbb-ac0f-fcd106b62fdd">
+  <img width="55%" src="https://github.com/Doer-org/MorPhoto/assets/55625375/72bf2d4b-2a76-4dbb-ac0f-fcd106b62fdd">
+  <h4>MorPhoto converts images using a latent diffusion model</h4>
+  <br>
 </div>
-
-## About
-**MorPhoto** converts images using a latent diffusion model.
 
 ## Mophing Process
 <div align="center">
@@ -24,7 +23,7 @@
         <img src="https://github.com/RyushiAok.png" width="100px;" alt="RyushiAok"/>
       </a>
       <br>
-      <sub><a href="https://github.com/RyushiAok">RyushiAok</a><br>Infra / BE</sub>
+      <sub><a href="https://github.com/RyushiAok">RyushiAok</a><br>Infra / BackEnd</sub>
     </td>
     <td>
       <a href="https://github.com/yach36">
@@ -45,7 +44,7 @@
         <img src="https://github.com/yuuugaaa.png" width="100px;" alt="yuuugaaa"/>
       </a>
       <br>
-      <sub><a href="https://github.com/yuuugaaa">yuuugaaa</a><br>Design / FE</sub>
+      <sub><a href="https://github.com/yuuugaaa">yuuugaaa</a><br>Design / FrontEnd</sub>
     </td>
   </tr>
 </table>
