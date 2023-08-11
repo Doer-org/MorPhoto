@@ -140,7 +140,15 @@ export default function ResultPage({
             <ResultImage child_id={morphoto.child_id} />
           ) : (
             <p>
-              {gcsRegistered ? "Wait a minute..." : "URLを確認してください。"}
+              {gcsRegistered ? (
+                <>
+                  この処理には40秒程度かかります。少々お待ちください。
+                  <br />
+                  This process takes about 40 seconds. Please wait a moment.
+                </>
+              ) : (
+                "URLを確認してください。"
+              )}
             </p>
           )}
         </div>

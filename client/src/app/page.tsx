@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 export default function Home() {
   return (
@@ -48,6 +49,25 @@ export default function Home() {
               Photo
             </span>
           </h1>
+          <span
+            style={{
+              display: "inline-block",
+              width: 48,
+              height: 4,
+              backgroundColor: "#3d4449",
+            }}
+          ></span>
+          <p
+            style={{
+              color: "#687076",
+              fontSize: 14,
+              marginTop: 24,
+              lineHeight: 1.2,
+            }}
+          >
+            A service that allows anyone
+            <br /> to enjoy image conversion.
+          </p>
         </div>
 
         <div
@@ -56,17 +76,54 @@ export default function Home() {
             paddingTop: 120,
           }}
         >
-          <Link href="/create" className={styles.card}>
-            <h2>
-              Create MorPhoto <span>-&gt;</span>
-            </h2>
-            <p
+          <Link
+            href="/create"
+            style={{
+              padding: "12px 72px",
+              borderRadius: 10,
+              background: "linear-gradient(90deg, #793AAF, #3451B2)",
+              transition: "opacity 0.3s ease",
+            }}
+          >
+            <div
               style={{
-                display: "inline-block",
+                display: "inline-flex",
+                gap: 12,
               }}
             >
-              create MorPhoto
-            </p>
+              <span
+                style={{
+                  color: "white",
+                  fontSize: 18,
+                  fontWeight: 700,
+                }}
+              >
+                Start Now
+              </span>
+              <div
+                style={{
+                  width: 22,
+                  height: 22,
+                  display: "inline-block",
+                  position: "relative",
+                }}
+              >
+                <ArrowRightIcon
+                  style={{
+                    backgroundColor: "white",
+                    width: 22,
+                    height: 22,
+                    padding: 2,
+                    color: "linear-gradient(90deg, #793AAF, #3451B2)",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    borderRadius: "50%",
+                  }}
+                />
+              </div>
+            </div>
           </Link>
         </div>
       </div>
