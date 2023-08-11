@@ -26,10 +26,10 @@ MorPhoto's core technologies are **"Prompt Conversion"** and **"Image Conversion
   <img width="800px" src="https://github.com/Doer-org/MorPhoto/assets/55625375/28c2b31f-61ac-4d7c-8dee-7bfdce5e0d66">
 </div>
 
-### ML Deployment
+### 🤖 ML Deployment
 The machine learning component has been deployed on [Modal](https://modal.com/), a usage-based billing model cloud computing service. This deployment structure incurs charges exclusively during inference, leading to a rationalization of hosting costs.
 
-### BFF
+### ⚙️ BFF
 Resource management to prevent redundant re-inference of identical images is managed by a Backend for Frontend (BFF) coded in F#.
 
 ## Contributers
