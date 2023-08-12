@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/ui";
 import {
   CopyButton,
   MisskeyShareButton,
@@ -25,7 +24,6 @@ export default function ResultPage({
   params: { parent_id: string };
   searchParams: { prompt?: string; strength?: string };
 }) {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [morphoto, setMorphoto] = useState<TMorphoto | null>(null);
   const [done, setDone] = useState<boolean>(false);
   const [gcsRegistered, setGcsRegistered] = useState<boolean>(true);
@@ -80,7 +78,7 @@ export default function ResultPage({
       createInference(parent_id, {
         prompt: prompt,
         strength: Number(strength),
-        // is_mock: true,
+        is_mock: true,
       })
         .then((result) => {
           if (result.type === "error" || !result.value.data) {
@@ -119,7 +117,6 @@ export default function ResultPage({
 
   useEffect(() => {
     checkGcs();
-    setModalOpen(true);
     checkStatus();
     morphing();
     getMorphoto();
