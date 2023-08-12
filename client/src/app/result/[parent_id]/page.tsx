@@ -9,13 +9,13 @@ import {
   SaveLink,
   TwitterShareButton,
   Title,
-} from "../_components";
+} from "./_components";
 import { useEffect, useRef, useState } from "react";
 import { TMorphoto } from "@/types/Morphoto";
 import { createInference, readGcs, readMorphoto, readStatus } from "@/api";
 import { env } from "@/constants";
 
-import * as styles from "../result.css";
+import * as styles from "./result.css";
 
 export default function ResultPage({
   params: { parent_id },
