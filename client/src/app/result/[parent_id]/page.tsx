@@ -78,7 +78,7 @@ export default function ResultPage({
       createInference(parent_id, {
         prompt: prompt,
         strength: Number(strength),
-        is_mock: true,
+        // is_mock: true,
       })
         .then((result) => {
           if (result.type === "error" || !result.value.data) {
