@@ -23,6 +23,7 @@ const textareaBase = style({
   backgroundColor: "white",
   border: "none",
   outline: "none",
+  padding: "8px 12px",
   transition: "background-color 0.3s ease",
   "::placeholder": {
     color: slate.slate8,

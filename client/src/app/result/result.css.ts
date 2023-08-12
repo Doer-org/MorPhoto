@@ -2,10 +2,14 @@ import { slate } from "@radix-ui/colors";
 import { style } from "@vanilla-extract/css";
 
 export const resultStyle = style({
-  padding: "120px 16px",
+  padding: "48px 16px 120px",
+  margin: "0 auto",
+  maxWidth: 800,
 });
 
-export const resultModalContentStyle = style({});
+export const resultModalContentStyle = style({
+  marginTop: 24,
+});
 
 export const resultModalItemStyle = style({
   marginTop: 14,
