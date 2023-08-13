@@ -21,9 +21,9 @@ type Props = {
 
 export default async function og({ params }: Props) {
   const morphoto = await readMorphoto(params.parent_id);
-  if (morphoto.type === "error") {
-    return new Response("Not Found", { status: 404 });
-  }
+  // if (morphoto.type === "error") {
+  //   return new Response("Not Found", { status: 404 });
+  // }
   console.log(morphoto);
 
   return new ImageResponse(
