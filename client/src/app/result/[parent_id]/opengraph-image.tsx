@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ImageResponse } from "next/server";
 
 export const runtime = "edge";
-export const revalidate = 10;
+export const revalidate = 50;
 
 export const alt = "変換画像";
 export const size = {
@@ -19,12 +19,14 @@ type Props = {
   };
 };
 
-export default async function og({ params: { parent_id } }: Props) {
-  // const morphoto = await readMorphoto(parent_id);
-  // if (morphoto.type === "error")
-  //   return new Response("Not Found", { status: 404 });
+export default async function og({ params }: Props) {
+  const morphoto = await readMorphoto(params.parent_id);
+  if (morphoto.type === "error") {
+    return new Response("Not Found", { status: 404 });
+  }
+  console.log(morphoto);
 
-  new ImageResponse(
+  return new ImageResponse(
     (
       <div
         style={{
@@ -34,9 +36,9 @@ export default async function og({ params: { parent_id } }: Props) {
       >
         <Image src={"/assets/example1.png"} fill alt="生成画像" />
       </div>
-    )
-  ),
+    ),
     {
       ...size,
-    };
+    }
+  );
 }
