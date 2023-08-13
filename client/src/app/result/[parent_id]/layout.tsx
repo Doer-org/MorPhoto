@@ -7,9 +7,9 @@ export default function ResultLayout({ children }: { children: ReactNode }) {
 
 export async function generateMetadata(
   {},
-  parent?: ResolvingMetadata
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const previousImages = (await parent)?.openGraph?.images || [];
+  const previousImages = (await parent).openGraph?.images || [];
 
   return {
     openGraph: {
