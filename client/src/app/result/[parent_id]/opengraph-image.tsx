@@ -24,12 +24,12 @@ type Props = {
 };
 
 export default async function og({ params, searchParams }: Props) {
-  const morphoto = await readMorphoto(params.parent_id);
-  if (morphoto.type === "error") {
-    return new ImageResponse(
-      <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
-    );
-  }
+  // const morphoto = await readMorphoto(params.parent_id);
+  // if (morphoto.type === "error") {
+  //   return new ImageResponse(
+  //     <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
+  //   );
+  // }
 
   return new ImageResponse(
     (
