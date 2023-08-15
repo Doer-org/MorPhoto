@@ -27,20 +27,20 @@ export default async function og({ params }: Props) {
     );
   }
 
-  const css = await fetch(
-    "https://fonts.googleapis.com/css2?family=Inter:wght@600&subset=latin"
-  ).then((res) => res.text());
-  const fontUrl = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/
-  )?.[1];
-  if (!fontUrl) {
-    return new ImageResponse(
-      <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
-    );
-  }
-  const interArrayBuffer = await fetch(fontUrl).then((res) =>
-    res.arrayBuffer()
-  );
+  // const css = await fetch(
+  //   "https://fonts.googleapis.com/css2?family=Inter:wght@600&subset=latin"
+  // ).then((res) => res.text());
+  // const fontUrl = css.match(
+  //   /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  // )?.[1];
+  // if (!fontUrl) {
+  //   return new ImageResponse(
+  //     <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
+  //   );
+  // }
+  // const interArrayBuffer = await fetch(fontUrl).then((res) =>
+  //   res.arrayBuffer()
+  // );
 
   return new ImageResponse(
     (
@@ -78,8 +78,7 @@ export default async function og({ params }: Props) {
               }}
             >
               <img
-                // src={getImageUrl(morphoto.value.data.parent_id)}
-                src={`https://storage.googleapis.com/morphoto_strage/${morphoto.value.data.parent_id}`}
+                src={getImageUrl(morphoto.value.data.parent_id)}
                 alt="入力画像"
                 style={{
                   width: "100%",
@@ -108,7 +107,7 @@ export default async function og({ params }: Props) {
               }}
             >
               <img
-                src={`https://storage.googleapis.com/morphoto_strage/${morphoto.value.data.child_id}`}
+                src={getImageUrl(morphoto.value.data.child_id)}
                 alt="変換画像"
                 style={{
                   width: "100%",
@@ -160,14 +159,14 @@ export default async function og({ params }: Props) {
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: "Inter",
-          data: interArrayBuffer,
-          style: "normal",
-          weight: 600,
-        },
-      ],
+      // fonts: [
+      //   {
+      //     name: "Inter",
+      //     data: interArrayBuffer,
+      //     style: "normal",
+      //     weight: 600,
+      //   },
+      // ],
     }
   );
 }
