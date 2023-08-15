@@ -49,7 +49,7 @@ export default async function og({ params }: Props) {
           display: "flex",
           width: "100%",
           height: "100%",
-          padding: "12px 120px",
+          padding: "0 120px",
           backgroundColor: "#dfe3e6",
         }}
       >
@@ -60,7 +60,6 @@ export default async function og({ params }: Props) {
             justifyContent: "space-between",
             backgroundColor: "white",
             padding: "40px 80px 32px",
-            borderRadius: 40,
           }}
         >
           <div
