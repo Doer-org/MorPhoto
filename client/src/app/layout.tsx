@@ -1,7 +1,7 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { MorphotoHeader } from "./_components";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 const siteName = "MorPhoto";
@@ -9,6 +9,7 @@ const description = "Let's start morphing!";
 const url = "https://www.morphoto.app/";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.morphoto.app"),
   title: {
     default: siteName,
     template: `%s｜${siteName}`,
