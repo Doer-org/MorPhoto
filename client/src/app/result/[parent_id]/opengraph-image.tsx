@@ -78,7 +78,8 @@ export default async function og({ params }: Props) {
               }}
             >
               <img
-                src={getImageUrl(morphoto.value.data.parent_id)}
+                // src={getImageUrl(morphoto.value.data.parent_id)}
+                src={`https://storage.googleapis.com/morphoto_strage/${morphoto.value.data.parent_id}`}
                 alt="入力画像"
                 style={{
                   width: "100%",
@@ -107,7 +108,7 @@ export default async function og({ params }: Props) {
               }}
             >
               <img
-                src={getImageUrl(morphoto.value.data.child_id)}
+                src={`https://storage.googleapis.com/morphoto_strage/${morphoto.value.data.child_id}`}
                 alt="変換画像"
                 style={{
                   width: "100%",
