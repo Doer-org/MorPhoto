@@ -28,9 +28,9 @@ let inference (request: MLRequest) (env: MLEnv) =
         else
             Error "ML Server Error")
 
-let mlRepo env =
-    { new MLRepo with
-        member _.inference request base64Image =
+let mlRepo env = {
+    inference =
+        fun request base64Image ->
             inference
                 {
                     prompt = request.prompt
@@ -39,4 +39,4 @@ let mlRepo env =
                     is_mock = request.is_mock
                 }
                 env
-    }
+}

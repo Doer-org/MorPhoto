@@ -63,10 +63,7 @@ let uploadFile (base64: string) (env: GCS_ENV) =
     }
 
 
-let gcsStore env =
-    { new Domain.GCPRepo with
-        member _.downloadBase64(fileName: string) =
-            getBase64FromGCS fileName env
-
-        member _.upload base64 = uploadFile base64 env
-    }
+let gcsStore env : Domain.GCPRepo = {
+    downloadBase64 = fun (fileName: string) -> getBase64FromGCS fileName env
+    upload = fun base64 -> uploadFile base64 env
+}

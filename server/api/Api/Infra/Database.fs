@@ -41,10 +41,9 @@ let conn (env: DBEnv) : IDbConnection =
         Error e.Message |> Task.singleton 
 *)
 
-let statusRepo env =
-    { new StatusRepo with
-        member _.registerStatus(status: Status) : TaskResult<Status, string> =
-
+let statusRepo env = {
+    registerStatus =
+        fun (status: Status) ->
             try
                 let conn = conn env
 
@@ -57,7 +56,8 @@ let statusRepo env =
             with e ->
                 Error e.Message |> Task.singleton
 
-        member _.getStatus(parent_id: string) : TaskResult<Status, string> =
+    getStatus =
+        fun (parent_id: string) ->
             try
                 let conn = conn env
 
@@ -75,8 +75,8 @@ let statusRepo env =
                 )
             with e ->
                 Error e.Message |> Task.singleton
-
-        member _.updateStatus(arg1: Status) : TaskResult<Status, string> =
+    updateStatus =
+        fun (arg1: Status) ->
             try
                 let conn = conn env
 
@@ -89,12 +89,11 @@ let statusRepo env =
                 |> Task.map (fun _ -> Ok arg1)
             with e ->
                 Error e.Message |> Task.singleton
-    }
+}
 
-let morphotoRepo env =
-    { new MorphotoRepo with
-
-        member _.register(morphoto: Morphoto) : TaskResult<Morphoto, string> =
+let morphotoRepo env = {
+    register =
+        fun morphoto ->
             try
                 let conn = conn env
 
@@ -106,8 +105,8 @@ let morphotoRepo env =
                 |> Task.map (fun _ -> Ok morphoto)
             with e ->
                 Error e.Message |> Task.singleton
-
-        member _.getMorphoto(parent_id: string) : TaskResult<Morphoto, string> =
+    getMorphoto =
+        fun parent_id ->
             try
                 let conn = conn env
 
@@ -125,9 +124,8 @@ let morphotoRepo env =
                 )
             with e ->
                 Error e.Message |> Task.singleton
-
-        // Todo: 検索条件(view_count, created_at)
-        member _.getAllMorphotos() : TaskResult<Morphoto[], string> =
+    getAllMorphotos =
+        fun () ->
             try
                 let conn = conn env
 
@@ -139,4 +137,5 @@ let morphotoRepo env =
                 |> Task.map (Seq.toArray >> Ok)
             with e ->
                 Error e.Message |> Task.singleton
-    }
+
+}
