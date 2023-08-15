@@ -59,7 +59,7 @@ export default async function og({ params }: Props) {
             flexDirection: "column",
             justifyContent: "space-between",
             backgroundColor: "white",
-            padding: "40px 80px 32px",
+            padding: "40px 80px",
           }}
         >
           <div
