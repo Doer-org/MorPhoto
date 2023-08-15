@@ -93,7 +93,7 @@ export default async function og({ params }: Props) {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  backgroundColor: "rgba(0, 0, 0, .25)",
+                  backgroundColor: "rgba(0, 0, 0, .1)",
                 }}
               ></span>
             </div>
