@@ -164,7 +164,7 @@ export default async function og({ params }: Props) {
           name: "Inter",
           data: interArrayBuffer,
           style: "normal",
-          weight: 700,
+          weight: 600,
         },
       ],
     }
