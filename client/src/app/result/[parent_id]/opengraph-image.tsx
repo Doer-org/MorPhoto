@@ -27,20 +27,20 @@ export default async function og({ params }: Props) {
     );
   }
 
-  // const css = await fetch(
-  //   "https://fonts.googleapis.com/css2?family=Inter:wght@600&subset=latin"
-  // ).then((res) => res.text());
-  // const fontUrl = css.match(
-  //   /src: url\((.+)\) format\('(opentype|truetype)'\)/
-  // )?.[1];
-  // if (!fontUrl) {
-  //   return new ImageResponse(
-  //     <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
-  //   );
-  // }
-  // const interArrayBuffer = await fetch(fontUrl).then((res) =>
-  //   res.arrayBuffer()
-  // );
+  const css = await fetch(
+    "https://fonts.googleapis.com/css2?family=Inter:wght@600&subset=latin"
+  ).then((res) => res.text());
+  const fontUrl = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  )?.[1];
+  if (!fontUrl) {
+    return new ImageResponse(
+      <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
+    );
+  }
+  const interArrayBuffer = await fetch(fontUrl).then((res) =>
+    res.arrayBuffer()
+  );
 
   return new ImageResponse(
     (
@@ -50,6 +50,7 @@ export default async function og({ params }: Props) {
           width: "100%",
           height: "100%",
           padding: "12px 120px",
+          backgroundColor: "#dfe3e6",
         }}
       >
         <div
@@ -159,14 +160,14 @@ export default async function og({ params }: Props) {
     ),
     {
       ...size,
-      // fonts: [
-      //   {
-      //     name: "Inter",
-      //     data: interArrayBuffer,
-      //     style: "normal",
-      //     weight: 600,
-      //   },
-      // ],
+      fonts: [
+        {
+          name: "Inter",
+          data: interArrayBuffer,
+          style: "normal",
+          weight: 600,
+        },
+      ],
     }
   );
 }
