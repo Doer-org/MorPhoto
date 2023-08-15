@@ -17,19 +17,30 @@ type Props = {
   params: {
     parent_id: string;
   };
-  searchParams: {
-    prompt?: string;
-    strength?: string;
-  };
 };
 
-export default async function og({ params, searchParams }: Props) {
-  // const morphoto = await readMorphoto(params.parent_id);
-  // if (morphoto.type === "error") {
-  //   return new ImageResponse(
-  //     <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
-  //   );
-  // }
+export default async function og({ params }: Props) {
+  const morphoto = await readMorphoto(params.parent_id);
+  if (morphoto.type === "error" || !morphoto.value.data) {
+    return new ImageResponse(
+      <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
+    );
+  }
+
+  const css = await fetch(
+    "https://fonts.googleapis.com/css2?family=Inter:wght@600&subset=latin"
+  ).then((res) => res.text());
+  const fontUrl = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  )?.[1];
+  if (!fontUrl) {
+    return new ImageResponse(
+      <img src={`${env.CLIENT_URL}/opengraph-image.png`} />
+    );
+  }
+  const interArrayBuffer = await fetch(fontUrl).then((res) =>
+    res.arrayBuffer()
+  );
 
   return new ImageResponse(
     (
@@ -110,21 +121,23 @@ export default async function og({ params, searchParams }: Props) {
             >
               <span
                 style={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  width: 440,
                   fontSize: 40,
-                  fontWeight: "bold",
                   color: "#687076",
                 }}
               >
-                {searchParams?.prompt || "prompt"}
+                {morphoto.value.data.prompt}
               </span>
               <span
                 style={{
                   fontSize: 40,
-                  fontWeight: "bold",
                   color: "#687076",
                 }}
               >
-                {searchParams?.strength || "0.78"}
+                {morphoto.value.data.strength}
               </span>
             </div>
             <img width={320} src={`${env.CLIENT_URL}/logo.png`} />
@@ -134,9 +147,14 @@ export default async function og({ params, searchParams }: Props) {
     ),
     {
       ...size,
-      // fonts: [
-      //   name: "Inter",
-      // ],
+      fonts: [
+        {
+          name: "Inter",
+          data: interArrayBuffer,
+          style: "normal",
+          weight: 700,
+        },
+      ],
     }
   );
 }
