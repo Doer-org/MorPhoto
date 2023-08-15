@@ -18,21 +18,22 @@ type Status = {
 
 open FsToolkit.ErrorHandling
 
-type MorphotoRepo =
-    abstract member register: Morphoto -> TaskResult<Morphoto, string>
-    abstract member getMorphoto: string -> TaskResult<Morphoto, string>
-    abstract member getAllMorphotos: unit -> TaskResult<Morphoto[], string>
+type MorphotoRepo = {
+    register: Morphoto -> TaskResult<Morphoto, string>
+    getMorphoto: string -> TaskResult<Morphoto, string>
+    getAllMorphotos: unit -> TaskResult<Morphoto[], string>
+}
 
-type StatusRepo =
-    abstract member registerStatus: Status -> TaskResult<Status, string>
-    abstract member getStatus: string -> TaskResult<Status, string>
-    abstract member updateStatus: Status -> TaskResult<Status, string>
+type StatusRepo = {
+    registerStatus: Status -> TaskResult<Status, string>
+    getStatus: string -> TaskResult<Status, string>
+    updateStatus: Status -> TaskResult<Status, string>
+}
 
-type GCPRepo =
-    abstract member upload:
-        string -> Async<Result<Google.Apis.Storage.v1.Data.Object, string>>
-
-    abstract member downloadBase64: string -> Async<Result<string, string>>
+type GCPRepo = {
+    upload: string -> Async<Result<Google.Apis.Storage.v1.Data.Object, string>>
+    downloadBase64: string -> Async<Result<string, string>>
+}
 
 type MorphotoInferenceReq = {
     parent_id: string
@@ -46,8 +47,15 @@ type MorphotoInferenceResp = {
     prompt: string
 }
 
-type MLRepo =
-    abstract member inference:
-        MorphotoInferenceReq ->
-        string ->
-            Async<Result<MorphotoInferenceResp, string>>
+type MLHealthResp = {
+    status: string
+    device: string
+}
+
+type MLRepo = {
+    health: unit -> Async<Result<MLHealthResp, string>>
+    inference:
+        MorphotoInferenceReq
+            -> string
+            -> Async<Result<MorphotoInferenceResp, string>>
+}

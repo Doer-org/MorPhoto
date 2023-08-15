@@ -21,6 +21,16 @@ let health () =
 
     resp.statusCode |> should equal HttpStatusCode.OK
 
+[<Fact>]
+let healthML () =
+    let resp =
+        http {
+            GET $"{endpoint}/health/ml"
+            CacheControl "no-cache"
+        }
+        |> Request.send
+    resp.statusCode |> should equal HttpStatusCode.OK
+
 
 [<Fact>]
 let testStatusAPI () =

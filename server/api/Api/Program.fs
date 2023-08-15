@@ -3,17 +3,18 @@
 module Env =
     open System
 
-    type IEnv =
-        abstract member ENVIRONMENT: string
-        abstract member DB_HOST: string
-        abstract member DB_USER: string
-        abstract member DB_PASSWORD: string
-        abstract member DB_DATABASE: string
-        abstract member CLIENT_URL: string
-        abstract member GCP_CREDENTIALS: string
-        abstract member GCP_BUCKET_NAME: string
-        abstract member GCS_URL: string
-        abstract member ML_URL: string
+    type Env = {
+        ENVIRONMENT: string
+        DB_HOST: string
+        DB_USER: string
+        DB_PASSWORD: string
+        DB_DATABASE: string
+        CLIENT_URL: string
+        GCP_CREDENTIALS: string
+        GCP_BUCKET_NAME: string
+        GCS_URL: string
+        ML_URL: string
+    }
 
     let env =
         if
@@ -54,18 +55,17 @@ module Env =
                 // コンテナ名をホスト名として扱う
                 Environment.GetEnvironmentVariable("ML_URL")
 
-
-        { new IEnv with
-            member _.ENVIRONMENT = ENVIRONMENT
-            member _.DB_HOST = DB_HOST
-            member _.DB_USER = DB_USER
-            member _.DB_PASSWORD = DB_PASSWORD
-            member _.DB_DATABASE = DB_DATABASE
-            member _.CLIENT_URL = CLIENT_URL
-            member _.GCP_CREDENTIALS = GCP_CREDENTIALS
-            member _.GCP_BUCKET_NAME = GCP_BUCKET_NAME
-            member _.GCS_URL = GCS_URL
-            member _.ML_URL = ML_URL
+        {
+            ENVIRONMENT = ENVIRONMENT
+            DB_HOST = DB_HOST
+            DB_USER = DB_USER
+            DB_PASSWORD = DB_PASSWORD
+            DB_DATABASE = DB_DATABASE
+            CLIENT_URL = CLIENT_URL
+            GCP_CREDENTIALS = GCP_CREDENTIALS
+            GCP_BUCKET_NAME = GCP_BUCKET_NAME
+            GCS_URL = GCS_URL
+            ML_URL = ML_URL
         }
 
     let dbEnv: Infra.Database.DBEnv = {
@@ -127,6 +127,7 @@ module Program =
 
             endpoints [
                 get "/health" (Response.ofJson {| env = Env.env.ENVIRONMENT |})
+                get "/health/ml" (Handler.Morphoto.healthML Env.ML_ENV)
                 post "/status/{parent_id}" Handler.Morphoto.registerStatus
                 get "/status/{parent_id}" Handler.Morphoto.getStatus
                 get "/morphoto/{parent_id}" Handler.Morphoto.getMorphoto
