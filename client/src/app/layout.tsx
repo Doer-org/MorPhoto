@@ -10,7 +10,6 @@ const description = "Let's start morphing!";
 const url = "https://www.morphoto.app/";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(env.CLIENT_URL),
   title: {
     default: siteName,
     template: `%s｜${siteName}`,
