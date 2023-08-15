@@ -3,7 +3,7 @@ import { getImageUrl } from "@/utils";
 import { ImageResponse } from "next/server";
 import { env } from "@/constants";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const revalidate = 10;
 
 export const alt = "変換画像";
