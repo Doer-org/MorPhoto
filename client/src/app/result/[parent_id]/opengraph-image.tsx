@@ -49,7 +49,7 @@ export default async function og({ params }: Props) {
           display: "flex",
           width: "100%",
           height: "100%",
-          padding: "0 120px",
+          padding: "12px 120px",
         }}
       >
         <div
@@ -58,7 +58,8 @@ export default async function og({ params }: Props) {
             flexDirection: "column",
             justifyContent: "space-between",
             backgroundColor: "white",
-            padding: "40px 80px",
+            padding: "40px 80px 32px",
+            borderRadius: 40,
           }}
         >
           <div
@@ -73,17 +74,28 @@ export default async function og({ params }: Props) {
                 alignItems: "center",
                 width: "400px",
                 height: "400px",
+                position: "relative",
               }}
             >
               <img
-                src={`${env.CLIENT_URL}/assets/nijika1.png`}
-                alt="生成画像"
+                src={getImageUrl(morphoto.value.data.parent_id)}
+                alt="入力画像"
                 style={{
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
                 }}
               />
+              <span
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0, 0, 0, .25)",
+                }}
+              ></span>
             </div>
             <div
               style={{
@@ -95,8 +107,8 @@ export default async function og({ params }: Props) {
               }}
             >
               <img
-                src={`${env.CLIENT_URL}/assets/nijika2.png`}
-                alt="生成画像"
+                src={getImageUrl(morphoto.value.data.child_id)}
+                alt="変換画像"
                 style={{
                   width: "100%",
                   height: "100%",
