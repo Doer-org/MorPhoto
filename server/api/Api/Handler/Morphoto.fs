@@ -9,6 +9,17 @@ open System.Text.Json
 
 open Handler.Error
 
+let healthML (mlEnv) : HttpHandler =
+    fun ctx ->
+        let health =
+            Infra.ML.mlRepo mlEnv
+            |> fun store -> store.health () |> Async.RunSynchronously
+
+        health
+        |> function
+            | Ok health -> ctx |> Response.ofJson {| data = health |}
+            | Error e -> errorHandler e ctx
+
 /// ### Endpoint
 /// - `POST: /inference/:id`
 /// - `body: { prompt: string, strength: float, is_mock?: bool }`

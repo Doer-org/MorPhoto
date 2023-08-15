@@ -39,4 +39,16 @@ let mlRepo env = {
                     is_mock = request.is_mock
                 }
                 env
+    health =
+        fun () -> 
+            http {
+                GET $"{env.ML_URL}/health"
+                body 
+            }
+            |> Request.sendAsync
+            |> Async.map (fun resp ->
+                if resp.statusCode = HttpStatusCode.OK then
+                    resp |> Response.deserializeJson<MLHealthResp> |> Ok
+                else
+                    Error "ML Server Error")
 }

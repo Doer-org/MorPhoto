@@ -127,6 +127,7 @@ module Program =
 
             endpoints [
                 get "/health" (Response.ofJson {| env = Env.env.ENVIRONMENT |})
+                get "/health/ml" (Handler.Morphoto.healthML Env.ML_ENV)
                 post "/status/{parent_id}" Handler.Morphoto.registerStatus
                 get "/status/{parent_id}" Handler.Morphoto.getStatus
                 get "/morphoto/{parent_id}" Handler.Morphoto.getMorphoto

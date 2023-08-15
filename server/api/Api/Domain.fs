@@ -47,7 +47,13 @@ type MorphotoInferenceResp = {
     prompt: string
 }
 
+type MLHealthResp = {
+    status: string
+    device: string
+}
+
 type MLRepo = {
+    health: unit -> Async<Result<MLHealthResp, string>>
     inference:
         MorphotoInferenceReq
             -> string
