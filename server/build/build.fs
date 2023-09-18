@@ -4,7 +4,7 @@ open System.IO
 let ENV = $"{__SOURCE_DIRECTORY__}/../.env.local"
 let DATA_DIR = $"{__SOURCE_DIRECTORY__}/../database/data"
 let DOCKER_FILER_DIR = $"{__SOURCE_DIRECTORY__}/../docker"
-let DOCKER_COMPONSE_LOCAL = $"{DOCKER_FILER_DIR}/docker-compose.local.yaml"
+let DOCKER_COMPOSE_LOCAL = $"{DOCKER_FILER_DIR}/docker-compose.local.yaml"
 
 let DOCKER_COMPOSE_LOCAL_DATABASE =
     $"{DOCKER_FILER_DIR}/docker-compose.local.database.yaml"
@@ -46,7 +46,7 @@ let initTargets () =
             "docker",
             [
                 $"compose -p {PROJECT_NAME}"
-                $"-f {DOCKER_COMPONSE_LOCAL}"
+                $"-f {DOCKER_COMPOSE_LOCAL}"
                 $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
                 $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
                 $"-f {DOCKER_COMPOSE_LOCAL_ML}"
@@ -64,7 +64,7 @@ let initTargets () =
             "docker",
             [
                 $"compose -p {PROJECT_NAME}"
-                $"-f {DOCKER_COMPONSE_LOCAL}"
+                $"-f {DOCKER_COMPOSE_LOCAL}"
                 $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
                 $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
                 $"-f {DOCKER_COMPOSE_LOCAL_ML}"
