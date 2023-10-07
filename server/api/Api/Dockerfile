@@ -12,8 +12,9 @@ COPY . .
 WORKDIR "/src/."
 RUN dotnet build "Api.fsproj" -c Release -o /app/build
 
+# https://learn.microsoft.com/ja-jp/dotnet/core/deploying/deploy-with-cli
 FROM build AS publish
-RUN dotnet publish "Api.fsproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Api.fsproj" -o /app/publish -r linux-x64 --self-contained true -p:PublishTrimmed=true
 
 FROM base AS final
 WORKDIR /app
