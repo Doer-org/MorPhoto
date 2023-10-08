@@ -49,7 +49,7 @@ let initTargets () =
                 $"-f {DOCKER_COMPOSE_LOCAL}"
                 $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
                 $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
-                $"-f {DOCKER_COMPOSE_LOCAL_ML}"
+                // $"-f {DOCKER_COMPOSE_LOCAL_ML}" // TODO: optional
                 $"--env-file {ENV}"
                 "up -d"
             ]
@@ -63,12 +63,7 @@ let initTargets () =
         Shell.Exec(
             "docker",
             [
-                $"compose -p {PROJECT_NAME}"
-                $"-f {DOCKER_COMPOSE_LOCAL}"
-                $"-f {DOCKER_COMPOSE_LOCAL_DATABASE}"
-                $"-f {DOCKER_COMPOSE_LOCAL_SERVER}"
-                $"-f {DOCKER_COMPOSE_LOCAL_ML}"
-                $"--env-file {ENV}"
+                $"compose -p {PROJECT_NAME}" 
                 "down --rmi all --volumes --remove-orphans"
             ]
             |> String.concat " "
