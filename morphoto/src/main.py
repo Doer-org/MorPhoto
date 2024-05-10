@@ -16,9 +16,9 @@ from morphoto import Morphoto
 
 morphoto_config = OmegaConf.create(MorphotoConfig)
 morphoto = Morphoto(morphoto_config)
-app = FastAPI()
+fastapi_app = FastAPI()
 
-app.add_middleware(
+fastapi_app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "https://api.morphoto.app"],
     allow_credentials=True,
@@ -26,13 +26,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-stub = modal.Stub("mophoto-fastapi")
+app = modal.App("mophoto-fastapi")
 modal_image = modal.Image.debian_slim().poetry_install_from_file(
     poetry_pyproject_toml="pyproject.toml", poetry_lockfile="poetry.lock"
 )
 
 
-@app.post("/inference")
+@fastapi_app.post("/inference")
 def inference(request: InferenceRequest) -> dict[str, str]:
     if request.is_mock:
         return {"converted_image": request.image, "prompt": request.prompt}
@@ -47,7 +47,7 @@ def inference(request: InferenceRequest) -> dict[str, str]:
     return result
 
 
-@app.get("/health")
+@fastapi_app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "device": DiffusionConfig.device}
 
@@ -56,20 +56,20 @@ load_dotenv()
 data_dir = os.getenv("DATA_DIR") or "data"
 
 
-@stub.function(
+@app.function(
     image=modal_image,
     mounts=[modal.Mount.from_local_dir(data_dir, remote_path="/root/data")],
-    secret=modal.Secret.from_name("morphoto-ml-secrets"),
+    secrets=[modal.Secret.from_name("morphoto-ml-secrets")],
     gpu="T4",
 )
 @asgi_app()
 def fastapi_app() -> FastAPI:
-    return app
+    return fastapi_app
 
 
-@stub.local_entrypoint()
+@app.local_entrypoint()
 def main() -> None:
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(fastapi_app, host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":

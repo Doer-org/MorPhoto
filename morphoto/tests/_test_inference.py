@@ -5,10 +5,10 @@ import unittest
 from fastapi.testclient import TestClient
 from PIL import Image
 
-from main import app
+from main import fastapi_app
 from models import InferenceRequest
 
-client = TestClient(app)
+client = TestClient(fastapi_app)
 
 
 class TestInferenceEndpoint(unittest.TestCase):

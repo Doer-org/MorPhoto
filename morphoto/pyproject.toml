@@ -25,7 +25,7 @@ transformers = "^4.30.2"
 fastapi = "0.70.0"
 uvicorn = "^0.23.0"
 accelerate = "^0.21.0"
-modal-client = "^0.54.3773"
+modal-client = "^0.62.158"
 yarl = "^1.9.2"
 
 
